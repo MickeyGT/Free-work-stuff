@@ -1,0 +1,29 @@
+#include <cstdio>
+#include <fstream>
+#include<math.h>
+int n,i,poz,nr;
+bool v[2000010];
+using namespace std;
+int main()
+{
+	ifstream f("ciur.in");
+	ofstream g("ciur.out");
+	f >> n;
+	poz = 2;
+	while (poz != n)
+	{
+		for (i = poz+poz;i <= n - 1;i = i + poz)
+			v[i] = 1;
+		poz++;
+		while (v[poz] == 1)
+			poz++;
+
+	}
+	for (i = 2;i <= n - 1;i++)
+		if (v[i] == 0)
+			nr++;
+	g << nr;
+
+
+	return 0;
+}
