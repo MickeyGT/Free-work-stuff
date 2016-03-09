@@ -1,0 +1,44 @@
+#include <fstream>
+using namespace std;
+int a[100010];
+long i;
+int t, n, el, j, k, max1, min1;
+unsigned char v[10000000010];
+int main()
+{
+	ifstream f("minlcm.in");
+	ofstream g("minlcm.out");
+	f >> t;
+	min1 = 100000;
+	max1 = 1;
+	for (j = 1;j <= t;j++)
+	{
+		for (i = 1;i <= max1*min1;i++)
+			v[i] = '0';
+		f >> n;
+		for (k = 1;k <= n;k++)
+		{
+			f >> el;
+			a[k] = el;
+			if (el<min1)
+				min1 = el;
+			if (el>max1)
+				max1 = el;
+		}
+		for (k = 1;k <= n;k++)
+			for (i = a[k];i <= max1*min1;i = i + a[k])
+			{
+				if (v[i] == '0')
+					v[i] = '1';
+				else
+					if (v[i] == '1')
+					{
+						g << i << "\n";
+						break;
+
+					}
+			}
+	
+	}
+	return 0;
+}
