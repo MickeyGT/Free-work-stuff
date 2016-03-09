@@ -1,0 +1,29 @@
+#include <fstream>
+#include <unordered_map>
+using namespace std;
+
+int n,type,value,i;
+int main()
+{
+    ifstream f("hashuri.in");
+	ofstream g("hashuri.out");
+	unordered_map <int, int> M;
+	f >> n;
+	for (i = 1;i <= n;++i)
+	{
+		f >> type >> value;
+		if (type == 1)
+			M[value]++;
+		else
+			if (type == 2)
+				M.erase(value);
+			else
+				if (M[value]!=0)
+					g << "1\n";
+				else
+					g << "0\n";
+
+
+	}
+	return 0;
+}
