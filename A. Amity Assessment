@@ -153,3 +153,161 @@ int main()
 
 	return 0;
 }
+..........................................................................................
+.......................................................................................... v2.0
+
+#include <stdlib.h>
+#include<stdio.h>
+#include<iostream>
+#include<string.h>
+#include<ctype.h>
+using namespace std;
+char m1[3][3], m2[3][3], string1[4], string2[4],aux,ok;
+int i, j, nr;
+void randomwtf()
+{
+	i = 0;
+	if (string1[0] == 'X')
+		while (i < 100)
+		{
+			if (rand() % 2 == 0)
+			{
+				string1[0] = string1[1];
+				string1[1] = 'X';
+			}
+			else
+			{
+				string1[0] = string1[2];
+				string1[2] = 'X';
+			}
+
+			if (strcmp(string1, string2) == 0)
+			{
+				cout << "YES";
+				ok = 1;
+				break;
+			}
+			else
+				i++;
+		}
+	else
+	if (string1[1] == 'X')
+		while (i < 100)
+		{
+			if (rand() % 2 == 0)
+			{
+				string1[1] = string1[0];
+				string1[0] = 'X';
+			}
+			else
+			{
+				string1[1] = string1[3];
+				string1[3] = 'X';
+			}
+			if (strcmp(string1, string2) == 0)
+			{
+				cout << "YES";
+				ok = 1;
+				break;
+			}
+			else
+				i++;
+		}
+	else
+	
+	if (string1[2] == 'X')
+		while (i < 100)
+		{
+			if (rand() % 2 == 0)
+			{
+				string1[2] = string1[0];
+				string1[0] = 'X';
+			}
+			else
+			{
+				string1[2] = string1[3];
+				string1[3] = 'X';
+			}
+			if (strcmp(string1, string2) == 0)
+			{
+				cout << "YES";
+				ok = 1;
+				break;
+			}
+			else
+				i++;
+		}
+	else
+	if (string1[3] == 'X')
+		while (i < 100)
+		{
+			if (rand() % 2 == 0)
+			{
+				string1[3] = string1[2];
+				string1[2] = 'X';
+			}
+			else
+			{
+				string1[3] = string1[1];
+				string1[1] = 'X';
+			}
+			if (strcmp(string1, string2) == 0)
+			{
+				cout << "YES";
+				ok = 1;
+				break;
+			}
+			else
+				i++;
+		}
+}
+int main()
+{
+	for (i = 1;i <= 2;i++)
+		for (j = 1;j <= 2;j++)
+			cin >> m1[i][j];
+	for (i = 1;i <= 2;i++)
+		for (j = 1;j <= 2;j++)
+			cin >> m2[i][j];
+	nr = 0;
+	for (i = 1;i <= 2;i++)
+		for (j = 1;j <= 2;j++)
+			string1[nr++]=m1[i][j];
+	nr = 0;
+	for (i = 1;i <= 2;i++)
+		for (j = 1;j <= 2;j++)
+			string2[nr++] = m2[i][j];
+	ok = 0;
+	randomwtf();
+	if (ok == 0)
+		randomwtf();
+	else
+	{
+		
+		return 0;
+	}
+	if (ok == 0)
+		randomwtf();
+	else
+	{
+		
+		return 0;
+	}
+	if (ok == 0)
+		randomwtf();
+	else
+	{
+		
+		return 0;
+	}
+	if (ok == 0)
+		randomwtf();
+	else
+	{
+		
+		return 0;
+	}
+	
+	cout << "NO";
+	return 0;
+}
