@@ -1,0 +1,63 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string.h>
+#include<vector>
+#include<algorithm>
+#define KEY 64437
+using namespace std;
+vector <int> v[500000];
+
+int el,i, n, m, A, B, C, D, E, el1, j, value;
+long long V, Q, nr;
+
+
+void remove1(int value)
+{
+	int el = value%KEY;
+	for (j = 0;j < v[el].size();++j)
+		if (v[el][j] == value)
+		{
+			swap(v[el][j], v[el][v[el].size() - 1]);
+			v[el].pop_back();
+			nr++;
+			break;
+		}
+}
+
+int main()
+{
+	ifstream f("muzica.in");
+	ofstream g("muzica.out");
+	f >> n;
+	f >> m;
+	f >> A >> B >> C >> D >> E;
+	for (i = 1;i <= n;i++)
+	{
+		f >> value;
+		int el = value%KEY;
+		v[el].push_back(value);
+	}
+	nr = 0;
+	el1 = 0;
+	remove1(A);
+	remove1(B);
+	V = B;
+	Q = A;
+	for (i = 3;i <= m;i++)
+	{
+		if (nr >= n)
+			break;
+		el1 = (C*V + D*Q) % E;
+		remove1(el1);
+		Q = V;
+		V = el1;
+	}
+
+	g << nr;
+
+
+
+
+	return 0;
+}
