@@ -1,0 +1,37 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string.h>
+#include<set>
+#include<algorithm>
+using namespace std;
+int n,i,type,el,v[200010],nr;
+multiset <int> Set;
+
+
+int main()
+{
+	ifstream f("heapuri.in");
+	ofstream g("heapuri.out");
+	f >> n;
+	nr = 1;
+	for (i = 1;i <= n;i++)
+	{
+		f >> type;
+		if (type == 1)
+		{
+			f >> el;
+			v[nr++] = el;
+			Set.insert(el);
+		}
+		else
+			if (type == 2)
+			{
+				f >> el;
+				Set.erase(v[el]);
+			}
+			else
+				g << *(Set.begin())<<"\n";
+	}
+	return 0;
+}
