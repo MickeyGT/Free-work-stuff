@@ -4,21 +4,33 @@
 #include<string.h>
 #include<deque>
 #include<algorithm>
-deque <long, int> D;
 using namespace std;
-long n, k,i,el;
+deque <long> D;
+long long n, k, i, s, v[5000010],front,back;
 
 int main()
 {
 	ifstream f("deque.in");
 	ofstream g("deque.out");
 	f >> n >> k;
-	f >> el;
-	D.push_front(el);
-	for (i = 1;i <= n-1;i++)
+	for (i = 1;i <= n;i++)
 	{
-		f >> el;
+		f >> v[i];
 	}
 
+	for (i = 1;i <= n;i++)
+	{
+		while ((D.empty()== 0) && (v[i] <= v[D.back()]))
+			D.pop_back();
+		D.push_back(i);
+		
+		if (i >= k)
+		{
+			s = s + v[D.front()];
+			if ((D.empty() == 0) && (i - D.front() >= k - 1))
+				D.pop_front();
+		}
+	}
+	g << s;
 	return 0;
 }
