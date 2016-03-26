@@ -1,0 +1,105 @@
+#include<iostream>
+#include<fstream>
+#include<stdio.h>
+using namespace std;
+double n;
+int v[100001];
+int cb0(int v[100001],int in, int sf,int m)
+{
+    int max = 1 << 31;
+    while (in <= sf)
+    {
+        int mid = (in + sf) / 2;
+        if (v[mid] == m)
+        {
+            max = mid;
+            in = mid + 1;
+ 
+        }
+         
+        else if (v[mid] < m)
+             
+            in = mid + 1;
+        else
+             
+            sf = mid - 1;
+    }
+    if (max == 1 << 31)
+        return -1;
+    else
+        return max;
+}
+int cb1(int v[100001], int in, int sf, int m)
+{
+    int max = 1 << 31;
+    while (in <= sf)
+    {
+ 
+        int mid = (in + sf) / 2;
+        if (v[mid] <= m)
+        {
+            max = mid;
+            in = mid + 1;
+ 
+ 
+        }
+         
+        else
+ 
+            sf = mid - 1;
+    }
+    return max;
+}
+ 
+int cb2(int v[100001], int in, int sf, int m)
+{
+    int max = 1 << 31;
+    while (in <= sf)
+    {
+        int mid = (in + sf) / 2;
+        if (v[mid] >= m)
+        {
+            max = mid;
+            sf = mid - 1;
+ 
+ 
+        }
+ 
+        else if (v[mid] < m)
+ 
+            in = mid + 1;
+     
+    }
+    return max;
+}
+int main() {
+    int t, m, nr, nrt, p, j,i;
+    ifstream f("cautbin.in");
+    ofstream g("cautbin.out");
+    f >> n;
+    for (i = 1; i <= n; i++)
+        f >> v[i];
+    f >> nrt;
+    for (j = 1; j <= nrt; j++)
+    {
+        f >> t;
+        f >> m;
+        if (t == 0)
+        {
+            g << cb0(v, 1, n, m) << '\n';
+ 
+        }
+        if (t == 1)
+        {
+            g << cb1(v, 1, n, m)<< '\n';
+ 
+        }
+        if (t == 2)
+        {
+            g << cb2(v, 1, n, m)<< '\n';
+ 
+}
+    }
+     
+    return 0;
+}
