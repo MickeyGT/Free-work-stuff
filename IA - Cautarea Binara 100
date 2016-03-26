@@ -14,14 +14,10 @@ int cb0(int v[100001],int in, int sf,int m)
         {
             max = mid;
             in = mid + 1;
- 
         }
-         
         else if (v[mid] < m)
-             
             in = mid + 1;
         else
-             
             sf = mid - 1;
     }
     if (max == 1 << 31)
@@ -34,18 +30,13 @@ int cb1(int v[100001], int in, int sf, int m)
     int max = 1 << 31;
     while (in <= sf)
     {
- 
         int mid = (in + sf) / 2;
         if (v[mid] <= m)
         {
             max = mid;
             in = mid + 1;
- 
- 
         }
-         
         else
- 
             sf = mid - 1;
     }
     return max;
@@ -61,14 +52,9 @@ int cb2(int v[100001], int in, int sf, int m)
         {
             max = mid;
             sf = mid - 1;
- 
- 
         }
- 
         else if (v[mid] < m)
- 
             in = mid + 1;
-     
     }
     return max;
 }
@@ -87,18 +73,15 @@ int main() {
         if (t == 0)
         {
             g << cb0(v, 1, n, m) << '\n';
- 
         }
         if (t == 1)
         {
             g << cb1(v, 1, n, m)<< '\n';
- 
         }
         if (t == 2)
         {
             g << cb2(v, 1, n, m)<< '\n';
- 
-}
+        }
     }
      
     return 0;
