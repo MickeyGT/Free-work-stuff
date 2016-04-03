@@ -1,0 +1,5 @@
+len()
+lower()
+upper()
+str()
+print("%.2f" % total)
