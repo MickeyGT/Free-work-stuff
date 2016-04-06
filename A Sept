@@ -21,7 +21,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn,	unsigned char jb
 		roundpoints = 0;
 		prevcard = 0;
 	}
-	if ((v[8 * int(jac) + int(jan)] == 1) || (v[8 * int(jbc) + int(jbn)] == 1))
+	if ((v[14 * int(jac) + int(jan)] == 1) || (v[14 * int(jbc) + int(jbn)] == 1))
 		cout << "Invalid\n";
 	else
 	{
@@ -40,7 +40,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn,	unsigned char jb
 		if (rounds != 16)
 				if (r == 1)
 				{
-					if ((prevcard == jbn) || (jbn == 7))
+					if ((prevcard == int(jbn)) || (int(jbn) == 7))
 						if (juccur == 1)
 							cout << "Jucator curent:a\n";
 						else
@@ -65,25 +65,26 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn,	unsigned char jb
 				}
 				else
 				{
-					if ((jan == jbn) || (jbn == 7))
+					if ((jan == jbn) || (int(jbn) == 7))
+					{
+						prevcard = int(jan);
 						if (juccur == 1)
 							cout << "Jucator curent:a\n";
 						else
 							cout << "Jucator curent:b\n";
+					}
 					else
 					{
 						if (juccur == 1)
 						{
 							cout << "Jucator curent:a\n";
-							juccur = 2;
-							pointsb += roundpoints;
+							pointsa += roundpoints;
 							roundpoints = 0;
 						}
 						else
 						{
 							cout << "Jucator curent:b\n";
-							juccur = 1;
-							pointsa += roundpoints;
+							pointsb += roundpoints;
 							roundpoints = 0;
 						}
 					}
@@ -91,7 +92,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn,	unsigned char jb
 		else
 			if (r == 1)
 			{
-				if ((prevcard == jbn) || (jbn == 7))
+				if ((prevcard == int(jbn)) || (int(jbn) == 7))
 					if (juccur == 1)
 					{
 						g1 = 0;
