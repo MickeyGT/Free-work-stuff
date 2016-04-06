@@ -1,0 +1,63 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+
+
+using namespace std;
+unsigned int g1, g2, g3;
+
+
+void f(unsigned char jan, unsigned char jac, unsigned char jbn,
+	unsigned char jbc, bool r)
+{
+	if (g3 == 0)
+	{
+		static int v[99];
+		g3 = 1;
+		v[8 * int(jac) + int(jan)] = 1;
+		v[8 * int(jbc) + int(jbn)] = 1;
+	}
+	else
+	{
+
+	}
+	if (r == 1)
+	{
+		if (((jan == g2) || (jan == 7)) && ((jbn == g2) || (jbn == 7)))
+			if (g1 == 0)
+				cout << "Jucator curent:a";
+			else
+				cout << "Jucator curent:b";
+	}
+	else
+	{
+		if ((jbn == jan) || (jan == 7))
+		{
+			r = 1;
+			if (g1 == 0)
+				cout << "Jucator curent:a";
+			else
+				cout << "Jucator curent:b";
+		}
+		else
+			if (g1 == 0)
+				cout << "Jucator curent:a";
+			else
+				cout << "Jucator curent:b";
+	}
+}
+int main(int argc, char **argv)
+{
+	do 
+	{
+
+	}while()
+	return 0;
+}
+
+
