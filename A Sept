@@ -10,11 +10,11 @@ using namespace std;
 unsigned int g1, g2, roundpoints;
 void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jbc, bool r)
 {
-	static int A[64][9],pointsa,pointsb, rounds = 0,stateG,state,prevcard;
+	static int A[100][10],pointsa,pointsb, rounds = 0,playerp,curplayer,prevcard;
 	if (g1 == 0)
 	{
 		memset(A, 0, sizeof(A));
-		state = rounds = pointsa = pointsb = roundpoints = prevcard = state = stateG = 0;
+		curplayer = rounds = pointsa = pointsb = roundpoints = prevcard = curplayer = playerp = 0;
 		g1 = 1;
 	}
 	if (A[jan][jac] == 1)
@@ -35,13 +35,13 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 	rounds++;
 	A[jan][jac] = A[jbn][jbc]=1;
 	if (r==0)
-		stateG = state;
+		playerp = curplayer;
 	else
-		state = stateG;
+		curplayer = playerp;
 	
 	if (r==0)
 	{
-		if (stateG % 2 == 0)
+		if (playerp % 2 == 0)
 		{
 			pointsa += roundpoints;
 			if (rounds < 16)
@@ -56,7 +56,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 	}
 	else
 	{
-		if (stateG % 2 == 0)
+		if (playerp % 2 == 0)
 		{
 			if (rounds < 16)
 				cout << "Jucator curent:a\n";
@@ -69,7 +69,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 	}
 	if (!r)
 	{
-		if (state % 2 == 0)
+		if (curplayer % 2 == 0)
 			prevcard = jan;
 		else
 			prevcard = jbn;
@@ -81,15 +81,15 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 	if (jbn == 10 || jbn == 11)
 		roundpoints++;
 
-	if (state % 2 == 0)
+	if (curplayer % 2 == 0)
 	{
 		if (jbn == prevcard || jbn == 7)
-				state++;
+				curplayer++;
 	}
 	else
 	{
 		if (jan == prevcard || jan == 7)
-				state++;
+				curplayer++;
 		
 	}
 
@@ -97,14 +97,13 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 	{
 		if (roundpoints)
 		{
-			if (state % 2 == 0)
+			if (curplayer % 2 == 0)
 				pointsa += roundpoints;
 			else
 				pointsb += roundpoints;
-			
 		}
 		cout << "Final joc:" << pointsa << "-" << pointsb << endl;
-		g1 = 0;
+		g1 = 1;
 	}
 }
 int main(int argc, char **argv)
