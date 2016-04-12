@@ -1,0 +1,20 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+
+using namespace std;
+void f(char l[3][255], int s)
+{
+
+}
+
+int main(int argc, char **argv)
+{
+
+	return 0;
+}
