@@ -10,11 +10,31 @@
 using namespace std;
 void f(char l[3][255], int s)
 {
+	ifstream f("cifre.in");
+	int i, j, k,nr,v[42],m[3][255];
+	for (i = 0;i <= 3;i++)
+		for (j = 0;j <= 254;j++)
+		{
+			m[i][j] = 0;
+			if (l[i][j] != ' ')
+				m[i][j] = 1;
+		}
+	i = 2;
+	while ((m[1][i] == 1) || (m[0][i] ==1))
+	{
+		if (m[1][i] == 1)
+		{
+			if (m[2][i] == 1)
+			{
 
+			}
+
+		}
+	}
 }
 
 int main(int argc, char **argv)
 {
-
+	
 	return 0;
 }
