@@ -3,4 +3,5 @@ lower()
 upper()
 str()
 print("%.2f" % total)
-if() :
+if() : // else :
+from math import *
