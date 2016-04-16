@@ -6,35 +6,61 @@
 #include <list>
 #include <bitset>
 #include <vector>
-
+char l[3][256];
 using namespace std;
 void f(char l[3][255], int s)
 {
-	ifstream f("cifre.in");
-	int i, j, k,nr,v[42],m[3][255];
-	for (i = 0;i <= 3;i++)
-		for (j = 0;j <= 254;j++)
-		{
-			m[i][j] = 0;
-			if (l[i][j] != ' ')
-				m[i][j] = 1;
-		}
-	i = 2;
-	while ((m[1][i] == 1) || (m[0][i] ==1))
+	int i=2, j, k,nr=0,v[42],m[21][10],ok;
+	memset(m, 0, sizeof(m));
+	while ((l[1][i] != 'Ì')||(l[2][i] != 'Ì'))
 	{
-		if (m[1][i] == 1)
+		nr++;
+		k = 0;
+		for (j = 1;j <= 2;j++)
 		{
-			if (m[2][i] == 1)
-			{
-
-			}
-
+			if (l[j][i] != '|')
+				ok = 0;
+			else
+				m[nr][k] = 1;
+			k++;
 		}
+		for (j = 0;j <= 2;j++)
+		{
+			if (l[j][i-1] != '_' && l[j][i-1] != ' ')
+				ok = 0;
+			else
+				if (l[j][i-1] == '_')
+					m[nr][k] = 1;
+			k++;
+		}
+		for (j = 1;j <= 2;j++)
+		{
+			if (l[j][i-2] != '|')
+				ok = 0;
+			else
+				m[nr][k] = 1;
+			k++;
+		}
+		i = i + 5;
 	}
+	///de aici transformare in numere si scazut din suma
+	for (i = 0;i <= nr;i++)
+	{
+		if(m[i][0]&&m[i][1]&&m[i][3])
+
+	}
+	
 }
 
 int main(int argc, char **argv)
 {
-	
+	ifstream in("cifre.in");
+
+	char l[3][255];
+	in.getline(l[0], 255);
+	in.getline(l[1], 255);
+	in.getline(l[2], 255);
+	f(l, 43);
+	system("pause");
 	return 0;
 }
