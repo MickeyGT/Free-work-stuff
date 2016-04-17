@@ -10,7 +10,7 @@ char l[3][256];
 using namespace std;
 void f(char l[3][255], int s)
 {
-	int i=2, j, k,nr=0,v[42],m[21][10],ok;
+	int i=2, j, k,nr=0,nrinvalid,v[42],m[21][10],ok=1,invind,ind=0;
 	memset(m, 0, sizeof(m));
 	while ((l[1][i] != 'Ì')||(l[2][i] != 'Ì'))
 	{
@@ -43,13 +43,66 @@ void f(char l[3][255], int s)
 		}
 		i = i + 5;
 	}
-	///de aici transformare in numere si scazut din suma
-	for (i = 0;i <= nr;i++)
+	for (i = 1;i <= nr;i++)
 	{
-		if(m[i][0]&&m[i][1]&&m[i][3])
+		Step:
+		nrinvalid = 0;
+		if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6])
+			v[i] = 8;
+		else
+			if (m[i][0] && m[i][1] && m[i][2] && m[i][4] && m[i][5] && m[i][6])
+				v[i] = 0;
+			else
+				if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5])
+					v[i] = 9;
+				else
+					if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6])
+						v[i] = 6;
+					else
+						if (m[i][0] && m[i][1] && m[i][2])
+							v[i] = 7;
+						else
+							if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5])
+								v[i] = 5;
+							else
+								if (m[i][0] && m[i][1] && m[i][3] && m[i][5])
+									v[i] = 4;
+								else
+									if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4])
+										v[i] = 3;
+									else
+										if (m[i][0] && m[i][2] && m[i][3] && m[i][4] && m[i][6])
+											v[i] = 2;
+										else
+											if (m[i][0] && m[i][1])
+												v[i] = 1;
+											else
+											{
+												v[i] = 10;
+												nrinvalid++;
+												invind = i;
+											}
+	}
+	if ((nrinvalid > 1)||(ok==0))
+		cout << "Numar invalid";
+	else if(nrinvalid==1)
+	{
+		for (i = ind;i <= 6;i++)
+			if (m[invind][i] == 0)
+			{
+				m[invind][i] = 1;
+				ind = i;
+				break;
+			}
+		i = invind;
+		goto Step;
 
 	}
-	
+	else
+	{
+
+	}
+	//finalul functiei
 }
 
 int main(int argc, char **argv)
