@@ -12,7 +12,7 @@ void f(char l[3][255], int s)
 {
 	int i = 2, j, k, nr = 0, nrinvalid, v[42], x[7],m[21][10], ok = 1, invind, ind = 1;
 	memset(m, 0, sizeof(m));
-	while (((l[1][i] != ' ')||(l[2][i] != ' '))&&(i<250))
+	while (i<=strlen(l[0]))
 	{
 		nr++;
 		k = 0;
