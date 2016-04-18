@@ -14,6 +14,8 @@ void f(char l[3][255], int s)
 	memset(m, 0, sizeof(m));
 	while (i<=strlen(l[0]))
 	{
+		if (l[0][i] != ' ' || l[0][i - 2] != ' ')
+			ok = 0;
 		nr++;
 		k = 0;
 		for (j = 1;j <= 2;j++)
@@ -45,10 +47,9 @@ void f(char l[3][255], int s)
 		}
 		i = i + 5;
 	}
+	nrinvalid = 0;
 	for (i = 1;i <= nr;i++)
 	{
-		Step:
-		nrinvalid = 0;
 		if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6])
 			v[i] = 8;
 		else
@@ -148,7 +149,7 @@ void f(char l[3][255], int s)
 		if (nrinvalid == 1)
 		{
 			v[invind] = s;
-			cout << "Numarul este: ";
+			cout << "Numarul este:";
 			for (i = 1;i <= nr;i++)
 				cout << v[i];
 		}
@@ -161,6 +162,8 @@ void f(char l[3][255], int s)
 		for (i = 1;i <= nr;i++)
 			s = s - v[i];
 		memset(m, 0, sizeof(m));
+		if (s == 0)
+			ok = 1;
 		for (i = 1;i <= nr;i++)
 			m[v[i]][0]++;
 		if (s == 8)
@@ -242,7 +245,7 @@ int main(int argc, char **argv)
 	in.getline(l[0], 255);
 	in.getline(l[1], 255);
 	in.getline(l[2], 255);
-	f(l, 43);
+	f(l, 42);
 	system("pause");
 	return 0;
 }
