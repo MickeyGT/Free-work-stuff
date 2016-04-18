@@ -120,8 +120,8 @@ void f(char l[3][255], int s)
 		}
 		if (s == 4)
 		{
-			x[5] = x[6] = 0;
-			x[0] = x[1] = x[2] = x[3] = x[4] = 1;
+			x[2] = x[6] = x[4] = 0;
+			x[0] = x[1] = x[3] = x[5] = 1;
 		}
 		if (s == 5)
 		{
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
 	in.getline(l[0], 255);
 	in.getline(l[1], 255);
 	in.getline(l[2], 255);
-	f(l, 44);
+	f(l, 45);
 	system("pause");
 	return 0;
 }
