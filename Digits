@@ -62,8 +62,8 @@ void f(char l[3][255], int s)
 					if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6])
 						v[i] = 6;
 					else
-						if (m[i][0] && m[i][1] && m[i][2])
-							v[i] = 7;
+						if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4])
+							v[i] = 3;
 						else
 							if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5])
 								v[i] = 5;
@@ -71,8 +71,8 @@ void f(char l[3][255], int s)
 								if (m[i][0] && m[i][1] && m[i][3] && m[i][5])
 									v[i] = 4;
 								else
-									if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4])
-										v[i] = 3;
+									if (m[i][0] && m[i][1] && m[i][2])
+										v[i] = 7;
 									else
 										if (m[i][0] && m[i][2] && m[i][3] && m[i][4] && m[i][6])
 											v[i] = 2;
@@ -110,7 +110,7 @@ void f(char l[3][255], int s)
 		}
 		if (s == 2)
 		{
-			x[3] = x[5] = 0;
+			x[1] = x[5] = 0;
 			x[0] = x[2] = x[3]=x[4]=x[6]= 1;
 		}
 		if (s == 3)
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
 	in.getline(l[0], 255);
 	in.getline(l[1], 255);
 	in.getline(l[2], 255);
-	f(l, 42);
+	f(l, 44);
 	system("pause");
 	return 0;
 }
