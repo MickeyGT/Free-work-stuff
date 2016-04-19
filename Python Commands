@@ -1,0 +1,19 @@
+len()
+lower()
+upper()
+str()
+print("%.2f" % total)
+if() : // else :
+from math import *
+
+import math            # Imports the math module
+everything = dir(math) # Sets everything to a list of things from math
+print everything       # Prints 'em all!
+
+list.append("new item")
+print "There are %d items in the suitcase." % (len(list))
+print list
+
+first  = suitcase[0:2]  # The first and second items (index zero and one)
+middle = suitcase[2:4]  # Third and fourth items (index two and three)
+last   = suitcase[4:6]  # The last two items (index four and five)
