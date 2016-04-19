@@ -22,3 +22,8 @@ cat  = animals[:3]   # The first three characters of animals
 dog  = animals[3:6]           # The fourth through sixth characters
 
 animals.insert(1, "dog") # We insert "dog" at index 1, which moves everything down by 1. 
+
+residents = {'Puffin' : 104, 'Sloth' : 105, 'Burmese Python' : 106}
+
+print residents['Puffin'] # Prints Puffin's room number
+menu['Chicken Alfredo'] = 14.50 # Adding new key-value pair
