@@ -20,3 +20,5 @@ last   = suitcase[4:6]  # The last two items (index four and five)
 
 cat  = animals[:3]   # The first three characters of animals
 dog  = animals[3:6]           # The fourth through sixth characters
+
+animals.insert(1, "dog") # We insert "dog" at index 1, which moves everything down by 1. 
