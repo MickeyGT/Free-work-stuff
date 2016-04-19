@@ -10,9 +10,9 @@ char l[3][256];
 using namespace std;
 void f(char l[3][255], int s)
 {
-	int i = 2, j, k, nr = 0, nrinvalid, v[42], x[7],m[21][10], ok = 1, invind, ind = 1;
+	int i = 2, j, k, nr = 0, nrinvalid, v[42], x[7],m[42][9], ok = 1, invind, ind = 1;
 	memset(m, 0, sizeof(m));
-	while (i<=strlen(l[0]))
+	while (i<=strlen(l[1]))
 	{
 		if (l[0][i] != ' ' || l[0][i - 2] != ' ')
 			ok = 0;
@@ -53,31 +53,31 @@ void f(char l[3][255], int s)
 		if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6])
 			v[i] = 8;
 		else
-			if (m[i][0] && m[i][1] && m[i][2] && m[i][4] && m[i][5] && m[i][6])
+			if (m[i][0] && m[i][1] && m[i][2] && m[i][4] && m[i][5] && m[i][6]&&!m[i][3])
 				v[i] = 0;
 			else
-				if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5])
+				if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5]&&!m[i][6])
 					v[i] = 9;
 				else
-					if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6])
+					if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6]&&!m[i][0])
 						v[i] = 6;
 					else
-						if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4])
+						if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4]&&!m[i][6]&&!m[i][5])
 							v[i] = 3;
 						else
-							if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5])
+							if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5]&&!m[i][0]&&!m[i][6])
 								v[i] = 5;
 							else
-								if (m[i][0] && m[i][1] && m[i][3] && m[i][5])
+								if (m[i][0] && m[i][1] && m[i][3] && m[i][5]&&!m[i][2]&&!m[i][4]&&!m[i][6])
 									v[i] = 4;
 								else
-									if (m[i][0] && m[i][1] && m[i][2])
+									if (m[i][0] && m[i][1] && m[i][2]&&!m[i][6]&&!m[i][5]&&!m[i][4]&&!m[i][3])
 										v[i] = 7;
 									else
-										if (m[i][0] && m[i][2] && m[i][3] && m[i][4] && m[i][6])
+										if (m[i][0] && m[i][2] && m[i][3] && m[i][4] && m[i][6]&&!m[i][5]&&!m[i][1])
 											v[i] = 2;
 										else
-											if (m[i][0] && m[i][1])
+											if (m[i][0] && m[i][1]&&!m[i][6]&&!m[i][2]&&!m[i][3]&&!m[i][4]&&!m[i][5])
 												v[i] = 1;
 											else
 											{
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
 	in.getline(l[0], 255);
 	in.getline(l[1], 255);
 	in.getline(l[2], 255);
-	f(l, 45);
+	f(l, 52);
 	system("pause");
 	return 0;
 }
