@@ -1,0 +1,254 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+char l[3][256];
+using namespace std;
+void f(char l[3][255], int s)
+{
+	int i = 2, j, k, nr = 0, nrinvalid, v[42], x[7],m[42][9], ok = 1, invind, ind = 1;
+	memset(m, 0, sizeof(m));
+	while (i<=strlen(l[1]))
+	{
+		if (l[0][i] != ' ' || l[0][i - 2] != ' ')
+			ok = 0;
+		nr++;
+		k = 0;
+		for (j = 1;j <= 2;j++)
+		{
+			if (l[j][i] != '|' && l[j][i] != ' ')
+				ok = 0;
+			else
+				if (l[j][i] == '|')
+				m[nr][k] = 1;
+			k++;
+		}
+		for (j = 0;j <= 2;j++)
+		{
+			if (l[j][i-1] != '_' && l[j][i-1] != ' ')
+				ok = 0;
+			else
+				if (l[j][i-1] == '_')
+					m[nr][k] = 1;
+			k++;
+		}
+		for (j = 1;j <= 2;j++)
+		{
+			if (l[j][i-2] != '|'&& l[j][i - 2] != ' ')
+				ok = 0;
+			else
+				if (l[j][i - 2] == '|')
+				m[nr][k] = 1;
+			k++;
+		}
+		i = i + 5;
+	}
+	nrinvalid = 0;
+	for (i = 1;i <= nr;i++)
+	{
+		if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6])
+			v[i] = 8;
+		else
+			if (m[i][0] && m[i][1] && m[i][2] && m[i][4] && m[i][5] && m[i][6]&&!m[i][3])
+				v[i] = 0;
+			else
+				if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5]&&!m[i][6])
+					v[i] = 9;
+				else
+					if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5] && m[i][6]&&!m[i][0])
+						v[i] = 6;
+					else
+						if (m[i][0] && m[i][1] && m[i][2] && m[i][3] && m[i][4]&&!m[i][6]&&!m[i][5])
+							v[i] = 3;
+						else
+							if (m[i][1] && m[i][2] && m[i][3] && m[i][4] && m[i][5]&&!m[i][0]&&!m[i][6])
+								v[i] = 5;
+							else
+								if (m[i][0] && m[i][1] && m[i][3] && m[i][5]&&!m[i][2]&&!m[i][4]&&!m[i][6])
+									v[i] = 4;
+								else
+									if (m[i][0] && m[i][1] && m[i][2]&&!m[i][6]&&!m[i][5]&&!m[i][4]&&!m[i][3])
+										v[i] = 7;
+									else
+										if (m[i][0] && m[i][2] && m[i][3] && m[i][4] && m[i][6]&&!m[i][5]&&!m[i][1])
+											v[i] = 2;
+										else
+											if (m[i][0] && m[i][1]&&!m[i][6]&&!m[i][2]&&!m[i][3]&&!m[i][4]&&!m[i][5])
+												v[i] = 1;
+											else
+											{
+												v[i] = 10;
+												nrinvalid++;
+												invind = i;
+											}
+	}
+	if ((nrinvalid > 1)||(ok==0))
+		cout << "Numar invalid";
+	else if (nrinvalid == 1)
+	{
+		for (i = 1;i <= nr;i++)
+			if (v[i] != 10)
+				s = s - v[i];
+		if (s == 0)
+		{
+			x[0] = x[1] = x[2] = x[4] = x[5] = x[6] = 1;
+			x[3] = 0;
+		}
+		if (s == 1)
+		{
+			x[2] = x[3]= x[4] = x[5] = x[6] = 0;
+			x[0] = x[1]=1;
+		}
+		if (s == 7)
+		{
+			x[3] = x[4] = x[5] = x[6] = 0;
+			x[0] = x[1] = x[2]=1;
+		}
+		if (s == 2)
+		{
+			x[1] = x[5] = 0;
+			x[0] = x[2] = x[3]=x[4]=x[6]= 1;
+		}
+		if (s == 3)
+		{
+			x[5] = x[6] = 0;
+			x[0] = x[1] = x[2] = x[3]= x[4] =1;
+		}
+		if (s == 4)
+		{
+			x[2] = x[6] = x[4] = 0;
+			x[0] = x[1] = x[3] = x[5] = 1;
+		}
+		if (s == 5)
+		{
+			x[0] = x[6] = 0;
+			x[1] = x[2] = x[3] = x[4] = x[5] = 1;
+		}
+		if (s == 6)
+		{
+			x[3] = x[1] = x[2] = x[4] = x[5] = x[6] = 1;
+			x[0] = 0;
+		}
+		if (s == 8)
+		{
+			x[0] = x[1] = x[2] = x[4] = x[5] = x[6] =x[3]= 1;
+		}
+		if (s == 9)
+		{
+			x[0] = x[1] = x[2] = x[4] = x[5] = x[3] = 1;
+			x[6] = 0;
+		}
+		nrinvalid = 0;
+		for (i = 0;i <= 6;i++)
+			if (m[invind][i] != x[i])
+				nrinvalid++;
+		if (nrinvalid == 1)
+		{
+			v[invind] = s;
+			cout << "Numarul este:";
+			for (i = 1;i <= nr;i++)
+				cout << v[i];
+		}
+		else
+			cout << "Numar invalid";
+	}
+	else
+	{
+		ok = 0;
+		for (i = 1;i <= nr;i++)
+			s = s - v[i];
+		memset(m, 0, sizeof(m));
+		if (s == 0)
+			ok = 1;
+		for (i = 1;i <= nr;i++)
+			m[v[i]][0]++;
+		if (s == 8)
+			if (m[0][0] == 1)
+				ok = 1;
+			else
+				if (m[0][0] >= 2)
+					ok = 2;
+		if (s == 6)
+			if (m[1][0] +m[3][0]== 1)
+				ok = 1;
+			else
+				if (m[1][0] + m[3][0] >= 2)
+					ok = 2;
+		if((s==1)||(s==4))
+			if (m[5][0] == 1)
+				ok = 1;
+			else
+				if (m[5][0] >= 2)
+					ok = 2;
+		if (s == -1)
+			if (m[9][0] == 1)
+				ok = 1;
+			else
+				if (m[9][0] >= 2)
+					ok = 2;
+		if (s == 2)
+			if (m[6][0] == 1)
+				ok = 1;
+			else
+				if (m[6][0] >= 2)
+					ok = 2;
+		if (ok == 1)
+		{
+			cout << "Numarul este:";
+			for (i = 1;i <= nr;i++)
+				if (s == 1 && v[i] == 5)
+					cout << 6;
+				else
+					if (s == -1 && v[i] == 9)
+						cout << 8;
+					else
+						if (s == 2 && v[i] == 6)
+							cout << 8;
+						else
+							if (s == 4 && v[i] == 5)
+								cout << 9;
+							else
+								if (s == 6 && v[i] == 3)
+									cout << 9;
+								else
+									if (s == 6 && v[i] == 1)
+										cout << 7;
+									else
+										if (s == 1 && v[i] == 5)
+											cout << 6;
+										else
+											if (s == -1 && v[i] == 9)
+												cout << 8;
+											else
+												if (s == 8 && v[i] == 0)
+													cout << 8;
+											else
+												cout << v[i];
+
+
+		}
+		else
+			if (ok == 2)
+				cout << "Solutii multiple";
+			else
+				cout << "Numar invalid";
+	}
+	
+}
+
+int main(int argc, char **argv)
+{
+	ifstream in("cifre.in");
+
+	char l[3][255];
+	in.getline(l[0], 255);
+	in.getline(l[1], 255);
+	in.getline(l[2], 255);
+	f(l, 52);
+	system("pause");
+	return 0;
+}
