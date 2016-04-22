@@ -15,24 +15,19 @@ void f(char l[3][255], int s)
 	memset(m, '0', sizeof(m));
 	while (i<=strlen(l[1]))
 	{
-		if (l[0][i] != ' ' || l[0][i - 2] != ' ')
-			ok = 0;
+
 		nr++;
 		k = 0;
 		for (j = 1;j <= 2;j++)
 		{
-			if (l[j][i] != '|' && l[j][i] != ' ')
-				ok = 0;
-			else
+
 				if (l[j][i] == '|')
 					m[nr][k] = '1';
 			k++;
 		}
 		for (j = 0;j <= 2;j++)
 		{
-			if (l[j][i-1] != '_' && l[j][i-1] != ' ')
-				ok = 0;
-			else
+
 				if (l[j][i-1] == '_')
 					m[nr][k] = '1';
 			k++;
