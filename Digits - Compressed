@@ -15,12 +15,10 @@ void f(char l[3][255], int s)
 	memset(m, '0', sizeof(m));
 	while (i<=strlen(l[1]))
 	{
-
 		nr++;
 		k = 0;
 		for (j = 1;j <= 2;j++)
 		{
-
 				if (l[j][i] == '|')
 					m[nr][k] = '1';
 			k++;
@@ -34,9 +32,6 @@ void f(char l[3][255], int s)
 		}
 		for (j = 1;j <= 2;j++)
 		{
-			if (l[j][i-2] != '|'&& l[j][i - 2] != ' ')
-				ok = 0;
-			else
 				if (l[j][i - 2] == '|')
 				m[nr][k] = '1';
 			k++;
@@ -143,12 +138,7 @@ void f(char l[3][255], int s)
 			else
 				if (m[9][0] >= 2)
 					ok = 2;
-		if (s == 2)
-			if (m[6][0] == 1)
-				ok = 1;
-			else
-				if (m[6][0] >= 2)
-					ok = 2;
+
 		if (ok == 1)
 		{
 			cout << "Numarul este:";
