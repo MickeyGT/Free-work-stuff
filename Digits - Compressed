@@ -132,12 +132,6 @@ void f(char l[3][255], int s)
 			else
 				if (m[5][0] >= 2)
 					ok = 2;
-		if (s == -1)
-			if (m[9][0] == 1)
-				ok = 1;
-			else
-				if (m[9][0] >= 2)
-					ok = 2;
 
 		if (ok == 1)
 		{
