@@ -13,17 +13,14 @@ unsigned short p[100][3];
 void f(unsigned short n, unsigned short p[100][3])
 {
 	int a[10][10], i, j, l, c, t;
-	for (i = 0;i <= 9;i++)
-		for (j = 0;j <= 9;j++)
-			a[i][j] = 0;
-	i = 0;
-	while (n > 0)
+	memset(a, 0, sizeof(a));
+	
+	for (i = 0;i < n;i++)
 	{
 		l = p[i][0];
 		c = p[i][1];
 		t = p[i][2];
-		if ((l <= 9) && (l >= 0) && (c <= 9) && (c >= 0))
-		{
+		
 			if ((t == 0) && (c > 1) && (c < 8) && (l < 6))
 			{
 
@@ -56,18 +53,13 @@ void f(unsigned short n, unsigned short p[100][3])
 					a[l][c] = a[l][c + 1] = a[l + 1][c + 1] = a[l + 2][c + 1] = a[l - 1][c + 1] = a[l - 2][c + 1] = a[l][c + 2] = a[l][c + 3] = a[l][c + 4] = a[l + 1][c + 4] = a[l - 1][c + 4] = 1;
 				}
 			}
-		}
-		n--;
-		i++;
+		
 	}
-	for (int i = 0;i <= 9;i++)
+	for (i = 0;i <= 9;i++)
 	{
-		for (int j = 0;j <= 9;j++)
-			if (a[i][j])
-				cout << "[]";
-			else
-				cout << "..";
-		cout << endl;
+		for (j = 0;j <= 9;j++)
+			((a[i][j]) ? cout << "[]" : cout << "..");
+		cout << '\n';
 	}
 }
 
