@@ -172,9 +172,6 @@ void f(char l[3][255], int s)
 									else
 										if (s == 1 && v[i] == 5)
 											cout << 6;
-										else
-											if (s == -1 && v[i] == 9)
-												cout << 8;
 											else
 												if (s == 8 && v[i] == 0)
 													cout << 8;
