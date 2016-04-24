@@ -18,24 +18,11 @@ void f(char l[3][255], int s)
 		nr++;
 		k = 0;
 		for (j = 1;j <= 2;j++)
-		{
-			if (l[j][i] == '|')
-				m[nr][k] = '1';
-			k++;
-		}
+			l[j][i] == '|' ? m[nr][k++] = '1' : k++;
 		for (j = 0;j <= 2;j++)
-		{
-
-			if (l[j][i - 1] == '_')
-				m[nr][k] = '1';
-			k++;
-		}
+			l[j][i - 1] == '_' ? m[nr][k++] = '1' : k++;
 		for (j = 1;j <= 2;j++)
-		{
-			if (l[j][i - 2] == '|')
-				m[nr][k] = '1';
-			k++;
-		}
+			l[j][i - 2] == '|' ? m[nr][k++] = '1' : k++;		
 		i += 5;
 	}
 	nrinvalid = 0;
@@ -116,11 +103,6 @@ void f(char l[3][255], int s)
 		if (s == 8)
 			if (m[0][0] == 1)
 				ok = 1;
-
-		if (s == 6)
-			if (m[1][0] + m[3][0] == 1)
-				ok = 1;
-
 		if ((s == 1) || (s == 4))
 			if (m[5][0] == 1)
 				ok = 1;
@@ -130,21 +112,7 @@ void f(char l[3][255], int s)
 		{
 			cout << "Numarul este:";
 			for (i = 1;i <= nr;i++)
-				if (s == 4 && v[i] == 5)
-					cout << 9;
-				else
-					if (s == 6 && v[i] == 3)
-						cout << 9;
-					else
-						if (s == 1 && v[i] == 5)
-							cout << 6;
-						else
-							if (s == 8 && v[i] == 0)
-								cout << 8;
-							else
-								cout << v[i];
-
-
+				 (s == 4 && v[i] == 5) ? cout << 9 : (s == 1 && v[i] == 5) ? cout << 6 : (s == 8 && v[i] == 0) ? cout << 8 : cout << v[i];
 		}
 		else
 			cout << "Solutii multiple";
