@@ -1,16 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <conio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <list>
-#include <bitset>
-#include <vector>
-char l[3][256];
-using namespace std;
-void f(char l[3][255], int s)
-{
-	int i = 2, j, k, nr = 0, nrinvalid = 0, v[42], f[42], ok = 0, invind, ind = 1;
+int i = 2, j, k, nr = 0, nrinvalid = 0, v[42], f[42], ok = 0, invind, ind = 1;
 	char m[42][8], x[8], q[4][99] = {"Numar invalid","Numarul este:","1110111","1100000"};
 	memset(m, '0', sizeof(m));
 	while (i <= strlen(l[1]))
@@ -105,24 +93,9 @@ void f(char l[3][255], int s)
 		{
 			cout << q[1];
 			for (i = 0;i < nr;i++)
-				 (s == 4 && v[i] == 5) ? cout << 9 : (s == 1 && v[i] == 5) ? cout << 6 : (s == 8 && v[i] == 0) ? cout << 8 : cout << v[i];
+				 s == 4 && v[i] == 5 ? cout << 9 : s == 1 && v[i] == 5 ? cout << 6 : s == 8 && v[i] == 0 ? cout << 8 : cout << v[i];
 		}
 		else
 			cout << "Solutii multiple";
 
 	}
-
-}
-
-int main(int argc, char **argv)
-{
-	ifstream in("cifre.in");
-
-	char l[3][255];
-	in.getline(l[0], 255);
-	in.getline(l[1], 255);
-	in.getline(l[2], 255);
-	f(l, 44);
-	system("pause");
-	return 0;
-}
