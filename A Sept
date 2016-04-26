@@ -64,16 +64,9 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 	x == 10 || x == 11 ? roundpoints++:0;
     player % 2 == 0 ? x == prevcard || x == 7 ?	player++: 0 : w == prevcard || w == 7 ?player++:0;
 
-	if (rounds == 16)
+	if (rounds > 15)
 	{
-		if (roundpoints)
-		{
-			if (player % 2 == 0)
-				pointsa += roundpoints;
-			else
-				pointsb += roundpoints;
-
-		}
+		roundpoints? player % 2 == 0 ? pointsa += roundpoints : pointsb += roundpoints:0;
 		cout << "Final joc:" << pointsa << "-" << pointsb << endl;
 		g1 = 0;
 	}
