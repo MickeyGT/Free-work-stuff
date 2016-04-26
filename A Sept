@@ -30,46 +30,20 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 	r ? player = mainplayer: mainplayer = player;
 
 	if (r)
-	{
-		if (mainplayer % 2 == 0)
-		{
-			if (rounds < 16)
-				cout << s[1];
-		}
-		else
-		{
-			if (rounds < 16)
-				cout << s[2];
-		}
-	}
+		mainplayer % 2 == 0 ? rounds < 16 ? cout << s[1],1:0:rounds < 16 ? cout << s[2], 1 : 0;
 	else
-	{
-		if (mainplayer % 2 == 0)
-		{
-			pointsa += roundpoints;
-			if (rounds < 16)
-				cout << s[1];
-		}
+	    if (mainplayer % 2 == 0)
+		     pointsa += roundpoints,rounds < 16 ? cout << s[1], 1 : 0;
 		else
-		{
-			pointsb += roundpoints;
-			if (rounds < 16)
-				cout << s[2];
-		}
-	}
+		     pointsb += roundpoints,rounds < 16 ? cout << s[2],1 : 0;
 	
 	!r ? player % 2 == 0 ? prevcard = w, roundpoints = 0 : prevcard = x, roundpoints = 0 :0;
 
 	w == 10 || w == 11 ? roundpoints++:0;
 	x == 10 || x == 11 ? roundpoints++:0;
     player % 2 == 0 ? x == prevcard || x == 7 ?	player++: 0 : w == prevcard || w == 7 ?player++:0;
-
-	if (rounds > 15)
-	{
-		roundpoints? player % 2 == 0 ? pointsa += roundpoints : pointsb += roundpoints:0;
-		cout << "Final joc:" << pointsa << "-" << pointsb << endl;
-		g1 = 0;
-	}
+    rounds > 15 ? roundpoints? player % 2 == 0 ? pointsa += roundpoints : pointsb += roundpoints:0,cout << "Final joc:" << pointsa << "-" << pointsb << endl,g1 = 0:0;
+	
 }
 int main(int argc, char **argv)
 {
