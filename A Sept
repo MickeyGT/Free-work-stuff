@@ -27,10 +27,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 
 	rounds++;
 	A[w][y] = A[x][z] = 1;
-	if (r)
-		player = mainplayer;
-	else
-		mainplayer = player;
+	r ? player = mainplayer: mainplayer = player;
 
 	if (r)
 	{
@@ -60,31 +57,12 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 				cout << s[2];
 		}
 	}
-	if (!r)
-	{
-		if (player % 2 == 0)
-			prevcard = w;
-		else
-			prevcard = x;
-		roundpoints = 0;
-	}
+	
+	!r ? player % 2 == 0 ? prevcard = w, roundpoints = 0 : prevcard = x, roundpoints = 0 :0;
 
-	if (w == 10 || w == 11)
-		roundpoints++;
-	if (x == 10 || x == 11)
-		roundpoints++;
-
-	if (player % 2 == 0)
-	{
-		if (x == prevcard || x == 7)
-			player++;
-	}
-	else
-	{
-		if (w == prevcard || w == 7)
-			player++;
-
-	}
+	w == 10 || w == 11 ? roundpoints++:0;
+	x == 10 || x == 11 ? roundpoints++:0;
+    player % 2 == 0 ? x == prevcard || x == 7 ?	player++: 0 : w == prevcard || w == 7 ?player++:0;
 
 	if (rounds == 16)
 	{
