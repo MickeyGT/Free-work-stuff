@@ -1,0 +1,5 @@
+vector<int>v; (creates an empty vector of integers)
+v.push_back(x);
+v.pop_back();
+sort(v.begin(),v.end());
+v.erase(v.begin()+4); (erases the 5th element of the vector v)
