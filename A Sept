@@ -10,13 +10,13 @@ using namespace std;
 unsigned int g1, g2, g3;
 void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jbc, bool r)
 {
-	static int A[64][9], pointsa, pointsb, rounds = 0, mainplayer, player, prevcard,roundpoints=0;
+	static int A[64][9], b, c, d = 0, e, f, g,h=0;
 	int w = jan, x = jbn, y = jac, z = jbc;
 	char s[9][99] = { "Invalid\n","Jucator curent:a\n","Jucator curent:b\n"};
-	if (g1 == 0)
+	if (!g1)
 	{
 		memset(A, 0, sizeof(A));
-		player = rounds = pointsa = pointsb = roundpoints = prevcard = player = mainplayer = 0;
+		f = d = b = c = h = g = f = e = 0;
 		g1 = 1;
 	}
 	if (A[w][y] == 1|| A[x][z] == 1|| (w == x && y == z))
@@ -25,24 +25,24 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 		return;
 	}
 
-	rounds++;
+	d++;
 	A[w][y] = A[x][z] = 1;
-	r ? player = mainplayer: mainplayer = player;
+	r ? f = e: e = f;
 
 	if (r)
-		mainplayer % 2 == 0 ? rounds < 16 ? cout << s[1],1:0:rounds < 16 ? cout << s[2], 1 : 0;
+		e % 2 == 0 ? d < 16 ? cout << s[1],1:0:d < 16 ? cout << s[2], 1 : 0;
 	else
-	    if (mainplayer % 2 == 0)
-		     pointsa += roundpoints,rounds < 16 ? cout << s[1], 1 : 0;
+	    if (e % 2 == 0)
+		     b += h,d < 16 ? cout << s[1], 1 : 0;
 		else
-		     pointsb += roundpoints,rounds < 16 ? cout << s[2],1 : 0;
+		     c += h,d < 16 ? cout << s[2],1 : 0;
 	
-	!r ? player % 2 == 0 ? prevcard = w, roundpoints = 0 : prevcard = x, roundpoints = 0 :0;
+	!r ? f % 2 == 0 ? g = w, h = 0 : g = x, h = 0 :0;
 
-	w == 10 || w == 11 ? roundpoints++:0;
-	x == 10 || x == 11 ? roundpoints++:0;
-    player % 2 == 0 ? x == prevcard || x == 7 ?	player++: 0 : w == prevcard || w == 7 ?player++:0;
-    rounds > 15 ? roundpoints? player % 2 == 0 ? pointsa += roundpoints : pointsb += roundpoints:0,cout << "Final joc:" << pointsa << "-" << pointsb << endl,g1 = 0:0;
+	w == 10 || w == 11 ? h++:0;
+	x == 10 || x == 11 ? h++:0;
+    f % 2 == 0 ? x == g || x == 7 ?	f++: 0 : w == g || w == 7 ?f++:0;
+    d > 15 ? h? f % 2 == 0 ? b += h : c += h:0,cout << "Final joc:" << b << "-" << c << endl,g1 = 0:0;
 	
 }
 int main(int argc, char **argv)
