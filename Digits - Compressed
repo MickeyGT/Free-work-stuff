@@ -11,34 +11,19 @@ using namespace std;
 void f(char l[3][255], int s)
 {
 	int i = 2, j, k, b = 0, a = 0, v[42], f[42], c = 0, d, e = 1;
-	char m[42][10], x[8], q[4][99] = { "Numar invalid","Numarul este:","011101011","011000000" };
+	char m[42][10], x[8], q[42][42] = { "Numar invalid","Numarul este:","011101011","011000000","010111001","011111000","011010010","001111010","001111011","011100000","011111011","011111010" };
 	memset(m, '0', sizeof(m));
+	memset(v, -1, sizeof(v));
 	while (i <= strlen(l[1]))
 	{
 		for (j = 0;j < 3;j++)
 			l[j][i - 1] == '_' ? m[b][j + 3] = '1' : 0, l[j][i] == '|' ? m[b][j] = '1' : 0, l[j][i - 2] == '|' ? m[b][j + 6] = '1' : 0;
 		i += 5;
 		m[b][9] = '\0';
-		!strcmp("011111011", m[b])? 
-			v[b] = 8:
-			!strcmp(q[2], m[b])?
-				v[b] = 0:
-				!strcmp("011111010", m[b])?
-					v[b] = 9:
-					!strcmp("001111011", m[b])?
-						v[b] = 6:
-						!strcmp("011111000", m[b])?
-							v[b] = 3:
-						    !strcmp("001111010", m[b])?
-								v[b] = 5:
-								!strcmp("011010010", m[b])?
-									v[b] = 4:
-									!strcmp("011100000", m[b])?
-										v[b] = 7:
-										!strcmp("010111001", m[b])?
-											v[b] = 2:
-											!strcmp(q[3], m[b])?
-												v[b] = 1: (v[b] = 10, a++, d = b);										
+		for (j = 2;j <= 11;j++)
+			!strcmp(q[j], m[b]) ?
+			v[b] = j - 2:0; 
+		v[b] < 0 ? (a++, d = b) : 0;
 		b++;
 	}
 
@@ -47,12 +32,12 @@ void f(char l[3][255], int s)
 	else if (a)
 	{
 		for (i = 0;i < b;i++)
-			v[i] != 10 ? s -= v[i] : 0;
+			v[i] > 0 ? s -= v[i] : 0;
 		s ? strcpy(x, q[3]) : strcpy(x, q[2]);
 
-		
+
 		for (i = 0;i < 7;i++)
-			m[d][i] != x[i] ? c++:0;
+			m[d][i] != x[i] ? c++ : 0;
 		if (c < 2)
 		{
 			v[d] = s;
