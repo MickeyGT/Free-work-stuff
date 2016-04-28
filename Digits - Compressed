@@ -62,7 +62,7 @@ void f(char l[3][255], int s)
 		{
 			cout << q[1];
 			for (i = 0;i < b;i++)
-				s == 4 && v[i] == 5 ? cout << 9 : s == 1 && v[i] == 5 ? cout << 6 : s == 8 && v[i] == 0 ? cout << 8 : cout << v[i];
+				s == 4 && v[i] == 5 ? cout << 9 : s == 1 && v[i] == 5 ? cout << 6 : s == 8 && v[i] < 1 ? cout << 8 : cout << v[i];
 		}
 		else
 			cout << "Solutii multiple";
