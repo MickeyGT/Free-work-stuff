@@ -14,70 +14,31 @@ void f(unsigned short n, unsigned short p[100][3])
 	memset(a, 0, sizeof(a));
 	for (j = 0;j < n;j++)
 	{
-		int k, l = p[j][0],c = p[j][1],t = p[j][2],ok=1,x,y;
-		[&](int x, int y, int z,int w,int r, int s,int q,int p)
-		{
-			for (i = 0;i < 5;i++)
-				if (t == 1)
-				{
-					if (a[l+x][c + y] || a[l +z][c+w] || a[l+r][c +s] || a[l + q][c + p])
-						ok = 0;
-				}
-				else
-					if (a[l-x][c + i] || a[l - 2 + i][c + 1] || a[l - 1][c + 4] || a[l + 1][c + 4])
-						ok = 0;
-			if (ok)
-				for (i = 0;i < 5;i++)
-					if (t == 1)
-						a[l+x][c - i] = a[l - 2 + i][c - 1] = a[l - 1][c - 4] = a[l + 1][c - 4] = 1;
-					else
-						a[l-x][c + i] = a[l - 2 + i][c + 1] = a[l - 1][c + 4] = a[l + 1][c + 4] = 1;
-		};
+		int l = p[j][0], c = p[j][1], t = p[j][2], k = 1,z,x;
 		if (t % 2)
 		{
 			for (i = 0;i < 5;i++)
-				if (t == 1)
-				{
-					if (a[l][c - i] || a[l - 2 + i][c - 1] || a[l - 1][c - 4] || a[l + 1][c - 4])
-						ok = 0;
-				}
-				else
-					if (a[l][c + i] || a[l - 2 + i][c + 1] || a[l - 1][c + 4] || a[l + 1][c + 4])
-						ok = 0;
-			if (ok)
+				z=l+i/2-1,t == 1 ? a[l][c - i] || a[l - 2 + i][c - 1] || a[z][c - 4] ? k = 0 : 0 : a[l][c + i] || a[l - 2 + i][c + 1] || a[z][c + 4] ? k = 0 : 0;
+			if (k)
 				for (i = 0;i < 5;i++)
-					if (t == 1)
-						a[l][c - i] = a[l - 2 + i][c - 1] = a[l - 1][c - 4] = a[l + 1][c - 4] = 1;
-					else
-						a[l][c + i] = a[l - 2 + i][c + 1] = a[l - 1][c + 4] = a[l + 1][c + 4] = 1;
+					z = l + i / 2 - 1,t == 1 ? a[l][c - i] = a[l - 2 + i][c - 1] = a[z][c - 4] = 1 : a[l][c + i] = a[l - 2 + i][c + 1] = a[z][c + 4] = 1;
 		}
 		else
-			if(c>1)
-		{
-			for (i = 0;i < 5;i++)
-				if (t)
-				{
-					if (a[l - i][c] || a[l - 1][c - 2 + i] || a[l - 4][c - 1] || a[l - 4][c + 1])
-						ok = 0;
-				}
-				else
-					if (a[l+i][c] || a[l + 1][c - 2 + i] || a[l + 4][c - 1] || a[l + 4][c + 1])
-						ok = 0;
-			if (ok)
+			if (c>1)
+			{
 				for (i = 0;i < 5;i++)
-					if (t)
-						a[l - i][c] = a[l - 1][c - 2 + i] = a[l - 4][c - 1] = a[l - 4][c + 1] = 1;
-					else
-						a[l + i][c] = a[l + 1][c - 2 + i] = a[l + 4][c - 1] = a[l + 4][c + 1] = 1;
+					z=c+i/2-1,t ? a[l - i][c] || a[l - 1][c - 2 + i] || a[l - 4][z] ? k = 0 : 0 : a[l + i][c] || a[l + 1][c - 2 + i] || a[l + 4][z] ? k = 0 : 0;
+				if (k)
+					for (i = 0;i < 5;i++)
+						z = c + i / 2 - 1,t ? a[l - i][c] = a[l - 1][c - 2 + i] = a[l - 4][z] = 1 : a[l + i][c] = a[l + 1][c - 2 + i] = a[l + 4][z] = 1;
+			}
 
-		}
-		
 	}
 	for (i = 0;i <= 9;i++)
 	{
 		for (j = 0;j <= 9;j++)
-			((a[i][j]) ? cout << "[]" : cout << "..");
-		cout << '\n';
+			a[i][j] ? cout << "[]" : cout << "..";
+		cout << endl;
 	}
 }
 
