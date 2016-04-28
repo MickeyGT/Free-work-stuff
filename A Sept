@@ -10,7 +10,7 @@ using namespace std;
 unsigned int g1, g2, g3;
 void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jbc, bool r)
 {
-	static int A[99][9], b, c, d, e, f, g, h;
+static int A[99][9], b, c, d, e, f, g, h;
 	int w = jan, x = jbn, y = jac, z = jbc;
 	char s[9][99] = { "Invalid\n","Jucator curent:a\n","Jucator curent:b\n" };
 	if (!g1)
@@ -36,8 +36,8 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 
 	!r ?  h=0,f % 2 == 0 ? g = w: g = x : 0;
 
-	w == 10 || w == 11 ? h++ : 0;
-	x == 10 || x == 11 ? h++ : 0;
+	w > 9 && w < 12 ? h++ : 0;
+	x > 9 && x < 12 ? h++ : 0;
 	f % 2 == 0 ? x == g || x == 7 ? f++ : 0 : w == g || w == 7 ? f++ : 0;
 	d > 15 ? h ? f % 2 == 0 ? b += h : c += h : 0, cout << "Final joc:" << b << "-" << c << endl, g1 = 0 : 0;
 
