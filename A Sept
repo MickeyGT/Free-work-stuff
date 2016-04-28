@@ -10,16 +10,14 @@ using namespace std;
 unsigned int g1, g2, g3;
 void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jbc, bool r)
 {
-	static int A[64][9], b, c, d = 0, e, f, g,h=0;
+	static int A[99][9], b, c, d = 0, e, f, g, h = 0;
 	int w = jan, x = jbn, y = jac, z = jbc;
-	char s[9][99] = { "Invalid\n","Jucator curent:a\n","Jucator curent:b\n"};
+	char s[9][99] = { "Invalid\n","Jucator curent:a\n","Jucator curent:b\n" };
 	if (!g1)
-	{
-		memset(A, 0, sizeof(A));
-		f = d = b = c = h = g = f = e = 0;
+		memset(A, 0, sizeof(A)),
+		f = d = b = c = h = g = f = e = 0,
 		g1 = 1;
-	}
-	if (A[w][y] == 1|| A[x][z] == 1|| (w == x && y == z))
+	if (A[w][y] || A[x][z] || w == x && y == z)
 	{
 		cout << s[0];
 		return;
@@ -27,23 +25,22 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 
 	d++;
 	A[w][y] = A[x][z] = 1;
-	r ? f = e: e = f;
-
+	r ? f = e : e = f;
 	if (r)
-		e % 2 == 0 ? d < 16 ? cout << s[1],1:0:d < 16 ? cout << s[2], 1 : 0;
+		e % 2 == 0 ? d < 16 ? cout << s[1], 1 : 0 : d < 16 ? cout << s[2], 1 : 0;
 	else
-	    if (e % 2 == 0)
-		     b += h,d < 16 ? cout << s[1], 1 : 0;
+		if (e % 2 == 0)
+			b += h, d < 16 ? cout << s[1], 1 : 0;
 		else
-		     c += h,d < 16 ? cout << s[2],1 : 0;
-	
-	!r ? f % 2 == 0 ? g = w, h = 0 : g = x, h = 0 :0;
+			c += h, d < 16 ? cout << s[2], 1 : 0;
 
-	w == 10 || w == 11 ? h++:0;
-	x == 10 || x == 11 ? h++:0;
-    f % 2 == 0 ? x == g || x == 7 ?	f++: 0 : w == g || w == 7 ?f++:0;
-    d > 15 ? h? f % 2 == 0 ? b += h : c += h:0,cout << "Final joc:" << b << "-" << c << endl,g1 = 0:0;
-	
+	!r ?  h=0,f % 2 == 0 ? g = w: g = x : 0;
+
+	w == 10 || w == 11 ? h++ : 0;
+	x == 10 || x == 11 ? h++ : 0;
+	f % 2 == 0 ? x == g || x == 7 ? f++ : 0 : w == g || w == 7 ? f++ : 0;
+	d > 15 ? h ? f % 2 == 0 ? b += h : c += h : 0, cout << "Final joc:" << b << "-" << c << endl, g1 = 0 : 0;
+
 }
 int main(int argc, char **argv)
 {
