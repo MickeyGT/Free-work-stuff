@@ -13,10 +13,10 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
     static int A[99][9], b, c, d, e, f, g, h;
 	int w = jan, x = jbn, y = jac, z = jbc;
 	char s[9][99] = { "Invalid\n","Jucator curent:a\n","Jucator curent:b\n" };
-	if (!g1)
+	!g1?
 		memset(A, 0, sizeof(A)),
 		f = d = b = c = h = g = f = e = 0,
-		g1 = 1;
+		g1 = 1:0;
 	if (A[w][y] || A[x][z] || w == x && y == z)
 	{
 		cout << s[0];
@@ -38,7 +38,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 
 	w > 9 && w < 12 ? h++ : 0;
 	x > 9 && x < 12 ? h++ : 0;
-	f % 2 ? w == g || w == 7 ? f++ : 0 : x == g || x == 7 ? f++ : 0;
+	f % 2 ? w == g || w < 8 ? f++ : 0 : x == g || x < 8 ? f++ : 0;
 	d > 15 ? h ? f % 2 == 0 ? b += h : c += h : 0, cout << "Final joc:" << b << "-" << c << endl, g1 = 0 : 0;
 
 }
