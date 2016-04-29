@@ -34,7 +34,7 @@ void f(unsigned char jan, unsigned char jac, unsigned char jbn, unsigned char jb
 		w > 9 & w < 12 ? h++ : 0;
 		x > 9 & x < 12 ? h++ : 0;
 		f % 2 ? w == g | w < 8 ? f++ : 0 : x == g | x < 8 ? f++ : 0;
-		d > 15 ? h ? f % 2 == 0 ? b += h : c += h : 0, cout << "Final joc:" << b << "-" << c << endl, memset(A, 0, sizeof(A)), f = d = b = c = h = g = f = e = 0 : 0;
+		d > 15 ? h ? f % 2 == 0 ? b += h : c += h : 0, cout << "Final joc:" << b << "-" << c << endl, memset(A, 0, 891), f = d = b = c = h = g = f = e = 0 : 0;
 	}
 }
 int main(int argc, char **argv)
