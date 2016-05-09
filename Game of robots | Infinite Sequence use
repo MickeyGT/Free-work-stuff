@@ -1,0 +1,28 @@
+#include <stdlib.h>
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+long long n, bigpos, nr,k,v[100001];
+int main()
+{
+	cin >> k>> n;
+	bigpos = 3;
+	nr = 2;
+	for (int i = 1;i <= k;i++)
+		cin >> v[i];
+	while (bigpos < n)
+	{
+		nr++;
+		bigpos = (nr*(nr + 1)) / 2;
+	}
+	while (bigpos > n)
+	{
+		nr--;
+		bigpos--;
+	}
+	if (n == 1)
+		cout << v[1];
+	else
+		cout << v[nr];
+	return 0;
+}
