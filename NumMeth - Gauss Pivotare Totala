@@ -1,0 +1,87 @@
+#include<iostream>
+#include<stdlib.h>
+#include<stdio.h>
+#include<math.h>
+#include<conio.h>
+using namespace std;
+int n, j, i, k, lin, col, c[100][100], npc;
+float a[100][100], s, piv, aux, eps;
+int main() 
+{
+	cin >> n >> eps;
+	for (i = 1;i <= n;i++)
+		for (j = 1;j <= n + 1;j++)
+			cin >> a[i][j];
+	npc = 0;
+	for (k = 1;k <= n - 1;k++)
+	{
+		piv = fabs(a[k][k]);
+		cout << "Pivotul folosit la acest pas este: " << piv << endl;
+		lin = k;
+		col = k;
+		for (j = k;j <= n;j++)
+			for (i = k + 1;i <= n;i++)
+			{
+				if (piv<fabs(a[i][j]))
+				{
+					piv = fabs(a[i][j]);
+					lin = i;
+					col = j;
+				}
+			}
+		if (piv<eps)
+		{
+			cout << "Sistemul nu are solutia unica.";
+			break;
+		}
+		if (lin != k)
+			for (j = k;j <= n + 1;j++)
+			{
+				aux = a[k][j];
+				a[k][j] = a[lin][j];
+				a[lin][j] = aux;
+			}
+		if (col != k)
+		{
+			npc++;
+			c[npc][1] = k;
+			c[npc][2] = col;
+			for (i = 1;i <= n;i++)
+			{
+				aux = a[i][k];
+				a[i][k] = a[i][col];
+				a[i][col] = aux;
+			}
+		}
+		for (i = k + 1;i <= n;i++)
+		{
+			a[i][k] = a[i][k] / a[k][k];
+			for (j = k + 1;j <= n + 1;j++)
+				a[i][j] = a[i][j] - a[i][k] * a[k][j];
+		}
+	}
+	if (fabs(a[n][n])<eps)
+	{
+		cout << "Sistemul nu are solutia Unica.";
+		return 0;
+	}
+	a[n][n + 1] = a[n][n + 1] / a[n][n];
+	for (i = n - 1;i >= 1;i--) {
+		s = 0;
+		for (j = i + 1;j <= n;j++)
+			s = s + a[i][j] * a[j][n + 1];
+		a[i][n + 1] = (a[i][n + 1] - s) / a[i][i];
+	}
+	if (npc != 0)
+		for (i = npc;i >= 1;i--)
+		{
+			aux = a[c[i][1]][n + 1];
+			a[c[i][1]][n + 1] = a[c[i][2]][n + 1];
+			a[c[i][2]][n + 1] = aux;
+		}
+	for (i = 1;i <= n;i++)
+		cout << "X " << i << "= " << a[i][n + 1] << endl;
+
+	system("pause");
+	return 0;
+}
