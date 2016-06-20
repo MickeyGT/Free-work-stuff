@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+char type;
+struct polinom 
+{
+	int n;
+	float v[100];
+}a,b,c;
+int i,j;
+float val,sum,p;
+int main() 
+{   
+	do 
+	{
+		scanf("%c", &type);
+		if (type == 'a')
+		{
+			scanf("%d",&a.n);
+			for (i = a.n;i >= 0;i--)
+			{
+				scanf("%f", &a.v[i]);
+				c.v[i] = a.v[i];
+			}
+			scanf("%d", &b.n);
+			for (i = b.n;i >= 0;i--)
+			{
+				scanf("%f", &b.v[i]);
+				if (i > a.n)
+					c.v[i] = b.v[i];
+				else
+					c.v[i] += b.v[i];
+			}
+			c.n = a.n;
+			if (b.n > c.n)
+				c.n = b.n;
+			printf("%d ", c.n);
+			for (i = c.n;i >= 0;i--)
+				printf("%f ", c.v[i]);
+			printf("\n");
+		}
+		if (type == 'i')
+		{
+			scanf("%d", &a.n);
+			for (i = a.n;i >= 0;i--)
+				scanf("%f", &a.v[i]);
+			scanf("%d", &b.n);
+			for (i = b.n;i >= 0;i--)
+				scanf("%f", &b.v[i]);
+			for (i = 0;i <= a.n + b.n;i++)
+				c.v[i] = 0;
+			for (i = a.n;i >= 0;i--)
+				for (j = b.n;j >= 0;j--)
+				{
+					c.v[i + j] += a.v[i] * b.v[j];
+				}
+			c.n = a.n + b.n;
+			printf("%d ", c.n);
+			for (i = c.n;i >= 0;i--)
+				printf("%f ", c.v[i]);
+			printf("\n");
+		}
+		if (type == 'e')
+		{
+			scanf("%d", &a.n);
+			for (i = a.n;i >= 0;i--)
+				scanf("%f", &a.v[i]);
+			scanf("%f", &p);
+			val = 1;
+			for (i = 0;i <= a.n;i++,val=val*p)
+			{
+				sum = sum + val*a.v[i];
+			}
+			printf("%f", sum);
+			printf("\n");
+		}
+	} while (type != 'x');
+
+	system("pause");
+	return 0;
+}
