@@ -1,0 +1,20 @@
+Pentru activare Windows 10 Pro
+
+slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX
+slmgr /skms kms.shuax.com
+slmgr /ato
+
+Și pentru a reveni la setările normale
+
+slmgr /skms localhost
+slmgr /ckms
+
+Windows 10 Home : TX9XD-98N7V-6WMQ6-BX7FG-H8Q99
+Windows 10 Enterprise : NPPR9-FWDCX-D2C8J-H872K-2YT43
+
+Asta ca să nu mai folosiți toate tâmpenile.
+Eu am update-urile la zi, și nu am întâmpinat nici un fel de problemă.
+
+Și pentru un Windows 10 curat, imagine originală.
+https://www.microsoft.com/ro-ro/software-download/windows10
+Instrumentul de la Windows include să creezi o imagine pentru usb, foarte ușor și simplu de folosit.
