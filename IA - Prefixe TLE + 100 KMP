@@ -1,0 +1,92 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string.h>
+#include<vector>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+char v[131080];
+int n, k, l, j;
+int i, ok, x;
+int main()
+{
+	ifstream f("prefixe.in");
+	ofstream g("prefixe.out");
+	f >> n;
+	for (k = 1; k <= n; k++)
+	{
+		f >> v;
+		l = strlen(v);
+		g << 0<<" ";
+		for (j = 2; j <= l; j++)
+		{
+			for (i = j - 1; i >= 0; i--)
+			{
+				if (i == 0)
+				{
+					g << 0 << " ";
+					break;
+				}
+				ok = 1;
+				for (x = 0; x <= i - 1; x++)
+					if (v[x] != v[j - i + x])
+					{
+						ok = 0;
+						break;
+					}
+				if (ok)
+				{
+					g << i << " ";
+					break;
+				}
+			}
+		}
+		g << '\n';
+	}
+	return 0;
+}
+
+=====================================================================================================
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string.h>
+#include<vector>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+char v[131080];
+int n, k, l, j,i, rez[200000],t;
+
+int main()
+{
+	ifstream f("prefixe.in");
+	ofstream g("prefixe.out");
+	f >> n;
+	for (t = 1; t <= n; t++)
+	{
+		f >> (v+1);
+		l = strlen(v+1);
+		memset(rez, 0, sizeof(rez));
+		k = 0;
+		rez[1] = 0;
+		g << rez[1]<<" ";
+		for (i = 2; i <= l; i++)
+		{
+			while ((k > 0) && (v[k+1] != v[i]))
+			{
+				k = rez[k];
+			}
+			if (v[k+1] == v[i])
+				k++;
+			rez[i] = k;
+			g << rez[i] << " ";
+		}
+		g << '\n';
+	}
+	return 0;
+}
