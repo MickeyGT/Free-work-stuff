@@ -19,7 +19,6 @@ int main()
 	for (k = 1; k <= n; k++)
 	{
 		cin >> v;
-		x[k] = v;
 		l = v.size();
 		min1 = 'z';
 		for (i = 0; i <= l - 1; i++)
@@ -31,6 +30,7 @@ int main()
 		{
 			v[i] = v[i] - min1 + 'a';
 		}
+		x[k] = v;
 		it = st.find(v);
 		if (it == st.end())
 			st.insert(make_pair(v, 1));
@@ -40,27 +40,14 @@ int main()
 	for (k = 1; k <= n; k++)
 	{
 		v = x[k];
-		l = v.size();
-		min1 = 'z';
-		for (i = 0; i <= l - 1; i++)
-		{
-			if (v[i] < min1)
-				min1 = v[i];
-		}
-		for (i = 0; i <= l - 1; i++)
-		{
-			v[i] = v[i] - min1 + 'a';
-		}
 		it = st.find(v);
 		if (it != st.end())
 		{
 			if (it->second > 1)
-				cout << 1 << endl;
+				cout << "1\n";
 			else
-				cout << 0 << endl;
+				cout << "0\n";
 		}
-		else
-			cout << 0 << endl;
 	}
 
 	return 0;
