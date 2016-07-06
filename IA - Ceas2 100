@@ -1,0 +1,39 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string.h>
+#include<vector>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+char tc[100010], td[100010], sc[100];
+int i, ok,len,nr;
+int main()
+{
+    ifstream f("ceas2.in");
+    ofstream g("ceas2.out");
+    f >> tc;
+    f >> td;
+    len = strlen(tc);
+    ok = 1;
+    for (i=0;i<=len-1;i++)
+    {
+        if (tc[i] + sc[tc[i] - 'a'] == td[i])
+            continue;
+        else
+        {
+            if (sc[tc[i] - 'a'] != 0)
+            {
+                g << "NU\n";
+                return 0;
+            }
+            sc[tc[i] - 'a'] = td[i] - tc[i];
+        }
+    }
+     
+    g << "DA\n";
+    for (i = 0; i <= 50; i++)
+        if (sc[i] != 0)
+            g << char('a' + i) << " " << char('a' + i + sc[i]) << '\n';
+    return 0;
+}
