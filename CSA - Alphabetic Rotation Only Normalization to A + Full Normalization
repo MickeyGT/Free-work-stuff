@@ -1,0 +1,108 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<iostream>
+#include<math.h>
+#include<algorithm>
+#include<map>
+using namespace std;
+int n, i, j, l, p, nr, k;
+map <string, int> st;
+map <string, int> ::iterator it;
+char min1;
+string v, x[100010];
+int main()
+{
+	cin >> n;
+	for (k = 1; k <= n; k++)
+	{
+		cin >> v;
+		l = v.size();
+		min1 = 'z';
+		for (i = 0; i <= l - 1; i++)
+		{
+			if (v[i] < min1)
+				min1 = v[i];
+		}
+		for (i = 0; i <= l - 1; i++)
+		{
+			v[i] = v[i] - min1 + 'a';
+		}
+		x[k] = v;
+		it = st.find(v);
+		if (it == st.end())
+			st.insert(make_pair(v, 1));
+		else
+			it->second++;
+	}
+	for (k = 1; k <= n; k++)
+	{
+		v = x[k];
+		it = st.find(v);
+		if (it != st.end())
+		{
+			if (it->second > 1)
+				cout << "1\n";
+			else
+				cout << "0\n";
+		}
+	}
+
+	return 0;
+}
+
+============================================================================================================
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<iostream>
+#include<math.h>
+#include<algorithm>
+#include<map>
+using namespace std;
+int n, i, j, l, p, nr, k,diff,diffc;
+map <string, int> st;
+map <string, int> ::iterator it;
+char min1;
+string v, x[100010];
+int main()
+{
+	cin >> n;
+	for (k = 1; k <= n; k++)
+	{
+		cin >> x[k];
+		diff = x[k][0] - 'a';
+		l = x[k].size();
+		for (i = 0; i <= l - 1; i++)
+		{
+			diffc = x[k][i] - 'a';
+			diffc -= diff;
+			if (diffc < 0)
+				diffc += 26;
+			x[k][i] = (char)(diffc + 'a');
+		}
+		it = st.find(x[k]);
+		if (it == st.end())
+			st.insert(make_pair(x[k], 1));
+		else
+			it->second++;
+	}
+	for (k = 1; k <= n; k++)
+	{
+		it = st.find(x[k]);
+		if (it != st.end())
+		{
+			if (it->second > 1)
+				cout << "1\n";
+			else
+				cout << "0\n";
+		}
+	}
+
+	return 0;
+}
