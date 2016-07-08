@@ -1,0 +1,88 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<iostream>
+#include<math.h>
+#include<algorithm>
+#include<string.h>
+#include<ctype.h>
+#include<map>
+using namespace std;
+map<string, int>mp;
+map<string, int>::iterator it;
+int n, m,i,l,qe,pi[10001],nr,len;
+char s1[65], s[1000010],cuv[10001],mt[101][10001];
+string As;
+void make_prefix()
+{
+    int i, q = 0;
+ 
+    for (i = 2, pi[1] = 0; i <= len; ++i)
+    {
+        while (q && cuv[q + 1] != cuv[i])
+            q = pi[q];
+        if (cuv[q + 1] == cuv[i])
+            ++q;
+        pi[i] = q;
+    }
+}
+int main()
+{
+    ifstream f("ahocorasick.in");
+    ofstream g("ahocorasick.out");
+    f >> s;
+    /*
+    f >> n;
+    for (i = 1; i <= n; i++)
+    {
+        f >> s1;
+        l = strlen(s);
+        strcpy(s + l, s1);
+    }
+    */
+    f >> m;
+    for (i = 1; i <= m; i++)
+    {
+        f >> cuv;
+        strcpy(mt[i], cuv);
+        if (mp.find(cuv) == mp.end())
+            mp.insert(make_pair(cuv, 0));
+    }
+ 
+    l = strlen(s);
+    for (i = l - 1; i >= 0; i--)
+        s[i + 1] = s[i];
+ 
+    for (it = mp.begin(); it != mp.end(); it++)
+    {
+        As= it->first;
+        len = As.length();
+        memset(cuv, 0, sizeof(cuv));
+        cuv[0] = ' ';
+        for (i = 0; i <= len - 1; i++)
+            cuv[i + 1] = As[i];
+        len = strlen(cuv)-1;
+        make_prefix();
+        for (i = 1; i <= l; ++i)
+        {
+            while (qe && cuv[qe + 1] != s[i])
+                qe = pi[qe];
+            if (cuv[qe + 1] == s[i])
+                ++qe;
+            if (qe == len)
+            {
+                qe = pi[len];
+                ++n;
+                it->second++;
+            }
+        }
+    }
+    for (i = 1; i <= m; i++)
+    {
+        it = mp.find(mt[i]);
+        g << it->second << '\n';
+    }
+    return 0;
+}
