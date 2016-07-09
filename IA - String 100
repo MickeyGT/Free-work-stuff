@@ -11,10 +11,10 @@
 #include<map>
 #include <bitset>
 using namespace std;
-int n, i, j, power, k, element;
+int n, i, j, power, k, element, powers, powerd;
 char s[500010];
 char el[100];
-bool m[19][262147];
+bool m[21][262147];
 int main()
 {
 	ifstream f("string.in");
@@ -28,41 +28,38 @@ int main()
 		else
 			s[i] = '1';
 	}
-	for (i = 2; i <= 18 && i <= n; i++)
+	powerd = 1;
+	for (i = 2; i <= 20 && i <= n; i++)
 	{
+		powerd<<=1;
 		for (j = 0; j <= n - i; j++)
 		{
-			for (k = j; k < j + i; k++)
-				el[k - j] = s[k];
-			el[i] = '\0';
-			power = pow(2, i - 1);
 			element = 0;
-			//m[i][strtol(el,NULL,2)] = 1;
-			for (k = 0; k <= i - 1; k++)
+			powers = powerd;
+			for (k = j; k < j + i; k++)
 			{
-				element += power*(el[k] - '0');
-				power = power / 2;
+				element += powers*(s[k] - '0');
+				powers>>=1;
 			}
+			//m[i][strtol(el,NULL,2)] = 1;
 			m[i][element] = 1;
 		}
-		power = pow(2, i);
+		power = powerd * 2;
 		for (j = 0; j <= power - 1; j++)
 			if (m[i][j] == 0)
 			{
 				g << i << '\n';
-				power = pow(2, i - 1);
-				memset(el, 0, sizeof(el));
 				for (k = 0; k <= i - 1; k++)
 				{
-					if (j >= power)
+					if (j >= powerd)
 					{
-						j -= power;
-						power /= 2;
+						j -= powerd;
+						powerd >>= 1;
 						el[k] = '1';
 					}
 					else
 					{
-						power /= 2;
+						powerd >>= 1;
 						el[k] = '0';
 					}
 				}
@@ -74,6 +71,6 @@ int main()
 				return 0;
 			}
 	}
-	
+
 	return 0;
 }
