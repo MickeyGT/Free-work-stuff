@@ -1,0 +1,82 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<iostream>
+#include<math.h>
+#include<algorithm>
+#include<string.h>
+#include<ctype.h>
+#include<map>
+#include <bitset>
+using namespace std;
+int n, i,j,power,k,element;
+char s[500010];
+char el[100];
+int m[19][262147];
+int main()
+{
+	ifstream f("string.in");
+	ofstream g("string.out");
+	f >> n;
+	f >> s;
+	for (i = 0; i <= n - 1; i++)
+	{
+		if (s[i] == 'a')
+			s[i] = '0';
+		else
+			s[i] = '1';
+	}
+	for (i = 2; i <= 18 && i<=n; i++)
+	{
+		for (j = 0; j <= n - i; j++)
+		{
+			strcpy(el,s+ j);
+			el[i] = '\0';
+			power = pow(2, i - 1);
+			element = 0;
+			//m[i][strtol(el,NULL,2)] = 1;
+			for (k = 0; k <= i - 1; k++)
+			{
+				element += power*(el[k] - '0');
+				power = power / 2;
+			}
+			m[i][element] = 1;
+		}
+	}
+	for (i = 2; i <= 18 && i <= n; i++)
+	{
+		power = pow(2, i);
+		for (j = 0; j <= power-1; j++)
+			if (m[i][j] == 0)
+			{
+				g << i << '\n';
+				power = pow(2, i-1);
+				memset(el, 0, sizeof(el));
+				for (k = 0; k <= i - 1; k++)
+				{
+					if (j >= power)
+					{
+						j -= power;
+						power /= 2;
+						el[k] = '1';
+					}
+					else
+					{
+						power /= 2;
+						el[k] = '0';
+					}
+				}
+				//std::bitset<32> el(j);
+				for(k=0;k<=i-1;k++)
+					if (el[k] == '0')
+						g<<'a';
+					else
+						g<<'b';
+				return 0;
+			}
+	}
+
+	return 0;
+}
