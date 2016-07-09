@@ -14,7 +14,7 @@ using namespace std;
 int n, i, j, power, k, element;
 char s[500010];
 char el[100];
-int m[19][262147];
+bool m[19][262147];
 int main()
 {
 	ifstream f("string.in");
@@ -45,9 +45,6 @@ int main()
 			}
 			m[i][element] = 1;
 		}
-	}
-	for (i = 2; i <= 18 && i <= n; i++)
-	{
 		power = pow(2, i);
 		for (j = 0; j <= power - 1; j++)
 			if (m[i][j] == 0)
@@ -77,6 +74,6 @@ int main()
 				return 0;
 			}
 	}
-
+	
 	return 0;
 }
