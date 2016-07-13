@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <memory.h>
+#include <string.h>
+#include <math.h>
+#include <iostream>
+using namespace std;
+#define NMAX 2000005
+
+char str_a[NMAX], str_b[NMAX];
+int suffix[NMAX];
+int ans[NMAX];
+
+int _min(int a, int b) {
+
+	return a < b ? a : b;
+
+}
+int i, j, ans_ind = 0, nr;
+int main() {
+
+
+
+	scanf("%s", str_b);
+	scanf("%s", str_a);
+
+	int len_a = strlen(str_a),
+		len_b = strlen(str_b);
+
+	j = 0;
+	for (i = 1; i < len_a; ++i) {
+		while (str_a[i] != str_a[j] && j) {
+			j = suffix[j - 1];
+		}
+		if (str_a[i] == str_a[j])
+			++j;
+		suffix[i] = j;
+	}
+	j = 0;
+	for (i = 0; i < len_b; ++i) {
+		while (str_b[i] != str_a[j] && j) {
+			j = suffix[j - 1];
+		}
+		if (str_b[i] == str_a[j])
+			++j;
+		if (j == len_a) {
+			ans[ans_ind++] = i - len_a + 1;
+			j = suffix[j - 1];
+		}
+	}
+
+	int k = _min(ans_ind, 10000000);
+	for (i = 0; i < k; ++i)
+	{
+		if (ans[i + 1] - ans[i] <= len_a)
+		{
+			nr++;
+			i++;
+		}
+		else
+			nr++;
+	}
+	cout << nr;
+	return 0;
+}
