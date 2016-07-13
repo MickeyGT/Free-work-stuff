@@ -1,0 +1,44 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<iostream>
+#include<math.h>
+#include<algorithm>
+#include<string.h>
+#include<ctype.h>
+#include<map>
+#include <bitset>
+using namespace std;
+long long n, i, j, a, b, c, pb, gb;
+
+int main()
+{
+	cin >> n;
+	cin >> a;
+	cin >> b;
+	cin >> c;
+	i = n;
+	pb = i / a;
+	i = i - pb*a;
+	if (i >= b)
+	{
+		pb += (i - b) / (b - c);
+		pb++;
+	}
+	if (n > b)
+	{
+		gb = (n - b) / (b - c);
+		gb++;
+		n -= b;
+		n += c;
+		n = n - (gb - 1)*(b - c);
+		gb += n / a;
+	}
+	if (pb > gb)
+		cout << pb;
+	else
+		cout << gb;
+	return 0;
+}
