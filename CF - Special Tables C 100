@@ -1,0 +1,54 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<iostream>
+#include<math.h>
+#include<algorithm>
+#include<string.h>
+#include<ctype.h>
+#include<map>
+#include <bitset>
+using namespace std;
+int n, i, j, a, b, c, pb, gb, k, el, s;
+int m[501][501],fr[2500001];
+int main()
+{
+	cin >> n;
+	cin >> k;
+	el = n*n - (n-k);
+	s = el;
+	fr[el] = 1;
+	for (i = 1; i <= n; i++)
+	{
+		m[i][k] = el;
+		a = el;
+		for (j = k+1; j <= n; j++)
+			m[i][j] = ++a;
+		fr[el] = 1;
+		el = el - (n-k+1);
+		s = s + el;
+	}
+	s -= el;
+	el = el + (n - k + 1);
+	for (i = 1; i <= n; i++)
+	{
+		for (j = k-1; j >= 1; j--)
+			if(fr[el]!=1)
+			m[i][j] = --el;
+			else
+			{
+				el--;
+				m[i][j] = el;
+			}
+	}
+	cout << s<<'\n';
+	for (i = 1; i <= n; i++)
+	{
+		for (j = 1; j <= n; j++)
+			cout << m[i][j] << " ";
+		cout << '\n';
+	}
+	return 0;
+}
