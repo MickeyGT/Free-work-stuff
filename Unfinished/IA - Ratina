@@ -1,0 +1,90 @@
+#include <fstream>
+#include <string.h>
+#include<ctype.h>
+using namespace std;
+int n, i, j, nr, k, l,q,v[10010],templ,rasp[10010],que,nod,min1,max1,el,cif;
+char s[10010][2010],temp[2010];
+void quickSort(int ii, int is) 
+{
+	int x = ii;
+	int y = is;
+	strcpy(temp,s[ii + (is - ii) / 2]);
+	while (ii <= is) 
+	{
+		while (strcmp(s[ii],temp)==-1)    
+			ii++;
+		while (strcmp(s[is],temp)==1)   
+			is--;
+		if (ii <= is)
+		{
+			swap(s[ii++],s[is--]);
+		}
+	}
+	if (x < is)
+		quickSort(x, is);
+	if (y > ii)
+		quickSort(ii, y);
+
+}
+int main()
+{
+	ifstream f("ratina.in");
+	ofstream g("ratina.out");
+	f >> n>>q;
+	for (i = 1; i <= n; i++)
+	{
+		f >> s[i];
+		el=i;
+		nr = 2009;
+		while (el!= 0)
+		{
+			cif = el % 10;
+			el = el / 10;
+			s[i][nr] = cif + '0';
+			nr--;
+		}
+	}
+	quickSort(1, n);
+	for (i = 1; i <= n; i++)
+	{
+		nr = 2009;
+		el = 0;
+		while (s[i][nr--] != 0)
+			el = el * 10 + s[i][nr + 1] - '0';
+		v[el] = i;
+	}
+	for (i = 1; i <= n - 1; i++)
+	{
+		nr = 0;
+		while (s[i][nr] == s[i + 1][nr])
+			nr++;
+		rasp[i] = nr;
+	}
+	for (k = 1; k <= q; k++)
+	{
+		f >> que;
+		min1 = 42424242;
+		max1 = -42424242;
+		for (i = 1; i <= que; i++)
+		{
+			f >> nod;
+			if (v[nod] < min1)
+				min1 = v[nod];
+			if (v[nod] > max1)
+				max1 = v[nod];
+		}
+		if (min1 == max1)
+		{
+			nr = strlen(s[min1]);
+		}
+		else
+		{
+			nr = 42424242;
+			for (i = min1; i <= max1 - 1; i++)
+				if (rasp[i] < nr)
+					nr = rasp[i];
+		}
+		g << nr << '\n';
+	}
+	return 0;
+}
