@@ -1,0 +1,48 @@
+#include<iostream>
+#include<vector>
+#include<stdlib.h>
+#include<stdio.h>
+#include<algorithm>
+#include<string>
+#include<ctype.h>
+#include<fstream>
+#include<functional>
+using namespace std;
+double t, s, x, aux;
+float rez;
+int main()
+{
+	cin >> t >> s >> x;
+	if (t == x)
+	{
+		cout << "YES";
+		return 0;
+	}
+	x -= t;
+	if (x < 0)
+	{
+		cout << "NO";
+		return 0;
+	}
+	aux = x;
+	aux--;
+	aux = aux / s;
+	x = x / s;
+	if (int(x) == 0)
+	{
+		cout << "NO";
+		return 0;
+	}
+	if (x - int(x) == 0)
+	{
+		cout << "YES";
+		return 0;
+	}
+	if (aux - int(aux) == 0)
+	{
+		cout << "YES";
+		return 0;
+	}
+	cout << "NO";
+	return 0;
+}
