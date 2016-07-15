@@ -1,0 +1,63 @@
+#include<iostream>
+#include<vector>
+#include<stdlib.h>
+#include<stdio.h>
+#include<algorithm>
+#include<string.h>
+#include<ctype.h>
+#include<fstream>
+#include<functional>
+using namespace std;
+char s[100000];
+long long i, poz, l, nr, number, ok;
+int main()
+{
+	cin >> s;
+	l = strlen(s);
+	for (i = 0; i <= l - 1; i++)
+		if (s[i] == '.')
+		{
+			poz = i;
+			break;
+		}
+	i = l - 1;
+	while (s[i] != 'e')
+		i--;
+	nr = 0;
+	i++;
+	while (s[i] != 0)
+	{
+		nr = nr * 10 + s[i++] - '0';
+	}
+	number = nr;
+	for (i = 0; s[i - 1] != 'e'; i++)
+		if (s[i] == '.'&&s[i + 1] == 'e' || s[i] == '0'&&s[i + 1] == 'e')
+		{
+			s[i] = 'e';
+			i -= 2;
+		}
+	for (i = poz; i <= nr + poz - 1 && s[i] != '\0'; i++)
+	{
+		s[i] = s[i + 1];
+		if (s[i] != 'e')
+			number--;
+		else
+			break;
+	}
+	if (i != l)
+		s[i] = '.';
+	for (i = 0; s[i - 1] != 'e';i++)
+		if (s[i] == '.'&&s[i + 1] == 'e' || s[i] == '0'&&s[i + 1] == 'e')
+		{
+			s[i] = 'e';
+			i-=2;
+		}
+	
+	for (i = 0; s[i] != 'e'; i++)
+		cout << s[i];
+	for (i = 1; i <= number; i++)
+		cout << 0;
+	if (s[0] == 'e')
+		cout << 0;
+	return 0;
+}
