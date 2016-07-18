@@ -1,0 +1,123 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<unordered_set>
+using namespace std;
+ifstream f("trie.in");
+ofstream g("trie.out");
+int type;
+char str[21];
+struct Trie
+{
+	int nrprefixe, nrcuv;
+	Trie *fiu[26];
+
+	Trie()
+	{
+		nrprefixe = nrcuv = 0;
+		memset(fiu, 0, sizeof(fiu));
+	}
+};
+
+Trie *root = new Trie();
+void add(string s)
+{
+	Trie *node = root;
+	int i, l = s.size();
+	for (i = 0; i < l; i++)
+	{
+		if (node->fiu[s[i] - 'a'] == 0)
+			node->fiu[s[i] - 'a'] = new Trie;
+		node->nrprefixe++;
+		node = node->fiu[s[i] - 'a'];
+		if (i == l - 1)
+		{
+			node->nrcuv++;
+			node->nrprefixe++;
+		}
+	}
+}
+void del(string s)
+{
+	Trie *node = root;
+	int i, l = s.size();
+	for (i = 0; i < l; i++)
+	{
+		if (node->fiu[s[i] - 'a'] == NULL)
+			break;
+		else
+		{
+			node = node->fiu[s[i] - 'a'];
+			node->nrprefixe--;
+			if (i == l - 1)
+			{
+				node->nrcuv--;
+			}
+		}
+	}
+}
+void findcuvnr(string s)
+{
+	Trie *node = root;
+	int i, l = s.size();
+	for (i = 0; i < l; i++)
+	{
+		if (node->fiu[s[i] - 'a'] == NULL)
+		{
+			g << 0 << '\n';
+			break;
+		}
+		else
+		{
+			node = node->fiu[s[i] - 'a'];
+			if (i == l - 1)
+			{
+				g << node->nrcuv << '\n';
+				return;
+			}
+		}
+	}
+}
+void findprefnr(string s)
+{
+	Trie *node = root;
+	int i, l = s.size(), nr=0;
+	for (i = 0; i < l; i++)
+	{
+		if (node->fiu[s[i] - 'a'] == 0)
+		{
+			g << nr << '\n';
+			return;
+		}
+		else
+		{
+			node = node->fiu[s[i] - 'a'];
+			if (node->nrprefixe != 0)
+				nr++;
+		}
+	}
+	g << nr << '\n';
+	return;
+}
+int main()
+{
+
+	while (f >> type >> str)
+	{
+		if (type == 0)
+			add(str);
+		else
+			if (type == 1)
+				del(str);
+			else
+				if (type == 2)
+					findcuvnr(str);
+				else
+					findprefnr(str);
+	}
+	return 0;
+}
