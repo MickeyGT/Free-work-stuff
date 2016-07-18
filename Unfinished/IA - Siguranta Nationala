@@ -1,0 +1,50 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<unordered_set>
+using namespace std;
+int l, n,i,maxaer,maxground,a,b;
+int main()
+{
+	ifstream f("file.in");
+	ofstream g("file.out");
+	f >> l >> n;
+	maxaer = 1;
+	maxground = 1;
+	for (i = 1; i <= n; i++)
+	{
+		f >> a >> b;
+		if (a > maxaer)
+		{
+			maxground = b;
+			g << 0 << '\n';
+		}
+		else
+		{
+			if (a > maxground)
+			{
+				maxaer = b;
+				g << 1 << '\n';
+			}
+			else
+			{
+				if (b - maxground < b - maxaer)
+				{
+					maxground = b;
+					g << 0 << '\n';
+				}
+				else
+				{
+					maxaer = b;
+					g << 1 << '\n';
+				}
+
+			}
+		}
+	}
+	return 0;
+}
