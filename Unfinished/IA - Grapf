@@ -11,9 +11,10 @@
 using namespace std;
 vector <int> v[7501];
 vector <int> ::iterator it;
-deque <int> deq;
-deque <int> ::iterator iter;
-int n, m, in, sf, i, start, finish, rez, nr, j, el, x = 1,fr[7501];
+deque  <int> deq;
+deque  <int> ::iterator iter;
+map    <int, int>mp;
+int n, m, in, sf, i, start, finish, rez, nr, j, el, x = 1, fr[7501];
 bool viz[7501];
 void finddist()
 {
@@ -43,17 +44,48 @@ void finddist()
 		nr++;
 	}
 }
+void dfs(int node)
+{
+	deq.push_back(node);
+	if (node == sf&&deq.size() == rez+1)
+	{
+		for (iter = deq.begin(); iter != deq.end(); iter++)
+			mp[*iter]++;
+	}
+	if (deq.size() >= rez + 1)
+	{
+		deq.pop_back();
+		
+		return;
+	}
+	if (viz[node] == 0)
+	{
+		viz[node] = 1;
+		if (v[node].size() != 0)
+		{
+			for (vector <int> ::iterator it = v[node].begin(); it != v[node].end(); it++)
+			{
+				dfs(*it);	
+			}
+			
+		}
+	}
+}
 int main()
 {
 	ifstream f("file.in");
 	ofstream g("file.out");
-	f >> n >> m >> in>>sf;
+	f >> n >> m >> in >> sf;
 	for (i = 1; i <= m; i++)
 	{
 		f >> start >> finish;
 		v[start].push_back(finish);
 	}
 	finddist();
-	g << rez<<" ";
+	deq.clear();
+	memset(viz, 0, sizeof(viz));
+	nr = 1;
+	dfs(in);
+	g << rez << "\n";
 	return 0;
 }
