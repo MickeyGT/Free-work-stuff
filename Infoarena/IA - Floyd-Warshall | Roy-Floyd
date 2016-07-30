@@ -1,0 +1,36 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+using namespace std;
+int n, m, i, nr, j, el,k;
+int mat[101][101];
+int main()
+{
+    ifstream f("royfloyd.in");
+    ofstream g("royfloyd.out");
+    f >> n;
+    for (i = 1; i <= n; i++)
+        for (j = 1; j <= n; j++)
+            f >> mat[i][j];
+    for(k=1;k<=n;k++)
+        for(i=1;i<=n;i++)
+            for (j = 1; j <= n; j++)
+            {
+                if (mat[i][k] != 0 && mat[k][j] != 0 && (mat[i][j] > mat[i][k] + mat[k][j] || !mat[i][j]) && i != j)
+                    mat[i][j] = mat[i][k] + mat[k][j];
+            }
+    for (i = 1; i <= n; i++)
+    {
+        for (j = 1; j <= n; j++)
+            g << mat[i][j] << " ";
+        g << '\n';
+    }
+    return 0;
+}
