@@ -89,3 +89,81 @@ int main()
 	g << rez << "\n";
 	return 0;
 }
+
+
+=====================================================================================================================
+
+
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+using namespace std;
+vector <int> v[100001];
+vector <int> ::iterator it;
+deque <int> deq;
+int n, m, node, i, start, finish, rez[100001], nr, j, el,sf;
+bool viz[100001];
+int main()
+{
+	ifstream f("file.in");
+	ofstream g("file.out");
+	f >> n >> m >> node>>sf;
+	for (i = 1; i <= m; i++)
+	{
+		f >> start >> finish;
+		v[start].push_back(finish);
+	}
+	deq.push_back(node);
+	nr = 1;
+	rez[node] = -1;
+	while (deq.size() != 0)
+	{
+		m = deq.size();
+		for (i = 1; i <= m; i++)
+		{
+			el = *deq.begin();
+			deq.pop_front();
+			if (viz[el] == 0)
+			{
+				for (it = v[el].begin(); it != v[el].end(); it++)
+				{
+					if (rez[*it] == 0)
+						rez[*it] = nr;
+					deq.push_back(*it);
+				}
+				viz[el] = 1;
+			}
+		}
+		nr++;
+	}
+	deq.clear();
+	deq.push_back(node);
+	while (deq.size() != 0)
+	{
+		m = deq.size();
+		for (i = 1; i <= m; i++)
+		{
+			el = *deq.begin();
+			deq.pop_front();
+			if (viz[el] == 0)
+			{
+				for (it = v[el].begin(); it != v[el].end(); it++)
+				{
+					if (rez[*it] == 0)
+						rez[*it] = nr;
+					deq.push_back(*it);
+				}
+				viz[el] = 1;
+			}
+		}
+		nr++;
+	}
+	return 0;
+}
