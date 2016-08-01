@@ -8,121 +8,32 @@
 #include<array>
 #include<deque>
 #include<unordered_set>
-using namespace std;
-vector <int> v[7501];
-vector <int> ::iterator it;
-deque  <int> deq;
-deque  <int> ::iterator iter;
-map    <int, int>mp;
-int n, m, in, sf, i, start, finish, rez, nr, j, el, x = 1, fr[7501];
-bool viz[7501];
-void finddist()
-{
-	deq.push_back(in);
-	nr = 1;
-	while (deq.size() != 0)
-	{
-		m = deq.size();
-		for (i = 1; i <= m; i++)
-		{
-			el = *deq.begin();
-			deq.pop_front();
-			if (viz[el] == 0)
-			{
-				for (it = v[el].begin(); it != v[el].end(); it++)
-				{
-					if (*it == sf&&rez == 0)
-					{
-						rez = nr;
-						return;
-					}
-					deq.push_back(*it);
-				}
-				viz[el] = 1;
-			}
-		}
-		nr++;
-	}
-}
-void dfs(int node)
-{
-	deq.push_back(node);
-	if (node == sf&&deq.size() == rez+1)
-	{
-		for (iter = deq.begin(); iter != deq.end(); iter++)
-			mp[*iter]++;
-	}
-	if (deq.size() >= rez + 1)
-	{
-		deq.pop_back();
-		
-		return;
-	}
-	if (viz[node] == 0)
-	{
-		viz[node] = 1;
-		if (v[node].size() != 0)
-		{
-			for (vector <int> ::iterator it = v[node].begin(); it != v[node].end(); it++)
-			{
-				dfs(*it);	
-			}
-			
-		}
-	}
-}
-int main()
-{
-	ifstream f("file.in");
-	ofstream g("file.out");
-	f >> n >> m >> in >> sf;
-	for (i = 1; i <= m; i++)
-	{
-		f >> start >> finish;
-		v[start].push_back(finish);
-	}
-	finddist();
-	deq.clear();
-	memset(viz, 0, sizeof(viz));
-	nr = 1;
-	dfs(in);
-	g << rez << "\n";
-	return 0;
-}
-
-
-=====================================================================================================================
-
-
-#include<fstream>
-#include<string.h>
-#include<ctype.h>
-#include<iostream>
-#include<algorithm>
-#include<map>
-#include<unordered_map>
-#include<array>
-#include<deque>
-#include<unordered_set>
+#include<set>
 using namespace std;
 vector <int> v[100001];
 vector <int> ::iterator it;
 deque <int> deq;
-int n, m, node, i, start, finish, rez[100001], nr, j, el,sf;
+deque <int>::iterator dit;
+set<int> st;
+int n, m, node, i, ok, start, finish, rez[100001], nr, j, el, sf, rasp;
 bool viz[100001];
 int main()
 {
 	ifstream f("file.in");
 	ofstream g("file.out");
-	f >> n >> m >> node>>sf;
+	f >> n >> m >> node >> sf;
+	st.insert(node);
+	st.insert(sf);
 	for (i = 1; i <= m; i++)
 	{
 		f >> start >> finish;
 		v[start].push_back(finish);
+		v[finish].push_back(start);
 	}
 	deq.push_back(node);
 	nr = 1;
 	rez[node] = -1;
+	ok = 1;
 	while (deq.size() != 0)
 	{
 		m = deq.size();
@@ -134,6 +45,11 @@ int main()
 			{
 				for (it = v[el].begin(); it != v[el].end(); it++)
 				{
+					if (*it == sf&&ok)
+					{
+						rasp = nr;
+						ok = 0;
+					}
 					if (rez[*it] == 0)
 						rez[*it] = nr;
 					deq.push_back(*it);
@@ -143,9 +59,9 @@ int main()
 		}
 		nr++;
 	}
-	deq.clear();
-	deq.push_back(node);
-	while (deq.size() != 0)
+	memset(viz, 0, sizeof(viz));
+	deq.push_back(sf);
+	while (rasp)
 	{
 		m = deq.size();
 		for (i = 1; i <= m; i++)
@@ -156,14 +72,24 @@ int main()
 			{
 				for (it = v[el].begin(); it != v[el].end(); it++)
 				{
-					if (rez[*it] == 0)
-						rez[*it] = nr;
 					deq.push_back(*it);
 				}
 				viz[el] = 1;
 			}
 		}
-		nr++;
+		ok = 0;
+		for(dit=deq.begin();dit!=deq.end();dit++)
+			if (rez[*dit] == rasp-1)
+			{
+					el = *dit;
+					ok++;				
+			}
+		if (ok == 1)
+			st.insert(el);
+		rasp--;
 	}
+	g << st.size() << "\n";
+	for (set<int>::iterator iter = st.begin(); iter != st.end(); iter++)
+		g << *iter << " ";
 	return 0;
 }
