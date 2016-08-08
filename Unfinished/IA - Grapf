@@ -10,86 +10,92 @@
 #include<unordered_set>
 #include<set>
 using namespace std;
-vector <int> v[100001];
+vector <int> v[10000];
 vector <int> ::iterator it;
 deque <int> deq;
 deque <int>::iterator dit;
 set<int> st;
-int n, m, node, i, ok, start, finish, rez[100001], nr, j, el, sf, rasp;
-bool viz[100001];
+int n, m, node, i, ok, start, finish, rez[10000], nr, j, el, sf, rasp;
+bool viz[10000],added[10000];
 int main()
 {
-	ifstream f("file.in");
-	ofstream g("file.out");
-	f >> n >> m >> node >> sf;
-	st.insert(node);
-	st.insert(sf);
-	for (i = 1; i <= m; i++)
-	{
-		f >> start >> finish;
-		v[start].push_back(finish);
-		v[finish].push_back(start);
-	}
-	deq.push_back(node);
-	nr = 1;
-	rez[node] = -1;
-	ok = 1;
-	while (deq.size() != 0)
-	{
-		m = deq.size();
-		for (i = 1; i <= m; i++)
-		{
-			el = *deq.begin();
-			deq.pop_front();
-			if (viz[el] == 0)
-			{
-				for (it = v[el].begin(); it != v[el].end(); it++)
-				{
-					if (*it == sf&&ok)
-					{
-						rasp = nr;
-						ok = 0;
-					}
-					if (rez[*it] == 0)
-						rez[*it] = nr;
-					deq.push_back(*it);
-				}
-				viz[el] = 1;
-			}
-		}
-		nr++;
-	}
-	memset(viz, 0, sizeof(viz));
-	deq.push_back(sf);
-	while (rasp)
-	{
-		m = deq.size();
-		for (i = 1; i <= m; i++)
-		{
-			el = *deq.begin();
-			deq.pop_front();
-			if (viz[el] == 0)
-			{
-				for (it = v[el].begin(); it != v[el].end(); it++)
-				{
-					deq.push_back(*it);
-				}
-				viz[el] = 1;
-			}
-		}
-		ok = 0;
-		for(dit=deq.begin();dit!=deq.end();dit++)
-			if (rez[*dit] == rasp-1)
-			{
-					el = *dit;
-					ok++;				
-			}
-		if (ok == 1)
-			st.insert(el);
-		rasp--;
-	}
-	g << st.size() << "\n";
-	for (set<int>::iterator iter = st.begin(); iter != st.end(); iter++)
-		g << *iter << " ";
-	return 0;
+    ifstream f("graf.in");
+    ofstream g("graf.out");
+    f >> n >> m >> node >> sf;
+    st.insert(node);
+    st.insert(sf);
+    for (i = 1; i <= m; i++)
+    {
+        f >> start >> finish;
+        v[start].push_back(finish);
+        v[finish].push_back(start);
+    }
+    deq.push_back(node);
+    nr = 1;
+    rez[node] = -1;
+    ok = 1;
+    while (deq.size() != 0)
+    {
+        m = deq.size();
+        for (i = 1; i <= m; i++)
+        {
+            el = *deq.begin();
+            deq.pop_front();
+            if (viz[el] == 0)
+            {
+                for (it = v[el].begin(); it != v[el].end(); it++)
+                {
+                    if (*it == sf&&ok)
+                    {
+                        rasp = nr;
+                        ok = 0;
+                    }
+                    if (rez[*it] == 0)
+                        rez[*it] = nr;
+                    deq.push_back(*it);
+                }
+                viz[el] = 1;
+            }
+        }
+        nr++;
+    }
+    memset(viz, 0, sizeof(viz));
+    deq.clear();
+    deq.push_back(sf);
+    while (rasp)
+    {
+        m = deq.size();
+        for (i = 1; i <= m; i++)
+        {
+ 
+            el = *deq.begin();
+            deq.pop_front();
+            if (viz[el] == 0)
+            {
+                for (it = v[el].begin(); it != v[el].end(); it++)
+                {
+                    if (viz[*it] == 0&&added[*it]==0)
+                    {
+                        deq.push_back(*it);
+                        added[*it] = 1;
+                    }
+                }
+                viz[el] = 1;
+            }
+        }
+        ok = 0;
+        for (dit = deq.begin(); dit != deq.end(); dit++)
+            if (rez[*dit] == rasp - 1)
+            {
+                el = *dit;
+                ok++;
+            }
+        if (ok == 1)
+            st.insert(el);
+        rasp--;
+    }
+    g << st.size() << "\n";
+    for (set<int>::iterator iter = st.begin(); iter != st.end(); iter++)
+        g << *iter << " ";
+    return 0;
 }
