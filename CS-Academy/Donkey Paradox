@@ -1,0 +1,30 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+int n, m, c1, l1, c2, l2,i,j,sum1,sum2,nr;
+int main()
+{
+	cin >> n>>m;
+	cin >> l1 >> c1;
+	cin >> l2 >> c2;
+	for(i=1;i<=n;i++)
+		for (j = 1; j <= m; j++)
+		{
+			sum1 = fabs(i - l1) + fabs(j - c1);
+			sum2 = fabs(i - l2) + fabs(j - c2);
+			if (sum1 == sum2)
+				nr++;
+		}
+	cout << nr;
+	return 0;
+}
