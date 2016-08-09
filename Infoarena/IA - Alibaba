@@ -1,0 +1,70 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+using namespace std;
+int n, k,j;
+char v[10010];
+set<int>del;
+set<int>::iterator it;
+void findclosest(int poz,int nr)
+{
+	int i;
+	if (k > 0&&poz<n)
+	{
+		int ok = 1;
+		for (i = poz; i <= n; i++)
+			if (v[i] == '0' + nr)
+			{
+				ok = 0;
+				if (i - poz > k)
+					findclosest(poz, nr - 1);
+				else
+				{
+					k = k - (i - poz);
+					for (j = poz; j <= i-1; j++)
+						del.insert(j);
+					findclosest(i + 1, 9);
+				}
+			}
+		if (i == n+1&&ok==1)
+			findclosest(poz, nr - 1);
+	}
+	if (poz >= n)
+	{
+		while (k > 0)
+		{
+			del.insert(n--);
+			k--;
+		}
+		return;
+	}
+}
+int main()
+{
+	ifstream f("alibaba.in");
+	ofstream g("alibaba.out");
+	f >> n >> k;
+	for (int i = 1; i <= n; i++)
+		f >> v[i];
+	findclosest(1, 9);
+	it = del.begin();
+	for (int i = 1; i <= n; i++)
+	{
+		if (it != del.end()&&*it == i)
+		{
+			if(it!=del.end())
+				it++;
+		}
+		else
+			g << v[i];
+	}
+	return 0;
+}
