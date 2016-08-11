@@ -1,0 +1,88 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+using namespace std;
+vector<int>extras;
+vector<int>::iterator itr;
+vector<pair<int, int>>v[100100];
+vector<pair<int, int>>::iterator it;
+map<pair<int, int>, int>mp;
+map<pair<int, int>, int>::iterator iter;
+deque<int>que;
+long long n, m, i, nstart, nend, cost, cmin[100010], nod,t,k,nr;
+bool incoada[100010],afisat[100010];
+int main()
+{
+	FILE * f;
+	FILE * g;
+	f = fopen("file.in", "r");
+	g = fopen("file.out", "w+");
+	fscanf(f,"%d",&t);
+	for (k = 1; k <= t; k++)
+	{
+		fscanf(f, "%d %d", &n,&m);
+		nr = 0;
+		for (i = 1; i <= m; i++)
+		{
+			nr++;
+			fscanf(f, "%d %d %d", &nstart, &nend, &cost);
+			if(v[nstart].size()!=0)
+			{ 
+				extras.push_back(nr);
+			}
+			else
+			{
+				v[nstart].push_back(make_pair(nend, cost));
+				mp.insert(make_pair(make_pair(nstart, nend), nr));
+			}
+			
+		}
+		for (i = 1; i <= n; i++)
+			cmin[i] = 0x3f3f3f3f;
+		cmin[1] = 0;
+		que.push_back(1);
+		incoada[1] = 1;
+		while (que.size() != 0)
+		{
+			nod = *que.begin();
+			que.pop_front();
+			incoada[nod] = 0;
+			for (it = v[nod].begin(); it != v[nod].end(); it++)
+				if (cmin[nod] + it->second < cmin[it->first])
+				{
+					fprintf(g,"%d ",mp[make_pair(nod, it->first)]);
+					afisat[mp[make_pair(nod, it->first)]] = 1;
+					cmin[it->first] = cmin[nod] + it->second;
+					if (incoada[it->first] == 0)
+					{
+						que.push_back(it->first);
+						incoada[it->first] = 1;
+					}
+				}
+		}
+		for (iter = mp.begin(); iter != mp.end(); iter++)
+		{
+			if (afisat[iter->second] == 0)
+				fprintf(g, "%d ", iter->second);
+		}
+		for(itr=extras.begin();itr!=extras.end();itr++)
+			fprintf(g, "%d ", *itr);
+		for (i = 1; i <= n; i++)
+			incoada[i] = 0;
+		for (i = 1; i <= n; i++)
+			afisat[i] = 0;
+		for (i = 1; i <= n; i++)
+			v[i].clear();
+		mp.clear();
+		que.clear();
+		fprintf(g, "\n");
+	}
+	return 0;
+}
