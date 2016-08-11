@@ -1,0 +1,53 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+using namespace std;
+vector<pair<int, int>>v[50010];
+vector<pair<int, int>>::iterator it;
+deque<int>que;
+int n, m, i, nstart, nend, cost, cmin[50010],nod;
+bool incoada[50010];
+int main()
+{
+    ifstream f("dijkstra.in");
+    ofstream g("dijkstra.out");
+    f >> n >> m;
+    for (i = 1; i <= m; i++)
+    {
+        f >> nstart >> nend >> cost;
+        v[nstart].push_back(make_pair(nend, cost));
+    }
+    memset(cmin, 0x3f3f3f3f, sizeof(cmin));
+    cmin[1] = 0;
+    que.push_back(1);
+    incoada[1] = 1;
+    while (que.size() != 0)
+    {
+        nod = *que.begin();
+        que.pop_front();
+        incoada[nod] = 0;
+        for (it = v[nod].begin(); it != v[nod].end(); it++)
+            if (cmin[nod] + it->second < cmin[it->first])
+            {
+                cmin[it->first] = cmin[nod] + it->second;
+                if (incoada[it->first] == 0)
+                {
+                    que.push_back(it->first);
+                    incoada[it->first] = 1;
+                }
+            }
+    }
+    for (i = 2; i <= n; i++)
+        if (cmin[i] < 0x3f3f3f3f)
+            g << cmin[i] << " ";
+        else
+            g << "0 ";
+    return 0;
+}
