@@ -1,0 +1,62 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+using namespace std;
+vector <int> v[810];
+vector <int> ::iterator it;
+deque <int> deq;
+int n, k,type,m,i,dmax[8010],cost[810][810],nstart,nend,price,nr,j,el,distmax,viz[810];
+int main()
+{
+	ifstream f("file.in");
+	ofstream g("file.out");
+	f >> type;
+	f >> n >> m;
+	for (i = 1; i <= n; i++)
+		f >> dmax[i];
+	for (i = 1; i <= m; i++)
+	{
+		f >> nstart >> nend >> price;
+		cost[nstart][nend] = price;
+		v[nstart].push_back(nend);
+	}
+	if (type == 1)
+	{
+		deq.push_back(1);
+		distmax = dmax[1];
+		while (deq.size() != 0)
+		{
+			m = deq.size();
+			for (i = 1; i <= m; i++)
+			{
+				el = *deq.begin();
+				deq.pop_front();
+				if (viz[el] == 0)
+				{
+					for (it = v[el].begin(); it != v[el].end(); it++)
+						if(dmax[1]>=cost[el][*it])
+					{
+						if (dmax[*it] > distmax)
+							distmax = dmax[*it];
+						deq.push_back(*it);
+					}
+					viz[el] = 1;
+				}
+			}
+		}
+		g << distmax;
+	}
+	else
+	{
+
+	}
+	return 0;
+}
