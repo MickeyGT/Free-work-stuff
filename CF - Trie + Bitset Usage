@@ -1,0 +1,134 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, i, j, k, nr, ok;
+char type,rez[50];
+string number;
+struct Trie
+{
+	int nrprefixe, nrcuv;
+	Trie *fiu[2];
+
+	Trie()
+	{
+		nrprefixe = nrcuv = 0;
+		memset(fiu, 0, sizeof(fiu));
+	}
+};
+
+Trie *root = new Trie();
+inline void add()
+{
+	Trie *node = root;
+	int i, l = number.size();
+	for (i = 0; i < l; i++)
+	{
+		if (node->fiu[number[i] - '0'] == 0)
+			node->fiu[number[i] - '0'] = new Trie;
+		node->nrprefixe++;
+		node = node->fiu[number[i] - '0'];
+		if (i == l - 1)
+		{
+			node->nrcuv++;
+			node->nrprefixe++;
+		}
+	}
+}
+inline void del()
+{
+	Trie *node = root;
+	int i, l = number.size();
+	for (i = 0; i < l; i++)
+	{
+		if (node->fiu[number[i] - '0'] == NULL)
+			break;
+		else
+		{
+			node = node->fiu[number[i] - '0'];
+			node->nrprefixe--;
+			if (i == l - 1)
+			{
+				node->nrcuv--;
+			}
+		}
+	}
+}
+inline void findopp()
+{
+	Trie *node = root;
+	int i, l = number.size();
+	for (i = 0; i < l; i++)
+	{
+		if (number[i] == '0')
+		{
+			if (node->fiu[1] != NULL&&node->fiu[1]->nrprefixe != 0)
+			{
+				rez[i] = '1';
+				node = node->fiu[1];
+			}
+			else
+			{
+				rez[i] = '0';
+				node = node->fiu[0];
+			}
+		}
+		else
+		{
+			if (node->fiu[0] != NULL&&node->fiu[0]->nrprefixe != 0)
+			{
+				rez[i] = '0';
+				node = node->fiu[0];
+			}
+			else
+			{
+				rez[i] = '1';
+				node = node->fiu[1];
+			}
+		}
+	}
+}
+
+int main()
+{
+	cin >> n;
+	bitset<30>numb(0);
+	number = numb.to_string<char, std::string::traits_type, std::string::allocator_type>();
+	add();
+	for (k = 1; k <= n; k++)
+	{
+		cin >> type>>nr;
+		if (type == '+')
+		{
+			bitset<30>numb(nr);
+			number = numb.to_string<char, std::string::traits_type, std::string::allocator_type>();
+			add();
+		}
+		if (type == '-')
+		{
+			bitset<30>numb(nr);
+			number = numb.to_string<char, std::string::traits_type, std::string::allocator_type>();
+			del();
+		}
+		if (type == '?')
+		{
+			bitset<30>numb(nr);
+			number = numb.to_string<char, std::string::traits_type, std::string::allocator_type>();
+			findopp();
+			char * end;
+			int value = strtol(rez, &end, 2);
+			cout << (value^nr)<<"\n";
+		}
+	}
+	return 0;
+}
