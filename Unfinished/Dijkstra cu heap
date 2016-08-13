@@ -14,7 +14,7 @@ struct Graf
 	int nod, cost;
 	Graf *next;
 };
-int n, m,dist[50001],h[50001],poz[50001],k;
+int n, m, dist[50001], h[50001], poz[50001], k,j,x,y,z;
 Graf *g[50001];
 void swap(int x, int y)
 {
@@ -105,6 +105,7 @@ void dijkstra_heap()
 					upheap(k);
 				}
 			}
+			q = q->next;
 		}
 	}
 }
@@ -112,5 +113,17 @@ int main()
 {
 	ifstream f("file.in");
 	ofstream g("file.out");
+	f >> n >> m;
+	for (j = 1; j <= m; j++)
+	{
+		f >> x >> y >> z;
+		add(x, y, z);
+	}
+	dijkstra_heap();
+	for (j = 2; j <= n; j++)
+		if (dist[j] != 1 << 30)
+			g << dist[j] << " ";
+		else
+			g << "0 ";
 	return 0;
 }
