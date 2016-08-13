@@ -8,14 +8,15 @@
 #include<array>
 #include<deque>
 #include<unordered_set>
+#include <cstdio>
 using namespace std;
 struct Graf
 {
 	int nod, cost;
 	Graf *next;
 };
-int n, m, dist[50001], h[50001], poz[50001], k,j,x,y,z;
-Graf *g[50001];
+int n, m, d[50001], h[50001], poz[50001], k,j,x,y,z;
+Graf *a[50001];
 void swap(int x, int y)
 {
 	int t = h[x];
@@ -27,26 +28,30 @@ void add(int where, int what, int cost)
 	Graf *q = new Graf;
 	q->nod = what;
 	q->cost = cost;
-	q->next = g[where];
-	g[where] = q;
+	q->next = a[where];
+	a[where] = q;
 }
 void upheap(int what)
 {
-	int father;
+	int tata;
 	while (what > 1)
 	{
-		father = what >> 1;
-		if (dist[h[father]] > dist[h[what]])
+		tata = what >> 1;
+
+		if (d[h[tata]] > d[h[what]])
 		{
-			poz[h[what]] = father;
-			poz[h[father]] = what;
-			swap(father, what);
-			what = father;
+			poz[h[what]] = tata;
+			poz[h[tata]] = what;
+
+			swap(tata, what);
+
+			what = tata;
 		}
 		else
 			what = 1;
 	}
 }
+
 void downheap(int what)
 {
 	int f;
@@ -57,46 +62,52 @@ void downheap(int what)
 		{
 			f = what << 1;
 			if (f + 1 <= k)
-				if (dist[h[f + 1]] < dist[h[f]])
+				if (d[h[f + 1]] < d[h[f]])
 					++f;
 		}
 		else
 			return;
 
-		if (dist[h[what]] > dist[h[f]])
+		if (d[h[what]] > d[h[f]])
 		{
 			poz[h[what]] = f;
 			poz[h[f]] = what;
+
 			swap(what, f);
+
 			what = f;
 		}
 		else
 			return;
 	}
 }
+
 void dijkstra_heap()
 {
-	for (int i = 2; i <= n; i++)
-	{
-		dist[i] = 1 << 30;
-		poz[i] = -1;
-	}
+	for (int i = 2; i <= n; ++i)
+		d[i] = 1<<30, poz[i] = -1;
 	poz[1] = 1;
+
 	h[++k] = 1;
+
 	while (k)
 	{
-		int MIN = h[1];
+		int min = h[1];
 		swap(1, k);
 		poz[h[1]] = 1;
 		--k;
+
 		downheap(1);
-		Graf *q = g[MIN];
+
+		Graf *q = a[min];
+
 		while (q)
 		{
-			if (dist[q->nod] > dist[MIN] + q->cost)
+			if (d[q->nod] > d[min] + q->cost)
 			{
-				dist[q->nod] = dist[MIN] + q->cost;
-				if (poz[q->nod] != 1)
+				d[q->nod] = d[min] + q->cost;
+
+				if (poz[q->nod] != -1)
 					upheap(poz[q->nod]);
 				else
 				{
@@ -121,8 +132,8 @@ int main()
 	}
 	dijkstra_heap();
 	for (j = 2; j <= n; j++)
-		if (dist[j] != 1 << 30)
-			g << dist[j] << " ";
+		if (d[j] != 1 << 30)
+			g << d[j] << " ";
 		else
 			g << "0 ";
 	return 0;
