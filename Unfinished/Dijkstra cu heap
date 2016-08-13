@@ -1,0 +1,116 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+using namespace std;
+struct Graf
+{
+	int nod, cost;
+	Graf *next;
+};
+int n, m,dist[50001],h[50001],poz[50001],k;
+Graf *g[50001];
+void swap(int x, int y)
+{
+	int t = h[x];
+	h[x] = h[y];
+	h[y] = t;
+}
+void add(int where, int what, int cost)
+{
+	Graf *q = new Graf;
+	q->nod = what;
+	q->cost = cost;
+	q->next = g[where];
+	g[where] = q;
+}
+void upheap(int what)
+{
+	int father;
+	while (what > 1)
+	{
+		father = what >> 1;
+		if (dist[h[father]] > dist[h[what]])
+		{
+			poz[h[what]] = father;
+			poz[h[father]] = what;
+			swap(father, what);
+			what = father;
+		}
+		else
+			what = 1;
+	}
+}
+void downheap(int what)
+{
+	int f;
+	while (what <= k)
+	{
+		f = what;
+		if ((what << 1) <= k)
+		{
+			f = what << 1;
+			if (f + 1 <= k)
+				if (dist[h[f + 1]] < dist[h[f]])
+					++f;
+		}
+		else
+			return;
+
+		if (dist[h[what]] > dist[h[f]])
+		{
+			poz[h[what]] = f;
+			poz[h[f]] = what;
+			swap(what, f);
+			what = f;
+		}
+		else
+			return;
+	}
+}
+void dijkstra_heap()
+{
+	for (int i = 2; i <= n; i++)
+	{
+		dist[i] = 1 << 30;
+		poz[i] = -1;
+	}
+	poz[1] = 1;
+	h[++k] = 1;
+	while (k)
+	{
+		int MIN = h[1];
+		swap(1, k);
+		poz[h[1]] = 1;
+		--k;
+		downheap(1);
+		Graf *q = g[MIN];
+		while (q)
+		{
+			if (dist[q->nod] > dist[MIN] + q->cost)
+			{
+				dist[q->nod] = dist[MIN] + q->cost;
+				if (poz[q->nod] != 1)
+					upheap(poz[q->nod]);
+				else
+				{
+					h[++k] = q->nod;
+					poz[h[k]] = k;
+					upheap(k);
+				}
+			}
+		}
+	}
+}
+int main()
+{
+	ifstream f("file.in");
+	ofstream g("file.out");
+	return 0;
+}
