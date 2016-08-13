@@ -8,17 +8,17 @@
 #include<array>
 #include<deque>
 #include<unordered_set>
+#include<vector>
 using namespace std;
 vector<int>extras;
 vector<int>::iterator itr;
 vector<pair<int, int>>v[100100];
-vector<pair<int, int>>::iterator it;
-map<pair<int, int>, int>mp;
-map<pair<int, int>, int>::iterator iter;
+vector<pair<int, int>>::iterator it,iter;
+vector<pair<int, int>>mp[100100];
 deque<int>que;
-int n, m, i, nstart, nend, cost, cmin[100010], nod, t, k, nr,msize;
-bool incoada[100010], afisat[100010];
-char buff[10000];
+int n, m, i, nstart, nend, cost, cmin[100010], nod, t, k, nr, msize;
+bool incoada[100010], afisat[200010];
+char buff[1000];
 int poz = 0;
 FILE * f;
 FILE * g;
@@ -28,14 +28,14 @@ inline void citeste(int &numar)
 	//cat timp caracterul din buffer nu e cifra ignor      
 	while (buff[poz] < '0' || buff[poz] > '9')
 		//daca am "golit" bufferul atunci il umplu
-		if (++poz == 10000)
-			fread(buff, 1, 10000,f), poz = 0;
+		if (++poz == 1000)
+			fread(buff, 1, 1000, f), poz = 0;
 	//cat timp dau de o cifra recalculez numarul          
 	while ('0' <= buff[poz] && buff[poz] <= '9')
 	{
 		numar = numar * 10 + buff[poz] - '0';
-		if (++poz == 10000)
-			fread(buff, 1, 10000,f), poz = 0;
+		if (++poz == 1000)
+			fread(buff, 1, 1000, f), poz = 0;
 	}
 }
 int main()
@@ -59,12 +59,8 @@ int main()
 			citeste(cost);
 			if (nstart != nend)
 			{
-				msize = mp.size();
-				mp.insert(make_pair(make_pair(nstart, nend), nr));
-				if (msize == mp.size())
-					extras.push_back(nr);
-				else
-					v[nstart].push_back(make_pair(nend, cost));
+				mp[nstart].push_back(make_pair(nend,nr));
+				v[nstart].push_back(make_pair(nend, cost));
 			}
 			else
 				extras.push_back(nr);
@@ -81,8 +77,13 @@ int main()
 			for (it = v[nod].begin(); it != v[nod].end(); it++)
 				if (cmin[nod] + it->second < cmin[it->first])
 				{
-					fprintf(g, "%d ", mp[make_pair(nod, it->first)]);
-					afisat[mp[make_pair(nod, it->first)]] = 1;
+					iter = mp[nod].begin(); 
+					while (iter != mp[nod].end())
+						if (iter++->first == it->first)
+							break;
+					iter--;
+					fprintf(g, "%d ",iter->second);
+					afisat[iter->second] = 1;
 					cmin[it->first] = cmin[nod] + it->second;
 					if (incoada[it->first] == 0)
 					{
@@ -91,18 +92,20 @@ int main()
 					}
 				}
 		}
-		for (iter = mp.begin(); iter != mp.end(); iter++)
+		for (i = 1; i <= n; i++)
 		{
-			if (afisat[iter->second] == 0)
-				fprintf(g, "%d ", iter->second);
+			for (iter = mp[i].begin(); iter != mp[i].end(); iter++)
+			{
+				if (afisat[iter->second] == 0)
+					fprintf(g, "%d ", iter->second);
+			}
+			mp[i].clear();
+			v[i].clear();
 		}
 		for (itr = extras.begin(); itr != extras.end(); itr++)
 			fprintf(g, "%d ", *itr);
 		memset(incoada, 0, sizeof(incoada));
 		memset(afisat, 0, sizeof(afisat));
-		for (i = 1; i <= n; i++)
-			v[i].clear();
-		mp.clear();
 		que.clear();
 		extras.clear();
 		fprintf(g, "\n");
