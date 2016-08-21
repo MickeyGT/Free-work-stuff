@@ -1,0 +1,83 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+unsigned short i, n, m, j, rez[252][252], min1,k,mint,poz,pozt,el;
+unsigned char s[252][252];
+int main()
+{
+    ifstream f("lacusta.in");
+    ofstream g("lacusta.out");
+    f >> n >> m;
+    for (i = 1; i <= n; i++)
+        for (j = 1; j <= m; j++)
+        {
+            f >> el;
+            s[i][j] = el;
+            rez[i][j] = (1<<15);
+        }
+    for (i = 2; i <= m; i++)
+        rez[1][i] = s[1][i]  + s[1][1] ;
+    for (j = 2; j <= m; j++)
+        rez[2][j] = s[2][j]  + s[1][j] + s[1][1] ;
+    min1 = rez[2][1];
+    for (j = 1; j <= m; j++)
+    {
+        for (k = 2; k <= m; k++)
+            if (j != k)
+                if (rez[1][k] + s[2][k]  + s[2][j]  < rez[2][j])
+                    rez[2][j] = rez[1][k] + s[2][k]  + s[2][j] ;
+        if (rez[2][j] < min1)
+        {
+            min1 = rez[2][j];
+            poz = j;
+        }
+    }
+    for (i = 3; i <= n; i++)
+    {
+        mint = 1<<15;
+        for (j = 1; j <= m; j++)
+        {
+            if (j != poz)
+            {
+                rez[i][j] = min1 + s[i - 1][j]  + s[i][j] ;
+                if (rez[i][j] < mint)
+                {
+                    mint = rez[i][j];
+                    pozt = j;
+                }
+            }
+            else
+            {
+                for(k=1;k<=m;k++)
+                    if (k != j)
+                    {
+                        if (rez[i - 1][k] + s[i][j]  + s[i - 1][j]  < rez[i][j])
+                            rez[i][j] = rez[i - 1][k] + s[i][j]  + s[i - 1][j] ;
+                        if (rez[i][j] < mint)
+                        {
+                            mint = rez[i][j];
+                            pozt = j;
+                        }
+                    }
+            }
+        }
+        min1 = mint;
+        poz = pozt;
+    }
+    min1 = rez[n][1];
+    for (i = 1; i <= m; i++)
+        if (rez[n][i] < min1)
+            min1 = rez[n][i];
+    g << min1 + s[n][m];
+    return 0;
+}
