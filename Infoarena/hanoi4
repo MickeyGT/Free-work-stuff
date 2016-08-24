@@ -1,0 +1,26 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+long long n, i, total,x;
+int main()
+{
+	// http://mathworld.wolfram.com/TowerofHanoi.html
+	ifstream f("hanoi4.in");
+    ofstream g("hanoi4.out");
+	f >> n;
+	total = 1;
+	x = floor((sqrt(8 * n - 7) - 1) / 2);
+	total += (n - (x*(x - 1))/2 - 1)*pow(2, x);
+	g << total;
+	return 0;
+}
