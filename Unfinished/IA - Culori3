@@ -1,0 +1,107 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+int n, i, total[2000], prv[6][2000], curr[6][2000], j, nr,len,k;
+void adunare(int x[2000],int y[2000],int z[2000])
+{
+	int lenx = x[0];
+	int leny = y[0];
+	int cifre = max(leny, lenx);
+	int carry = 0;
+	for (i = 1; i <=cifre; i++)
+	{
+		z[i] = (x[i] + y[i]+carry) % 10;
+		if (x[i] + y[i] >= 10)
+			carry = 1;
+		else
+			carry = 0;
+	}
+	if (x[cifre] + y[cifre] >= 10)
+	{
+		z[0] = cifre + 1;
+		z[cifre + 1] = 1;
+	}
+	else
+	{
+		z[0] = cifre;
+	}
+}
+void functie()
+{
+	for (j = 2; j <= n; j++)
+	{
+		memset(curr, 0, sizeof(curr));
+		len = prv[2][0];
+		for (i = 0; i <= len; i++)
+			curr[1][i] = prv[2][i];
+		adunare(prv[1], prv[3], curr[2]);
+		adunare(prv[2], prv[4], curr[3]);
+		adunare(prv[5], prv[3], curr[4]);
+		len = prv[4][0];
+		for (i = 0; i <= len; i++)
+			curr[5][i] = prv[4][i];
+		for (i = 1; i <= 5; i++)
+		{
+			for (k = 0; k <= 1999; k++)
+			{
+				prv[i][k] = curr[i][k];
+			}
+		}
+	}
+	memset(curr, 0, sizeof(curr));
+	adunare(prv[1], total, curr[1]);
+	adunare(prv[2], curr[1], total);
+	adunare(prv[3], total, curr[1]);
+	adunare(prv[4], curr[1], total);
+	adunare(prv[5], total, curr[1]);
+	len = curr[1][0];
+	for (i = 0; i <= len; i++)
+	{
+		total[i] = curr[1][i];
+	}
+}
+int main()
+{
+	ifstream f("culori3.in");
+    ofstream g("culori3.out");
+	f >> n;
+	prv[1][0] = 1;
+	prv[1][1] = 1;
+	functie();
+	memset(prv, 0, sizeof(prv));
+	memset(curr, 0, sizeof(curr));
+	prv[2][0] = 1;
+	prv[2][1] = 1;
+	functie();
+	memset(prv, 0, sizeof(prv));
+	memset(curr, 0, sizeof(curr));
+	prv[3][0] = 1;
+	prv[3][1] = 1;
+	functie();
+	memset(prv, 0, sizeof(prv));
+	memset(curr, 0, sizeof(curr));
+	prv[4][0] = 1;
+	prv[4][1] = 1;
+	functie();
+	memset(prv, 0, sizeof(prv));
+	memset(curr, 0, sizeof(curr));
+	prv[5][0] = 1;
+	prv[5][1] = 1;
+	functie();
+	len = total[0];
+	for (i = len; i >= 1; i--)
+	{
+		g<<total[i];
+	}
+	return 0;
+}
