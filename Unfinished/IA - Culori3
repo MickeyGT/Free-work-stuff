@@ -11,7 +11,9 @@
 #include<set>
 #include<math.h>
 using namespace std;
-int n, i, total[1200], prv[6][1200], j, nr, len, k, p, carry,temp[1200],cifre,carry2,poz1,poz2;
+int n, i, total[1200], prv[6][1200], j, nr, len, k, p, carry, temp[1200], cifre, carry2, poz1, poz2;
+ifstream f("file.in");
+ofstream g("file.out");
 void adunare(int x[1200], int y[1200], int z[1200])
 {
 	int cifre = max(x[0], y[0]);
@@ -40,14 +42,12 @@ void functie1()
 	{
 		if (j % 2 == 0)
 		{
-			//adunare(prv[1], prv[3], prv[2]);
-			//adunare(prv[5], prv[3], prv[4]);
-			//adunare(2,4,3)
+			//adunare(1,3,2/5,3,4)
 			cifre = max(prv[3][0], prv[1][0]);
 			cifre = max(cifre, prv[5][0]);
 			carry = 0;
 			carry2 = 0;
-			for (p = 1; p <= cifre+1; p++)
+			for (p = 1; p <= cifre + 1; p++)
 			{
 				prv[2][p] = (prv[3][p] + prv[1][p] + carry) % 10;
 				carry = (prv[3][p] + prv[1][p] + carry) / 10;
@@ -57,26 +57,24 @@ void functie1()
 				carry2 = (prv[3][p] + prv[5][p] + carry2) / 10;
 				if (prv[4][p] != 0)
 					poz2 = p;
-				prv[1][p - 1] = prv[3][p - 1] = prv[5][p-1] = 0;
+				prv[1][p - 1] = prv[3][p - 1] = prv[5][p - 1] = 0;
 			}
 			prv[2][0] = poz1;
 			prv[4][0] = poz2;
-			prv[1][cifre] = prv[3][cifre]=prv[5][cifre] = 0;
+			prv[1][cifre] = prv[3][cifre] = prv[5][cifre] = 0;
 			//se termina adunare(2,4,3)
 		}
 		else
 		{
-			len = max(prv[2][0], prv[4][0]);
-			for (i = 0; i <= len; i++)
-			{
-				prv[1][i] = prv[2][i];
-				prv[5][i] = prv[4][i];
-			}
+			prv[1][0] = prv[2][0];
+			prv[5][0] = prv[4][0];
 			//adunare(2,4,3)
 			cifre = max(prv[2][0], prv[4][0]);
 			carry = 0;
 			for (p = 1; p <= cifre; p++)
 			{
+				prv[1][p] = prv[2][p];
+				prv[5][p] = prv[4][p];
 				prv[3][p] = (prv[2][p] + prv[4][p] + carry) % 10;
 				if (prv[2][p] + prv[4][p] + carry >= 10)
 					carry = 1;
@@ -97,86 +95,47 @@ void functie1()
 			//se termina adunare(2,4,3)
 		}
 	}
-	adunare(prv[1], total, temp);
-	adunare(prv[2], temp, total);
-	adunare(prv[3], total, temp);
-	adunare(prv[4], temp, total);
-	adunare(prv[5], total, temp);
-	len = temp[0];
-	for (i = 0; i <= len; i++)
+	if (n % 2 == 0)
 	{
-		total[i] = temp[i];
-		temp[i] = 0;
-	}
-}
-void functie2()
-{
-	for (j = 2; j <= n; j++)
-	{
-		if (j % 2 == 1)
+		for (i = 1; i <= 8; i++)
 		{
-			adunare(prv[5], prv[3], prv[4]);
-			adunare(prv[1], prv[3], prv[2]);
-			for (k = 0; k <= 1198; k++)
-			{
-				prv[1][k] = prv[3][k] = prv[5][k] = 0;
-			}
+			adunare(prv[2], total, temp);
+			adunare(prv[4], temp, total);
 		}
-		else
+		len = total[0];
+		for (i = len; i >= 1; i--)
 		{
-			len = prv[2][0];
-			for (i = 0; i <= len; i++)
-				prv[1][i] = prv[2][i];
-			adunare(prv[2], prv[4], prv[3]);
-			len = prv[4][0];
-			for (i = 0; i <= len; i++)
-				prv[5][i] = prv[4][i];
-			for (k = 0; k <= 1198; k++)
-			{
-				prv[2][k] = prv[4][k] = 0;
-			}
+			g << total[i];
 		}
 	}
-	adunare(prv[1], total, temp);
-	adunare(prv[2], temp, total);
-	adunare(prv[3], total, temp);
-	adunare(prv[4], temp, total);
-	adunare(prv[5], total, temp);
-	len = temp[0];
-	for (i = 0; i <= len; i++)
+	else
 	{
-		total[i] = temp[i];
-		temp[i] = 0;
+		for (i = 1; i <= 8; i++)
+		{
+			adunare(prv[1], total, temp);
+			adunare(prv[3], temp, total);
+			adunare(prv[5], total, temp);
+			len = temp[0];
+			for (j = len; j >= 0; j--)
+			{
+				total[i] = temp[i];
+				temp[i] = 0;
+			}
+		}
+		len = total[0];
+		for (i = len; i >= 1; i--)
+		{
+			g << total[i];
+		}
 	}
+	
 }
+
 int main()
 {
-	ifstream f("culori3.in");
-	ofstream g("culori3.out");
 	f >> n;
 	prv[1][0] = 1;
 	prv[1][1] = 1;
 	functie1();
-	memset(prv, 0, sizeof(prv));
-	prv[2][0] = 1;
-	prv[2][1] = 1;
-	functie2();
-	memset(prv, 0, sizeof(prv));
-	prv[3][0] = 1;
-	prv[3][1] = 1;
-	functie1();
-	memset(prv, 0, sizeof(prv));
-	prv[4][0] = 1;
-	prv[4][1] = 1;
-	functie2();
-	memset(prv, 0, sizeof(prv));
-	prv[5][0] = 1;
-	prv[5][1] = 1;
-	functie1();
-	len = total[0];
-	for (i = len; i >= 1; i--)
-	{
-		g << total[i];
-	}
 	return 0;
 }
