@@ -1,0 +1,76 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+int G, W, dp1[11111], dp2[11111], i, j, eg, cg, cgs, egs,pg,sir=0;
+int main()
+{
+    ifstream f("energii.in");
+    ofstream g("energii.out");
+    f >> G;
+    f >> W;
+    pg = 1;
+    for (i = 1; i <= G; i++)
+    {
+        f >> eg >> cg;
+        //if (eg<=5000)
+        {
+            if (sir)
+            {
+                cgs += cg;
+                if (cg < pg)
+                    pg = cg;
+                cgs = min(cgs, 10000);
+                for (j = pg; j <= cgs; j++)
+                {
+                        dp2[j] = max(dp2[j - 1], dp1[j]);
+                    if (j >= cg)
+                        dp2[j] = max(dp2[j], dp1[j - cg] + eg);
+                }
+            }
+            else
+            {
+                cgs += cg;
+                if (cg < pg)
+                    pg = cg;
+                cgs = min(cgs, 10000);
+                for (j = pg; j <= cgs; j++)
+                {
+                        dp1[j] = max(dp1[j - 1], dp2[j]);
+                    if (j >= cg)
+                        dp1[j] = max(dp1[j], dp2[j - cg] + eg);
+                }
+            }
+            sir = 1 - sir;
+        }
+    }
+    if (G % 2 == 1)
+    {
+        for (i = 0; i <= cgs; i++)
+            if (dp1[i] >= W)
+            {
+                g << i;
+                return 0;
+            }
+    }
+    else
+    {
+        for (i = 0; i <= cgs; i++)
+            if (dp2[i] >= W)
+            {
+                g << i;
+                return 0;
+            }
+    }
+    g << -1;
+    return 0;
+}
