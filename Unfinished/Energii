@@ -11,44 +11,30 @@
 #include<set>
 #include<math.h>
 using namespace std;
-int G, W, dp[5050],i,j,eg,cg,cgs,egs;
-vector<pair<int, int>>v[1010];
-vector<pair<int, int>>::iterator it;
+int G, W, dp[1010][5050], i, j, eg, cg, cgs, egs,pcg;
 int main()
 {
 	ifstream f("file.in");
 	ofstream g("file.out");
 	f >> G;
 	f >> W;
+	pcg = 0;
 	for (i = 1; i <= G; i++)
 	{
 		f >> eg >> cg;
 		cgs += cg;
-		v[i].push_back(make_pair(cg, eg));
-	}
-	sort(v + 1, v + G + 1);
-	it = v[1].begin();
-	dp[it->first] = it->second;
-	for (j = it->first+1; j <= cgs; j++)
-	{
-		dp[j] = dp[j - 1];
-		for (i = 1; i <= G; i++)
-			if (j >= v[i].begin()->first&&j < 2*v[i].begin()->first)
-			{
-					dp[j] = max(dp[j], dp[j - v[i].begin()->first] + v[i].begin()->second);
-			}
-	}
-	/*
-	cgs += cg;
-		for (j = 1; j <= cgs; j++)
+		if(cg<pcg)
+			pcg=cg;
+		for (j = pcg; j <= cgs; j++)
 		{
-			dp[i][j] = max(dp[i][j-1],dp[i-1][j]);
+			dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
 			if (j >= cg)
-				dp[i][j] = max(dp[i][j], dp[i-1][j - cg] + eg);
+				dp[i][j] = max(dp[i][j], dp[i - 1][j - cg] + eg);
 		}
-	*/
-	for(i=0;i<=cgs;i++)
-		if (dp[i]>= W)
+		pcg = cg;
+	}
+	for (i = 0; i <= cgs; i++)
+		if (dp[G][i] >= W)
 		{
 			g << i;
 			return 0;
