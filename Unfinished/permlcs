@@ -1,0 +1,61 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+int n,m,mat[11][1010],i,j,fr[1010],poz[1010][11],ppoz[11],k,nr,nrm,ok,number;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("permlcs.in");
+	ofstream g("permlcs.out");
+	f >> n>>m;
+	for (i = 1; i <= m; i++)
+		for (j = 1; j <= n; j++)
+			f >> mat[i][j];
+	while (ok != n)
+	{
+		nr =number=0;
+		for (i = 1; i <= m; i++)
+			ppoz[i] = 0;
+		memset(poz, 0, sizeof(poz));
+		memset(fr, 0, sizeof(fr));
+		for (i = 1; i <= n; i++)
+		{
+			for (j = 1; j <= m; j++)
+			{
+				fr[mat[j][i]]++;
+				poz[mat[j][i]][j] = i;
+				if (fr[mat[j][i]] == m&&ok == number)
+				{
+					for (k = 1; k <= m; k++)
+						if (!(ppoz[k] < poz[mat[j][i]][k]))
+							break;
+					if (k == m + 1)
+					{
+						nr++;
+						for (k = 1; k <= m; k++)
+							ppoz[k] = poz[mat[j][i]][k];
+					}
+				}
+				else
+					if (fr[mat[j][i]] == m)
+						number++;
+			}
+		}
+		if (nr > nrm)
+			nrm = nr;
+		ok++;
+	}
+	g << nrm;
+	return 0;
+}
