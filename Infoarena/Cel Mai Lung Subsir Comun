@@ -1,0 +1,53 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+int n, m,i,j,dp[1050][1050],v1[1050],v2[1050],rez[1050],nr;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("cmlsc.in");
+	ofstream g("cmlsc.out");
+	f >> m >> n;
+	for (i = 1; i <= m; i++)
+		f >> v1[i];
+	for (i = 1; i <= n; i++)
+		f >> v2[i];
+	for (i = 1; i <= m; i++)
+		for (j = 1; j <= n; j++)
+			if (v1[i] == v2[j])
+				dp[i][j] = 1 + dp[i - 1][j - 1];
+			else
+				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+	i = m;
+	j = n;
+	nr = 0;
+	while (i != 0)
+	{
+		if (v1[i] == v2[j])
+		{
+			rez[++nr] = v1[i];
+			--i;
+			--j;
+		}
+		else
+			if (dp[i - 1][j] < dp[i][j - 1])
+				--j;
+			else
+				--i;
+	}
+	g << nr << "\n";
+	for (i = nr; i >= 1; --i)
+		g << rez[i] << " ";
+	return 0;
+}
