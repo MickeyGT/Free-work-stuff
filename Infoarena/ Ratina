@@ -1,0 +1,60 @@
+#include <fstream>
+#include <string.h>
+#include<ctype.h>
+#include<algorithm>
+using namespace std;
+int n, i, j, nr, k, temp[10010], l, q, v[10010], templ, rasp[10010], que, nod, min1, max1, el, cif,minpoz,maxpoz;
+char s[10010][2010];
+bool sortcmp(int i, int j)
+{
+    if (strcmp(s[i], s[j]) < 0)
+        return 1;
+    else
+        return 0;
+}
+int main()
+{
+    ifstream f("ratina.in");
+    ofstream g("ratina.out");
+    f >> n >> q;
+    for (i = 1; i <= n; i++)
+    {
+        f >> s[i];
+        v[i] = i;
+    }
+    sort(v + 1, v + n + 1,sortcmp);
+    for (i = 1; i <= n; i++)
+        temp[v[i]] = i;
+    for (k = 1; k <= q; k++)
+    {
+        f >> que;
+        min1 = 42424242;
+        max1 = -42424242;
+        for (i = 1; i <= que; i++)
+        {
+            f >> nod;
+            if (temp[nod] < min1)
+            {
+                min1 = temp[nod];
+                minpoz = nod;
+            }
+            if (temp[nod] > max1)
+            {
+                max1 = temp[nod];
+                maxpoz = nod;
+            }
+        }
+        if (min1 == max1)
+        {
+            nr = strlen(s[minpoz]);
+        }
+        else
+        {
+            nr = 0;
+            while ((s[minpoz][nr] == s[maxpoz][nr])&& s[minpoz][nr]!=0 &&s[maxpoz][nr]!=0)
+                nr++;
+        }
+        g << nr << '\n';
+    }
+    return 0;
+}
