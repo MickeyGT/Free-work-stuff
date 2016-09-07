@@ -1,2 +1,3 @@
 - Don't read directly  a number you want to store in an unsigned char.
 - Don't forget to use setprecission and fixed whenever you encounter a problem with floats or doubles.
+- Don't assume input constraints are always correct.
