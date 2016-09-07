@@ -1,0 +1,50 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+set<int>st;
+set<int>::iterator iter;
+set<int>::reverse_iterator it;
+long long t, p, i, n, poz, neg;
+int main()
+{
+    ifstream f("produs4.in");
+    ofstream g("produs4.out");
+    f >> t;
+    for(p=1;p<=t;p++)
+    {
+        f >> n;
+        poz = neg = 1;
+        st.clear();
+        for (i = 1; i <= n; i++)
+        {
+            f >> poz;
+            st.insert(poz);
+        }
+        it = st.rbegin();
+        poz = *it;
+        neg = *it;
+        it++;
+        poz *= *it;
+        it++;
+        poz *= *it;
+        iter = st.begin();
+        neg *= *iter;
+        iter++;
+        neg *= *iter;
+        if (poz > neg)
+            g << poz << "\n";
+        else
+            g << neg << "\n";
+    }
+    return 0;
+}
