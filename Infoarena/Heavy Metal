@@ -1,0 +1,53 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+int n, dp[111111], i, a, b, val, el, prvval, j, anteval, ok, max1;
+map<int, bool>mp[111111];
+map<int, bool>::iterator iter;
+set<int>final;
+set<int>::iterator it;
+int main()
+{
+    ifstream f("heavymetal.in");
+    ofstream g("heavymetal.out");
+    f >> n;
+    for (i = 1; i <= n; i++)
+    {
+        f >> a >> b;
+        mp[b][a]==1;
+        final.insert(b);
+    }
+    it = final.begin();
+    val = 1;
+    while (it != final.end())
+    {
+        if (val < *it+1)
+        {
+            while (val != *it+1)
+            {
+                dp[val] = dp[val - 1];
+                val++;
+            }
+        }
+        iter = mp[*it].begin();
+        while (iter != mp[*it].end())
+        {
+            dp[*it] = max(dp[*it], dp[iter->first] + *it - iter->first);
+            iter++;
+        }
+        it++;
+    }
+    it--;
+    g << dp[*it];
+    return 0;
+}
