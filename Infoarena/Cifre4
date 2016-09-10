@@ -1,0 +1,80 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+using namespace std;
+deque<unsigned long long>deq;
+bool rest[5000100];
+long long el;
+int k,t,n,p;
+int main()
+{
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    ifstream f("cifre4.in");
+    ofstream g("cifre4.out");
+    f >> t;
+    for (k = 1; k <= t; k++)
+    {
+        deq.clear();
+        memset(rest, 0, sizeof(rest));
+        f >> n >> p;
+        deq.push_back(0);
+        while (deq.size() != 0)
+        {
+            el = deq.front();
+            deq.pop_front();
+            if (rest[(el * 10 + 2) % p] == 0)
+            {
+                rest[(el * 10 + 2) % p] = 1;
+                deq.push_back(el * 10 + 2);
+                if ((el * 10 + 2) % p == n)
+                {
+                    g << (el * 10 + 2) << '\n';
+                    break;
+                }
+            }
+            if (rest[(el * 10 + 3) % p] == 0)
+            {
+                rest[(el * 10 + 3) % p] = 1;
+                deq.push_back(el * 10 + 3);
+                if ((el * 10 + 3) % p == n)
+                {
+                    g << (el * 10 + 3) << '\n';
+                    break;
+                }
+            }
+            if (rest[(el * 10 + 5) % p] == 0)
+            {
+                rest[(el * 10 + 5) % p] = 1;
+                deq.push_back(el * 10 + 5);
+                if ((el * 10 + 5) % p == n)
+                {
+                    g << (el * 10 + 5) << '\n';
+                    break;
+                }
+            }
+            if (rest[(el * 10 + 7) % p] == 0)
+            {
+                rest[(el * 10 + 7) % p] = 1;
+                deq.push_back(el * 10 + 7);
+                if ((el * 10 + 7) % p == n)
+                {
+                    g << (el * 10 + 7) << '\n';
+                    break;
+                }
+            }
+        }
+        if (deq.size() == 0)
+            g << "-1\n";
+    }
+    return 0;
+}
