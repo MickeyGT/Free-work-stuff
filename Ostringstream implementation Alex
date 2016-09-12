@@ -1,0 +1,139 @@
+#include<iostream>
+#include<string.h>
+#include<vector>
+#include<map>
+#include<queue>
+#include<string>
+#include<sstream>
+using namespace std;
+
+
+struct Comparator
+{
+	bool operator()(int a, int b)
+	{
+		return a > b;
+	}
+};
+
+priority_queue<int,vector<int>,Comparator> PQ;
+
+char s[24];
+
+int number;
+
+vector<pair<char, int>> events;
+
+string str;
+ostringstream ss;
+
+int main()
+{
+	int N,nr;
+
+	cin >> N;
+
+	for (int i = 1;i <= N;++i)
+	{
+		cin >> s;
+
+		if (strcmp(s, "insert") == 0)
+			cin >> nr, events.push_back(make_pair('i', nr));
+		else if (strcmp(s, "removeMin") == 0)
+			events.push_back(make_pair('r', 0));
+		else
+			cin >> nr, events.push_back(make_pair('g', nr));
+
+
+	}
+
+	for (int i = 0;i < events.size();++i)
+	{
+
+		ss.str("");
+		ss.clear();
+		if (events[i].first == 'r')
+		{
+			if (!PQ.size())
+			{
+				number+=2;
+				str += "insert";
+				str += " ";
+				str +="-999999999\n";
+				str +="removeMin\n";
+			}
+			else
+			{
+				++number;
+				str+="removeMin\n";
+				PQ.pop();
+			}
+		}
+		else if (events[i].first == 'i')
+		{
+			++number;
+
+			str += "insert ";
+			ss << events[i].second;
+			str += ss.str();
+			str += "\n";
+
+			PQ.push(events[i].second);
+		}
+		else
+		{
+			int ok = 0;
+			while (PQ.size() && events[i].second > PQ.top())
+			{
+				ok = 1;
+				++number;
+				str+="removeMin\n";
+				PQ.pop();
+			}
+			ss << events[i].second;
+
+			if (PQ.size() && ok && events[i].second != PQ.top())
+			{
+				++number;
+
+				str += "insert ";
+				str += ss.str();
+				str += "\n";
+
+				PQ.push(events[i].second);
+			}
+
+
+			if (PQ.size() && events[i].second < PQ.top())
+			{
+				++number;
+				str += "insert ";
+				str += ss.str();
+			    str+="\n";
+				PQ.push(events[i].second);
+			}
+
+			if (!PQ.size())
+			{
+				++number;
+				str += "insert ";
+				str += ss.str();
+				str += "\n";
+
+				PQ.push(events[i].second);
+			}
+
+			++number;
+			str += "getMin ";
+			str+=ss.str();
+			str += "\n";
+
+		}
+
+	}
+	cout << number << '\n';
+
+	cout << str;
+
+	return 0;
+}
