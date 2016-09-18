@@ -1,0 +1,53 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int maxarb[500500], val, i, j, k, n,q;
+//ifstream f("");
+//ofstream g("");
+ifstream f("file.in");
+ofstream g("file.out");
+void Update(int nod, int st, int dr, int value, int pos)
+{
+	if (st == dr)
+	{
+		maxarb[nod] = val;
+		return;
+	}
+	else
+	{
+		int mid = (st + dr) / 2;
+		if (pos <= mid)
+			Update(2 * nod, st, mid, value, pos);
+		else
+			Update(2 * nod + 1, mid+1, dr, value, pos);
+		maxarb[nod] = max(maxarb[2 * nod], maxarb[2 * nod + 1]);
+	}
+
+}
+void initAIB()
+{
+	for (i = 1; i <= n; i++)
+	{
+		f >> val;
+		Update(1, 1, n,val,i);
+	}
+}
+int main()
+{
+
+	f >> n >> q;
+	initAIB();
+	return 0;
+}
