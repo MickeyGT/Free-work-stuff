@@ -1,0 +1,73 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+using namespace std;
+int i, j, k, n, m,a,b,c,el,prvm,mat[100100][4],nr,mmax;
+bool viz[100100];
+map<int, pair<int,int>>mp;
+unordered_map<int, pair<int, pair<int, int>>>rez;
+unordered_map<int, pair<int, pair<int, int>>>::iterator iter;
+pair<int,pair<int, int>>val;
+map<int, pair<int, int>>::iterator it;
+int main()
+{
+	nr = 1;
+	m = 1;
+	mmax = -1;
+	while (m != 0)
+	{
+		cin >> m >> b >> c;
+		if (m > mmax)
+			mmax = m;
+		if (m != 0)
+		{
+			mp.insert(make_pair(m, make_pair(b, c)));
+			mat[nr][1] = m;
+			mat[nr][2] = b;
+			mat[nr][3] = c;
+			nr++;
+		}
+	}
+	it = mp.begin();
+	prvm = 2;
+	while (it != mp.end())
+	{
+		el = it->first;
+		for (i = prvm; i <= el; i++)
+		{
+			for (j = i; j <= mmax; j += i)
+				viz[j]=!viz[j];
+		}
+		prvm = el;
+		k = 0;
+		for (i = it->second.first; i < it->second.second; i++)
+		{
+			if (viz[i] == 1)
+				k++;
+		}
+		a=it->second.first;
+		b= it->second.second;
+		rez.insert(make_pair(el,make_pair(k,make_pair(a,b))));
+		it++;
+	}
+	for (i = 1; i <= nr-1; i++)
+	{
+		el= mat[i][1];
+		a = mat[i][2];
+		b = mat[i][3];
+		val = rez[el];
+		if (val.second.first == a&&val.second.second == b)
+			cout << val.first << '\n';
+	}
+	return 0;
+}
