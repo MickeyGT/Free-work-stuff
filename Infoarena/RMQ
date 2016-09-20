@@ -1,0 +1,46 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, m, rmq[200010][18], v[100100], i, el, j, k, st, dr,pt;
+int main()
+{
+	ifstream f("rmq.in");
+	ofstream g("rmq.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	f >> n >> m;
+	for (i = 1; i <= n; i++)
+	{
+		f >> v[i];
+		rmq[i][0] = v[i];
+	}
+	k = 1;
+	el = 1 << k;
+	while (el <= n)
+	{
+		for (i = 1; i +(1<<k)-1 <= n; i++)
+			rmq[i][k] = min(rmq[i][k - 1], rmq[i + (1 << (k - 1))][k - 1]);
+		k++;
+		el = 1 << k;
+	}
+	for (i = 1; i <= m; i++)
+	{
+		f >> st >> dr;
+		k = log2(dr - st+1);
+		pt = pow(2, k);
+		g << min(rmq[st][k],rmq[dr-pt+1][k])<<'\n';
+	}
+	return 0;
+}
