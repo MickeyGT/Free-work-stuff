@@ -1,0 +1,101 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int maxarb[150050], val, i, j, k, n, q,maxim,a,b,type;
+ifstream f("datorii.in");
+ofstream g("datorii.out");
+//ifstream f("file.in");
+//ofstream g("file.out");
+void Create(int nod, int st, int dr, int value, int pos)
+{
+    if (st == dr)
+    {
+        maxarb[nod] = value;
+        return;
+    }
+    else
+    {
+        int mid = (st + dr) / 2;
+        if (pos <= mid)
+            Create(2 * nod, st, mid, value, pos);
+        else
+            Create(2 * nod + 1, mid + 1, dr, value, pos);
+        maxarb[nod] = maxarb[2 * nod]+maxarb[2 * nod + 1];
+    }
+ 
+}
+void Update(int nod, int st, int dr, int value, int pos)
+{
+    if (st == dr)
+    {
+        maxarb[nod] = maxarb[nod]-value;
+        return;
+    }
+    else
+    {
+        int mid = (st + dr) / 2;
+        if (pos <= mid)
+            Update(2 * nod, st, mid, value, pos);
+        else
+            Update(2 * nod + 1, mid + 1, dr, value, pos);
+        maxarb[nod] = maxarb[2 * nod] + maxarb[2 * nod + 1];
+    }
+ 
+}
+void initADI()
+{
+    for (i = 1; i <= n; i++)
+    {
+        f >> val;
+        Create(1, 1, n, val, i);
+    }
+}
+void Querry(int nod, int st, int dr,int start, int finnish)
+{
+    if (start <= st && dr <= finnish)
+    {
+        maxim += maxarb[nod];
+        return;
+    }
+    else
+    {
+        int mid = (st + dr) / 2;
+        if (start <= mid)
+            Querry(nod * 2, st, mid, start, finnish);
+        if(mid < finnish)
+            Querry(nod * 2 + 1, mid + 1, dr, start, finnish);
+    }
+}
+int main()
+{
+ 
+    f >> n >> q;
+    initADI();
+    for (j = 1; j <= q; j++)
+    {
+        f >> type >> a>>b;
+        if (type)
+        {
+            maxim = 0;
+            Querry(1, 1, n, a, b);
+            g << maxim << "\n";
+        }
+        else
+        {
+            Update(1, 1, n, b, a);
+        }
+    }
+    return 0;
+}
