@@ -1,0 +1,62 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, m, rmq[10][500][500], i, el, j, k, st, dr,lat,q,pt;
+double res;
+int maxim(int a, int b, int c, int d)
+{
+	int maxi;
+	maxi = max(a, b);
+	maxi = max(maxi, c);
+	maxi = max(maxi, d);
+	return maxi;
+}
+int main()
+{
+	ifstream f("plantatie.in");
+	ofstream g("plantatie.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	f >> n >> q;
+	for (i = 1; i <= n; i++)
+		for(j=1;j<=n;j++)
+		{
+			f >> rmq[0][i][j];
+		}
+	k = 1;
+	el = 1 << k;
+	while (el <= n)
+	{
+		for (i = 1; i <= n - el+1; i++)
+			for (j = 1; j <= n - el+1; j++)
+				rmq[k][i][j] = maxim(rmq[k-1][i][j], rmq[k - 1][i][j + (el/2)], rmq[k-1][i + (el / 2)][j], rmq[k-1][i + (el / 2)][j + (el / 2)]);
+		k++;
+		el = 1 << k;
+	}
+	for (i = 1; i <= q; i++)
+	{
+		f >> st >> dr >> lat;
+		res = log2(lat);
+		if (int(res) == res)
+			g << rmq[int(res)][st][dr]<<'\n';
+		else
+		{
+			el = int(res);
+			pt = pow(2, el);
+			g << maxim(rmq[el][st][dr], rmq[el][st][dr + lat-pt], rmq[el][st +lat- pt][dr], rmq[el][st + lat-pt][dr + lat-pt]) << '\n';
+		}
+	}
+	return 0;
+}
