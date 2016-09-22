@@ -1,0 +1,109 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int arb[270000],st[270000],dr[270000],sum[270000],val, i, j, k, n, q, maxim, a, b, type,lg2,start;
+//ifstream f("arbint.in");
+//ofstream g("arbint.out");
+ifstream f("file.in");
+ofstream g("file.out");
+/*
+void Querry(int nod, int st, int dr, int start, int finnish)
+{
+	if (start <= st && dr <= finnish)
+	{
+		if (maxim < maxarb[nod])
+			maxim = maxarb[nod];
+		return;
+	}
+	else
+	{
+		int mid = (st + dr) / 2;
+		if (start <= mid)
+			Querry(nod * 2, st, mid, start, finnish);
+		if (mid < finnish)
+			Querry(nod * 2 + 1, mid + 1, dr, start, finnish);
+	}
+}
+void Update(int nod, int st, int dr, int value, int pos)
+{
+	if (st == dr)
+	{
+		maxarb[nod] = value;
+		return;
+	}
+	else
+	{
+		int mid = (st + dr) / 2;
+		if (pos <= mid)
+			Update(2 * nod, st, mid, value, pos);
+		else
+			Update(2 * nod + 1, mid + 1, dr, value, pos);
+		maxarb[nod] = max(maxarb[2 * nod], maxarb[2 * nod + 1]);
+	}
+
+}
+*/
+void initADI()
+{
+	lg2 = log2(n);
+	val = 1 << lg2;
+	start -= val;
+	while (start >= 1)
+	{
+		for (i = start; i <= start * 2 - 1; i++)
+		{
+			st[i] = max(st[i << 1], sum[i<<1]+st[i << 1 + 1]);
+			dr[i] = max(dr[i << 1 + 1], sum[i << 1 + 1] + dr[i << 1]);
+			arb[i] = max(max(arb[i << 1], arb[i << 1 + 1]), dr[1 << i] + st[1 << i + 1]);
+		}
+	}
+}
+int main()
+{
+
+	f >> n;
+	lg2 = log2(n);
+	start = 2;
+	while (lg2 >= 1)
+	{
+		start += 1<<lg2;
+		lg2--;
+	}
+	for (j = start; j <= n + start; j++)
+	{
+		f >> arb[j];
+		st[j] = arb[j];
+		dr[j] = arb[j];
+		sum[j] = arb[j];
+	}
+	initADI();
+	/*
+	for (j = 1; j <= q; j++)
+	{
+		f >> type >> a >> b;
+		if (type)
+		{
+			maxim = -1;
+			Querry(1, 1, n, a, b);
+			g << maxim << "\n";
+		}
+		else
+		{
+			Update(1, 1, n, b, a);
+		}
+	}
+	*/
+	return 0;
+}
