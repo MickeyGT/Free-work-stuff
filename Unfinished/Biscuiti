@@ -1,0 +1,147 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, arb[300300], lazy[140140],v[100100],i,sumi,sumf,k,start,poz;
+//ifstream f("arbint.in");
+//ofstream g("arbint.out");
+ifstream f("file.in");
+ofstream g("file.out");
+void update(int nod,int a,int b,int in, int sf, int diff)
+{
+	if (lazy[nod] != 0)
+	{
+		arb[nod] += lazy[nod];
+		if (a != b)
+		{
+			lazy[nod << 1] += lazy[nod];
+			lazy[(nod << 1) + 1] += lazy[nod];
+		}
+		lazy[nod] = 0;
+	}
+	if (a > b || a > sf || b < in)
+		return;
+	if (a >= in && b <= sf)
+	{
+		arb[nod] += diff;
+		if (a != b)
+		{
+			lazy[nod << 1] += diff;
+			lazy[(nod << 1) + 1] += diff;
+		}
+		return;
+	}
+	int mid = (a + b) / 2;
+	update(nod << 1, a, mid, in, sf, diff);
+	update((nod << 1) + 1, mid + 1, b, in, sf, diff);
+	arb[nod] = min(arb[nod << 1], arb[(nod << 1) + 1]);
+}
+
+int findpos(int nod,int val)
+{
+	if (arb[nod << 1] + lazy[(nod << 1)] != arb[nod]+lazy[nod] && arb[(nod << 1) + 1]+lazy[(nod << 1) + 1] != arb[nod]+lazy[nod])
+	{
+		sumf += arb[nod];
+		arb[nod] = 1 << 20;
+		int x = nod;
+		while (x!=1)
+		{
+			arb[x >> 1] = min(arb[x], arb[x + 1]);
+			x = x >> 1;
+		}
+		arb[1] = min(arb[2], arb[3]);
+		if (nod < start)
+			return n;
+		else
+			return nod-start;
+	}
+	if (arb[nod << 1]+lazy[nod<<1]<= arb[1+(nod << 1)] + lazy[1+(nod << 1)])
+		return findpos(nod << 1,val);
+	else
+		return findpos((nod << 1) + 1,val);
+}
+int findmin(int nod, int a, int b, int in, int sf)
+{
+	if (a > b || a > sf || b < in||nod>100000)
+		return 1 << 30;
+	if (lazy[nod] != 0)
+	{
+		arb[nod] += lazy[nod];
+		if (a != b)
+		{
+			lazy[nod << 1] += lazy[nod];
+			lazy[(nod << 1) + 1] += lazy[nod];
+		}
+		lazy[nod] = 0;
+	}
+	int mid = (a + b) / 2;
+	int q1 = findmin(nod << 1, a, mid, in, sf);
+	int q2 = findmin((nod << 1) + 1, mid + 1, b, in, sf);
+	if (arb[q1] > arb[q2])
+		return q2;
+	else
+		return q1;
+}
+void construct(int in, int sf, int curr)
+{
+	if (in > sf)
+		return;
+	if (in == sf)
+	{
+		arb[curr] = v[in];
+		return;
+	}
+	int mid = (in + sf) / 2;
+	construct(in, mid, curr<<1);
+	construct(mid + 1, sf, (curr<<1)+1);
+	arb[curr] = min(arb[curr << 1], arb[(curr << 1) + 1]);
+}
+/*
+int calcsum(int a, int b)
+{
+	for(i=1;i<=start-1;i++)
+		if (lazy[i] != 0)
+		{
+			arb[i] += lazy[i];
+			lazy[i << 1] = lazy[i];
+			lazy[i << 1+1] = lazy[i];
+			lazy[i] = 0;
+		}
+	int suma = 0;
+	for(i=start;i<=start+n;i++)
+		sum
+}
+*/
+int main()
+{
+	f >> n;
+	k = log2(n);
+	for (i = 0; i <= k; i++)
+		start += 1 << i;
+	start++;
+	for (i = 1; i <= n; i++)
+	{
+		f >> v[i];
+		sumi += v[i];
+	}
+	construct(1, n, 1);
+	for (k = 1; k <= n; k++)
+	{
+		poz = findmin(1, 1, n, 1, n);
+		sumf += v[poz];
+		update(1,1,n,1,poz, k);
+	}
+	g << sumf - sumi;
+	return 0;
+}
