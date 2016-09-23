@@ -1,0 +1,68 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int maxarb[100100], val, i, j, k, n, q, maxim, a, b, type,ord[30300],v[30300];
+//ifstream f("arbint.in");
+//ofstream g("arbint.out");
+ifstream f("file.in");
+ofstream g("file.out");
+void Update(int nod, int st, int dr, int value, int pos)
+{
+	if (st == dr)
+	{
+		maxarb[nod] = value;
+		return;
+	}
+	else
+	{
+		int mid = (st + dr) / 2;
+		if (pos <= mid)
+			Update(2 * nod, st, mid, value, pos);
+		else
+			Update(2 * nod + 1, mid + 1, dr, value, pos);
+		maxarb[nod] = maxarb[2 * nod]+maxarb[2 * nod + 1];
+	}
+
+}
+void Querry(int nod, int st, int dr, int value)
+{
+	if (st==dr)
+	{
+		ord[st] = i;
+		maxarb[nod] = 0;
+		return;
+	}
+	else
+	{
+		int mid = (st + dr) / 2;
+		if (val<=v[nod<<1])
+			Querry(nod * 2, st, mid,value);
+		else
+			Querry(nod * 2 + 1, mid + 1, dr,value);
+	}
+}
+void initADI()
+{
+	for (i = 1; i <= n; i++)
+	{
+		f >> v[i];
+		Update(1, 1, n, 1, i);
+	}
+}
+int main()
+{
+
+	return 0;
+}
