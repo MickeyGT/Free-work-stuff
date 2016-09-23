@@ -1,0 +1,76 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int maxarb[100100], val, i, j, k, n, q, maxim, a, b, type, ord[30300], v[30300];
+ifstream f("schi.in");
+ofstream g("schi.out");
+//ifstream f("file.in");
+//ofstream g("file.out");
+void Update(int nod, int st, int dr, int value, int pos)
+{
+    if (st == dr)
+    {
+        maxarb[nod] = value;
+        return;
+    }
+    else
+    {
+        int mid = (st + dr) / 2;
+        if (pos <= mid)
+            Update(2 * nod, st, mid, value, pos);
+        else
+            Update(2 * nod + 1, mid + 1, dr, value, pos);
+        maxarb[nod] = maxarb[nod<<1] + maxarb[(nod<<1) + 1];
+    }
+ 
+}
+void modify(int nod, int st, int dr, int value,int pozcls)
+{
+    if (st == dr)
+    {
+        ord[st] = pozcls;
+        maxarb[nod] = 0;
+        return;
+    }
+    else
+    {
+        int mid = (st + dr) / 2;
+        if (value <= maxarb[nod << 1])
+            modify(nod << 1, st, mid, value,pozcls);
+        else
+            modify((nod<<1)+ 1, mid + 1, dr, value-maxarb[nod<<1],pozcls);
+        maxarb[nod] = maxarb[nod << 1] + maxarb[1 + (nod << 1)];
+    }
+}
+void initADI()
+{
+    for (i = 1; i <= n; i++)
+    {
+        f >> v[i];
+        Update(1, 1, n, 1, i);
+    }
+}
+int main()
+{
+    f >> n;
+    initADI();
+    for (i = n; i >= 1; i--)
+    {
+        modify(1, 1, n, v[i],i);
+    }
+    for (i = 1; i <= n; i++)
+        g << ord[i] << '\n';
+    return 0;
+}
