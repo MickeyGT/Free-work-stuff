@@ -13,102 +13,92 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int arb[270000], st[270000], dr[270000], sum[270000], val, i, j, k, n, q, maxim, a, b, type, lg2, start;
-//ifstream f("arbint.in");
-//ofstream g("arbint.out");
-ifstream f("file.in");
-ofstream g("file.out");
-/*
-void Querry(int nod, int st, int dr, int start, int finnish)
+long long arb[600400], st[600400], dr[600400], sum[600400],v[200010], val, i, j, k, n, q, maxim, a, b, type, lg2, start,m,S;
+ifstream f("maxq.in");
+ofstream g("maxq.out");
+//ifstream f("file.in");
+//ofstream g("file.out");
+void initADI(int nod,int lf, int rt)
 {
-if (start <= st && dr <= finnish)
-{
-if (maxim < maxarb[nod])
-maxim = maxarb[nod];
-return;
+    if (lf == rt) 
+    {
+        st[nod] = dr[nod] = arb[nod] = max(v[lf], 0ll);
+        sum[nod] = v[lf];
+    }
+    else
+    {
+        int mid = (lf + rt)/2;
+        initADI(nod<<1,lf, mid);
+        initADI((nod<<1)+1, mid + 1, rt);
+        st[nod] = max(st[nod << 1], sum[nod << 1] + st[(nod << 1) + 1]);
+        dr[nod] = max(dr[nod << 1] + sum[(nod << 1) + 1], dr[(nod << 1) + 1]);
+        arb[nod] = max(max(arb[nod << 1], arb[(nod << 1) + 1]), dr[nod << 1] + st[(nod << 1) + 1]);
+        sum[nod] = sum[nod << 1] + sum[(nod << 1) + 1];
+    }
 }
-else
+void Update(int nod, int lf, int rt,int pos,int val)
 {
-int mid = (st + dr) / 2;
-if (start <= mid)
-Querry(nod * 2, st, mid, start, finnish);
-if (mid < finnish)
-Querry(nod * 2 + 1, mid + 1, dr, start, finnish);
+    if (lf == rt)
+    {
+        st[nod] = dr[nod] = arb[nod] = max(val, 0);
+        sum[nod] = val;
+    }
+    else
+    {
+        int mid = (lf + rt)/2;
+        if (pos <= mid)
+            Update(nod << 1, lf, mid,pos,val);
+        else
+            Update((nod << 1)+1, mid+1, rt,pos, val);
+         
+        st[nod] = max(st[nod << 1], sum[nod << 1] + st[(nod << 1) + 1]);
+        dr[nod] = max(dr[nod << 1] + sum[(nod << 1) + 1], dr[(nod << 1) + 1]);
+        arb[nod] = max(max(arb[nod << 1], arb[(nod << 1) + 1]), dr[nod << 1] + st[(nod << 1) + 1]);
+        sum[nod] = sum[nod << 1] + sum[(nod << 1) + 1];
+    }
 }
-}
-void Update(int nod, int st, int dr, int value, int pos)
+void Querry(int nod, int lf, int rt,int ql,int qr)
 {
-if (st == dr)
-{
-maxarb[nod] = value;
-return;
-}
-else
-{
-int mid = (st + dr) / 2;
-if (pos <= mid)
-Update(2 * nod, st, mid, value, pos);
-else
-Update(2 * nod + 1, mid + 1, dr, value, pos);
-maxarb[nod] = max(maxarb[2 * nod], maxarb[2 * nod + 1]);
-}
-
-}
-*/
-void initADI()
-{
-	lg2 = log2(n);
-	val = 1 << lg2;
-	start -= val;
-	while (start >= 1)
-	{
-		for (i = start; i <= start * 2 - 1; i++)
-		{
-			st[i] = max(st[i << 1], sum[i << 1] + st[(i << 1) + 1]);
-			dr[i] = max(dr[(i << 1) + 1], sum[(i << 1) + 1] + dr[i << 1]);
-			arb[i] = max(max(arb[i << 1], arb[(i << 1) + 1]), dr[1 << i] + st[(i << 1) + 1]);
-			sum[i] = sum[i << 1] + sum[(i << 1) + 1];
-		}
-		lg2--;
-		start -= 1 << lg2;
-	}
-	g<<0;
+    if (ql <= lf && rt <= qr)
+    {
+        if (S < 0)
+            S = 0;
+        maxim = max(maxim, max(S + st[nod], arb[nod]));
+        S = max(S + sum[nod], dr[nod]);
+    }
+    else
+    {
+        if (ql <= (lf + rt) / 2)
+            Querry(nod << 1, lf, (lf + rt) / 2, ql, qr);
+        if (qr > (lf + rt) / 2)
+            Querry((nod << 1)+1, ((lf + rt) / 2)+1,rt, ql, qr);
+    }
 }
 int main()
 {
-
-	f >> n;
-	lg2 = log2(n);
-	start = 2;
-	while (lg2 >= 1)
-	{
-		start += 1 << lg2;
-		lg2--;
-	}
-	for (j = start; j <= n + start; j++)
-	{
-		f >> arb[j];
-		st[j] = max(arb[j], 0);
-		dr[j] = max(arb[j], 0);
-		sum[j] = arb[j];
-		arb[j] = max(arb[j], 0);
-	}
-	initADI();
-	/*
-	for (j = 1; j <= q; j++)
-	{
-	f >> type >> a >> b;
-	if (type)
-	{
-	maxim = -1;
-	Querry(1, 1, n, a, b);
-	g << maxim << "\n";
-	}
-	else
-	{
-	Update(1, 1, n, b, a);
-	}
-	}
-	*/
-	return 0;
+ 
+    f >> n;
+    for (i=1;i<= n; i++)
+    {
+        f >> v[i];
+    }
+    initADI(1,1,n);
+    f >> q;
+    for (j = 1; j <= q; j++)
+    {
+        f >> type >> a >> b;
+        if (type)
+        {
+            maxim = 0;
+            S = 0;
+            Querry(1, 1, n, a+1, b+1);
+            g << maxim << "\n";
+        }
+        else
+        {
+            Update(1, 1, n, a+1, b);
+        }
+    }
+     
+    return 0;
 }
