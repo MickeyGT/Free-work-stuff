@@ -13,7 +13,7 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int n, arb[300300], lazy[140140], v[100100], i, sumi, sumf, k, start, poz;
+int n, arb[300300], lazy[140140], v[100100],pozm[300300], i, sumi, sumf, k, start, poz;
 //ifstream f("arbint.in");
 //ofstream g("arbint.out");
 ifstream f("file.in");
@@ -45,10 +45,17 @@ void update(int nod, int a, int b, int in, int sf, int diff)
 	int mid = (a + b) / 2;
 	update(nod << 1, a, mid, in, sf, diff);
 	update((nod << 1) + 1, mid + 1, b, in, sf, diff);
-	arb[nod] = min(arb[nod << 1], arb[(nod << 1) + 1]);
+	if (arb[nod << 1] <= arb[(nod << 1) + 1])
+	{
+		arb[nod] = arb[nod << 1];
+		pozm[nod] = pozm[nod << 1];
+	}
+	else
+	{
+		arb[nod] = arb[(nod << 1) + 1];
+		pozm[nod] = pozm[(nod << 1) + 1];
+	}
 }
-
-
 void construct(int in, int sf, int curr)
 {
 	if (in > sf)
@@ -56,32 +63,22 @@ void construct(int in, int sf, int curr)
 	if (in == sf)
 	{
 		arb[curr] = v[in];
+		pozm[curr] = in;
 		return;
 	}
 	int mid = (in + sf) / 2;
 	construct(in, mid, curr << 1);
 	construct(mid + 1, sf, (curr << 1) + 1);
-	arb[curr] = min(arb[curr << 1], arb[(curr << 1) + 1]);
-}
-int getminpoz(int nod, int a, int b)
-{
-	if (lazy[nod] != 0)
+	if (arb[curr << 1] <= arb[(curr << 1) + 1])
 	{
-		arb[nod] += lazy[nod];
-		if (a != b)
-		{
-			lazy[nod << 1] += lazy[nod];
-			lazy[(nod << 1) + 1] += lazy[nod];
-		}
-		lazy[nod] = 0;
+		arb[curr] = arb[curr << 1];
+		pozm[curr] = pozm[curr << 1];
 	}
-	if (a == b)
-		return nod-start;
-	int mid = (a + b) / 2;
-	if (arb[nod << 1] < arb[(nod << 1) + 1])
-		return getminpoz(nod << 1, a, mid);
 	else
-		return getminpoz((nod << 1) + 1, mid + 1, b);
+	{
+		arb[curr] = arb[(curr << 1) + 1];
+		pozm[curr] = pozm[(curr << 1) + 1];
+	}
 }
 int main()
 {
@@ -98,11 +95,9 @@ int main()
 	construct(1, n, 1);
 	for (k = 1; k <= n; k++)
 	{
-		poz = getminpoz(1, 1, n);
-		sumf += v[poz+1];
-		update(1, 1, n, 1, poz, k);
-		arb[poz+start] = 1 << 20;
-		int x = poz+start;
+		update(1, 1, n, 1, pozm[1]-1, k);
+		arb[pozm[1] + start-1] = 1 << 20;
+		int x = pozm[1] + start-1;
 		while (x != 1)
 		{
 			arb[x + 1] = arb[x + 1] + lazy[x >> 1];
