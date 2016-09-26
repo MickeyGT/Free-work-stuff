@@ -1,0 +1,98 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+char s[1010];
+int fr[30],l,i,ok;
+map<int,char>mp;
+map<int, char>::reverse_iterator it, iter,mprend;
+int main()
+{
+	cin >> l;
+	cin >> s;
+	for (i = 0; i <= l - 1; i++)
+		fr[s[i] - 'a' + 1]++;
+	for (i = 1; i <= 26; i++)
+		mp.insert(make_pair(fr[i], i + 'a' - 1));
+	mprend = mp.rend();
+	mprend++;
+	it = mp.rbegin();
+	it++;
+	for (; it != mprend; it++)
+	{
+		for (iter = it, iter++; iter != mp.rend(); iter++)
+		{
+			if (abs(iter->first - it->first) <= 1)
+			{
+				if (iter->first > it->first)
+				{
+					ok = 1;
+					for(i=0;i<=l-1;i++)
+						if (s[i] == iter->second || s[i] == it->second)
+						{
+							if (ok)
+							{
+								if (s[i] == iter->second)
+									ok = -1;
+								else
+									break;
+							}
+							else
+							{
+								if (s[i] == it->second)
+									ok = 1;
+								else
+									break;
+							}
+						}
+					if (i == l)
+					{
+						cout << iter->first + it->first << '\n';
+						return 0;
+					}
+							
+				}
+				else
+				{
+					ok = -1;
+					for (i = 0; i <= l - 1; i++)
+						if (s[i] == iter->second || s[i] == it->second)
+						{
+							if (ok)
+							{
+								if (s[i] == iter->second)
+									ok = -1;
+								else
+									break;
+							}
+							else
+							{
+								if (s[i] == it->second)
+									ok = 1;
+								else
+									break;
+							}
+						}
+					if (i == l)
+					{
+						cout << iter->first + it->first << '\n';
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	cout << 0;
+	return 0;
+}
