@@ -1,0 +1,92 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+ifstream f("baruri.in");
+ofstream g("baruri.out");
+//ifstream f("file.in");
+//ofstream g("file.out");
+int n, m, aib[100100], el, i, k, type, a, b, t, j,v[100100];
+// We will add val to pos and all the nodes whose intervals incldue pos.
+// Note that pos needs to be unsigned because otherwise we will get the negative complement.
+void update(int val, unsigned int pos)
+{
+    while (pos <= n)
+    {
+        //We get 2's complement to pos,bitwise AND it with pos, and add that to pos and we get the next position.
+        aib[pos] += val;
+        pos += (~pos + 1)&(pos);
+    }
+}
+int search(unsigned int pos)
+{
+    int res = 0;
+    while (pos != 0)
+    {
+        res += aib[pos];
+        pos -= (~pos + 1)&pos;
+    }
+    return res;
+}
+int main()
+{
+    //InParser f("file.in");
+    //InParser f("baruri.in");
+    f >> t;
+    for (j = 1; j <= t; j++)
+    {
+        f >> n;
+        for (i = 1; i <= n; i++)
+        {
+            f >> el;
+            v[i] = el;
+            update(el, i);
+        }
+        f >> m;
+        for (k = 1; k <= m; k++)
+        {
+            f >> type;
+            if (type == 0)
+            {
+                f >> a >> b;
+                g << search(min(b + a,n)) - search(max(a - 1 - b,0)) - v[a] << '\n';
+            }
+            if (type == 1 || type == 2)
+            {
+                f >> a >> b;
+                if (type == 1)
+                {
+                    update(a, b);
+                    v[b] += a;
+                }
+                else
+                {
+                    update(-1 * a, b);
+                    v[b] -= a;
+                }
+ 
+            }
+            if (type == 3)
+            {
+                f >> el >> a >> b;
+                update(el, b);
+                v[b] += el;
+                update(-1 * el, a);
+                v[a] -= el;
+            }
+        }
+        memset(aib, 0, sizeof(aib));
+    }
+    return 0;
+}
