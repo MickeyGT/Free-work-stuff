@@ -50,8 +50,10 @@ int cb(int in, int sf, double x, double y)
 }
 int main()
 {
-	ifstream f("file.in");
-	ofstream g("file.out");
+	ifstream f("triang.in");
+	ofstream g("triang.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
 	f >> n;
 	for (i = 1; i <= n; i++)
 	{
