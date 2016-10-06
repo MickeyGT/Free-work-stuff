@@ -1,3 +1,5 @@
 - Don't read directly  a number you want to store in an unsigned char.
 - Don't forget to use setprecission and fixed whenever you encounter a problem with floats or doubles.
 - Don't assume input constraints are always correct.
+- WA on CF can also mean the program is stuck somewhere in a loop.
+- If you use DFS,BFS,LEE, don't forget to mark the current node as visited before adding it to the queue and calling the function again.
