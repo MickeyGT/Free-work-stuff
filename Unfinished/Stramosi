@@ -1,0 +1,53 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, m, n,rmq[250250][19],lg,k,pw,q,p,power[20];
+inline int find(int nr, int str)
+{
+	int logar = log2(str);
+	int putere = power[logar];
+	if (putere == str)
+		return rmq[nr][logar];
+	else
+		return find(rmq[nr][logar], str - putere);
+}
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");	
+	ifstream f("stramosi.in");
+	ofstream g("stramosi.out");
+	f >> n>> m;
+	for (i = 1; i <= n; i++)
+		f >> rmq[i][0];
+	power[0] = 1;
+	power[1] = 2;
+	for (i = 2; i <= 19; i++)
+		power[i] = power[i - 1] * 2;
+	lg = log2(n);
+	for (k = 1; k <= lg; k++)
+	{
+		for (i = 1; i <= n; i++)
+		{
+			rmq[i][k] = rmq[rmq[i][k - 1]][k - 1];
+		}
+	}
+	for (k = 1; k <= m; k++)
+	{
+		f >> q >> p;
+		g << find(q, p) << '\n';
+	}
+	return 0;
+}
