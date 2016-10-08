@@ -13,15 +13,18 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int i, j, m, n,rmq[250250][19],lg,k,pw,q,p,power[20];
-inline int find(int nr, int str)
+int i, j, m, n, rmq[19][250250], lg, k, pw, q, p, power[20]; 
+int find(int nr, int str)
 {
-	int logar = log2(str);
+	int logar=1;
+	while (power[logar] <= str)
+		logar++;
+	logar--;
 	int putere = power[logar];
 	if (putere == str)
-		return rmq[nr][logar];
+		return rmq[logar][nr];
 	else
-		return find(rmq[nr][logar], str - putere);
+		return find(rmq[logar][nr], str - putere);
 }
 int main()
 {
@@ -29,9 +32,9 @@ int main()
 	//ofstream g("file.out");	
 	ifstream f("stramosi.in");
 	ofstream g("stramosi.out");
-	f >> n>> m;
+	f >> n >> m;
 	for (i = 1; i <= n; i++)
-		f >> rmq[i][0];
+		f >> rmq[0][i];
 	power[0] = 1;
 	power[1] = 2;
 	for (i = 2; i <= 19; i++)
@@ -41,7 +44,7 @@ int main()
 	{
 		for (i = 1; i <= n; i++)
 		{
-			rmq[i][k] = rmq[rmq[i][k - 1]][k - 1];
+			rmq[k][i] = rmq[k - 1][rmq[k - 1][i]];
 		}
 	}
 	for (k = 1; k <= m; k++)
