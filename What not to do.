@@ -5,3 +5,4 @@
 - If you use DFS,BFS,LEE, don't forget to mark the current node as visited before adding it to the queue and calling the function again.
 - Don't use labs or fabs unless you really have to.
 - Don't use set if you only need the items sorted. Use vector and sort it instead. Much much quicker for some reason.
+- Don't use ll for long long in scanf and printf, use lli.
