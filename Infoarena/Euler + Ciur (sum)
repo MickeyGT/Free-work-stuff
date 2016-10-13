@@ -1,0 +1,57 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+long long euler[100100],x, sum;
+bitset<100100>ciur;
+int n,i,j;
+void formciur()
+{
+	for (i = 2; i*i <= 100001; i++)
+	{
+		if (ciur[i] == true)
+			continue;
+		else
+			for (j = i*i; j <= 100001; j += i)
+				ciur[j] = true;
+	}
+}
+int main()
+{
+	FILE *f;
+	FILE *g;
+	f = fopen("sum.in", "r");
+	g = fopen("sum.out", "w+");
+	ciur[1] = true;
+	formciur();
+	for (i = 1; i <= 100001; i++)
+		euler[i] = i;
+	for (i = 2; i <= 100001; i++)
+	{
+		if (ciur[i] == true)
+			continue;
+		else
+			for (j = i; j <= 100001; j += i)
+				euler[j] -= euler[j] / i;
+	}
+	fscanf(f,"%d", &n);
+	while (n)
+	{
+		fscanf(f,"%d", &x);
+		sum=euler[x] * x * 2LL;
+		fprintf(g,"%lli\n", sum);
+		n--;
+	}
+	return 0;
+}
