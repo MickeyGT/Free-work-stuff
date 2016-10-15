@@ -1,0 +1,64 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+#include<set>
+#include<math.h>
+#include<bitset>
+using namespace std;
+struct nod
+{
+	int who;
+	vector<int>vecini;
+}user[1010];
+int n, m,i,x,y,j;
+map<int, int>commfr;
+map<int, int>::iterator it;
+deque<int>deq;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("fof.in");
+	ofstream g("fof.out");
+	f >> n >> m;
+	for (i = 1; i <= m; i++)
+	{
+		f >> x >> y;
+		user[x].vecini.push_back(y);
+		user[y].vecini.push_back(x);
+	}
+	for (j = 1; j <= n; j++)
+	{
+		commfr.clear();
+		for (i = 1; i <= user[j].vecini.size(); i++)
+		{
+			deq.push_back(user[j].vecini[i-1]);
+		}
+		while (deq.size())
+		{
+			int el = *deq.begin();
+			deq.pop_front();
+			for (i = 1; i <= user[el].vecini.size(); i++)
+			{
+				commfr[user[el].vecini[i-1]]++;
+			}
+		}
+		it = commfr.begin();
+		while (it != commfr.end())
+		{
+			if(it->first!=j)
+				g << it->first<<' ';
+			if (it != commfr.end())
+				it++;
+		}
+		g << '\n';
+	}
+	return 0;
+}
