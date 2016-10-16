@@ -1,0 +1,83 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+short M, N;
+char A[3030], B[3030];
+short pi[3030];
+void make_prefix(void)
+{
+	int i, q = 0;
+	for (i = 2, pi[1] = 0; i <= M; ++i)
+	{
+		while (q && A[q + 1] != A[i])
+			q = pi[q];
+		if (A[q + 1] == A[i])
+			++q;
+		pi[i] = q;
+	}
+}
+bitset<3010>mp[3010];
+short i, q = 0, n = 0,best[3030],t,nr;
+int main(void)
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("carte.in");
+	ofstream g("carte.out");
+	f >> t;
+	for (short k = 1; k <= t; k++)
+	{
+		memset(pi, 0, sizeof(pi));
+		memset(best, 0, sizeof(best));
+		f >> (B + 1);
+		N = strlen(B + 1);
+		f >> nr;
+		for (short j = 1; j <= nr; j++)
+		{
+			f >> (A + 1);
+			M = strlen(A + 1);
+			memset(pi, 0, sizeof(pi));
+			q = 0, n = 0;
+			make_prefix();
+			for (i = 1; i <= N; ++i)
+			{
+				while (q && A[q + 1] != B[i])
+					q = pi[q];
+				if (A[q + 1] == B[i])
+					++q;
+				if (q == M)
+				{
+					q = pi[M];
+					++n;
+					mp[i][M] = 1;
+				}
+			}
+		}
+		for (i = 1; i <= N; i++)
+		{
+			mp[i - 1].reset();
+			best[i] = best[i - 1];
+			for (int j = 1; j <= N; j++)
+				if (mp[i][j])
+				{
+					if (best[i] < best[i - j] + j)
+						best[i] = best[i - j] + j;
+				}
+		}
+		mp[N].reset();
+		g << N - best[N]<<'\n';
+	}
+	return 0;
+}
