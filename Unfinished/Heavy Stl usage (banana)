@@ -1,0 +1,125 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int nr, k, x, y,i,nrreg,result;
+struct pairhash
+{
+public:
+	template <typename T, typename U>
+	std::size_t operator()(const std::pair<T, U> &x) const
+	{
+		return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
+	}
+};
+unordered_map<int, int>number;
+unordered_map<int, int>::iterator sor;
+set<int>res;
+set<int>::reverse_iterator rev;
+unordered_map<pair<int, int>, int,pairhash>startc;
+unordered_map<pair<int, int>, int, pairhash>::iterator iter,itr,itor;
+vector<pair<int, int>>v;
+vector<pair<int, int>>::iterator it;
+int main()
+{
+	ifstream f("file.in");
+	ofstream g("file.out");
+	//ifstream f("banana.in");
+	//ofstream g("banana.out");
+	f >> nr>> k;
+	for (i = 1; i <= nr; i++)
+	{
+		f >> x >> y;
+		v.push_back(make_pair(x, y));
+		startc.insert(make_pair(make_pair(x, y), -1));
+	}
+	sort(v.begin(),v.end());
+	it = v.begin();
+	nrreg = 0;
+	while (it != v.end())
+	{
+		itor = startc.find(make_pair(it->first, it->second));
+		if (itor->second == -1)
+		{
+			iter = startc.find(make_pair(it->first, it->second - 1));
+			if (iter != startc.end()&& iter->second != -1)
+			{
+				number[iter->second]++;
+				startc.insert(make_pair(make_pair(it->first, it->second), iter->second));
+			}
+			else
+			{
+				nrreg++;
+				number.insert(make_pair(nrreg, 1));
+				startc.insert(make_pair(make_pair(it->first, it->second), nrreg));
+			}
+			iter = startc.find(make_pair(it->first - 1, it->second));
+			if (iter != startc.end())
+			{
+				itr = startc.find(make_pair(it->first, it->second));
+				if (itr->second != iter->second)
+				{
+					number[iter->second] += number[itr->second];
+					number.erase(itr->second);
+					itr->second = iter->second;
+					x = it->first;
+					y = it->second;
+					--y;
+					iter = startc.find(make_pair(x, y));
+					while (iter != startc.end())
+					{
+						iter->second = itr->second;
+						y--;
+						iter = startc.find(make_pair(x, y));
+					}
+				}
+			}
+			iter = startc.find(make_pair(it->first + 1, it->second));
+			if (iter != startc.end())
+			{
+				itr = startc.find(make_pair(it->first, it->second));
+				number[itr->second]++;
+				startc.insert(make_pair(make_pair(it->first + 1, it->second), itr->second));
+				x = itr->first.first;
+				y = itr->first.second;
+				--y;
+				iter = startc.find(make_pair(x, y));
+				while (iter != startc.end())
+				{
+					iter->second = itr->second;
+					number[itr->second]++;
+					y--;
+					iter = startc.find(make_pair(x, y));
+				}
+			}
+		}
+		it++;
+	}
+	sor = number.begin();
+	while (sor != number.end())
+	{
+		if (sor->second != 0)
+			res.insert(sor->second);
+		sor++;
+	}
+	rev = res.rbegin();
+	while (k)
+	{
+		result += *rev;
+		rev++;
+		k--;
+	}
+	g << result;
+	return 0;
+}
