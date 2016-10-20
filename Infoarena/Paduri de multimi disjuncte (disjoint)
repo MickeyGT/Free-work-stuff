@@ -1,0 +1,79 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, m,k,point[100100],rang[100100],type,x,y;
+int find(int x, int y)
+{
+	int compx = x,aux,compy=y;
+	while (point[x] != x)
+		x = point[x];
+	while (point[y] != y)
+		y = point[y];
+	while (point[compx] != compx)
+	{
+		aux = point[compx];
+		point[compx] = x;
+		compx = aux;
+	}
+	while (point[compy] != compy)
+	{
+		aux = point[compy];
+		point[compy] = y;
+		compy = aux;
+	}
+	return x == y;
+}
+void tie(int x,int y)
+{
+	while (point[x] != x)
+		x = point[x];
+	while (point[y] != y)
+		y = point[y];
+	if (rang[x] > rang[y])
+		point[y] = x;
+	else
+		point[x] = y;
+	if (rang[x] == rang[y])
+		rang[y]++;
+}
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("disjoint.in");
+	ofstream g("disjoint.out");
+	f >> n >> m;
+	for (k = 1; k <= n; k++)
+	{
+		point[k] = k;
+		rang[k] = 1;
+	}
+	for (k = 1; k <= m; k++)
+	{
+		f >> type >> x >> y;
+		if (type==2)
+		{
+			if (find(x, y) == 1)
+				g << "DA\n";
+			else
+				g << "NU\n";
+		}
+		else
+		{
+			tie(x, y);
+		}
+	}
+ 	return 0;
+}
