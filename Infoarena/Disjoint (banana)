@@ -13,76 +13,102 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int n, k, point[16160], rang[16160], type, x, y,i,res;
+//nr represents number of points. k represents number of connections we will need to make.
+//point acts as a pointer, the value of point[i] is the element i points to(his father in the disjoint)
+//rang[i] represents the number of elements in the i'th multitude
+int nr, k, point[16160], rang[16160], type, x, y, i, res,group;
+// the find function returns the parent of an element in the disjoint and 
+//moves all the elements in its way closer to the disjoint main parent.
 int find(int x)
 {
-    int compx = x, aux;
-    while (point[x] != x)
-        x = point[x];
-    while (point[compx] != compx)
-    {
-        aux = point[compx];
-        point[compx] = x;
-        compx = aux;
-    }
-    return x;
+	int compx = x, aux;
+	//getting the main disjoint parent.
+	while (point[x] != x)
+		x = point[x];
+	//moving all the elements from x to main parent by directing it straight to the main parent.
+	while (point[compx] != compx)
+	{
+		aux = point[compx];
+		point[compx] = x;
+		compx = aux;
+	}
+	return x;
 }
+// this function ties together the multitudes of 2 points.
 void tie(int x, int y)
 {
-    while (point[x] != x)
-        x = point[x];
-    while (point[y] != y)
-        y = point[y];
-    if (rang[x] >= rang[y])
-    {
-        rang[x] += rang[y];
-        point[y] = x;
-    }
-    else
-    {
-        rang[y] += rang[x];
-        point[x] = y;
-    }
+	//here we get the main parent for first multitude.
+	while (point[x] != x)
+		x = point[x];
+	//here we get the main parent for the second multitude.
+	while (point[y] != y)
+		y = point[y];
+	//The bigger multitude becomes the parent for the other multitude.
+	if (rang[x] >= rang[y])
+	{
+		rang[x] += rang[y];
+		point[y] = x;
+	}
+	else
+	{
+		rang[y] += rang[x];
+		point[x] = y;
+	}
 }
+// startc will hold as a key the coordinates for a point and its value will hold the number of the multitude the point is in.
 map<pair<int, int>, int>startc;
-map<pair<int, int>, int>::iterator it, iter,itr;
+map<pair<int, int>, int>::iterator it, iter, itr,END;
 int fr[16160];
 int main()
 {
-    //ifstream f("file.in");
-    //ofstream g("file.out");
-    ifstream f("banana.in");
-    ofstream g("banana.out");
-    f >> n >> k;
-    for (i = 1; i <= n; i++)
-    {
-        f >> x >> y;
-        startc.insert(make_pair(make_pair(x, y), i));
-        point[i] = i;
-        rang[i] = 1;
-    }
-    iter = startc.begin();
-    while (iter != startc.end())
-    {
-        itr= startc.find(make_pair(iter->first.first-1, iter->first.second));
-        if (iter != startc.end() && itr != startc.end() && find(iter->second) != find(itr->second))
-            tie(iter->second, itr->second);
-        itr = startc.find(make_pair(iter->first.first, iter->first.second-1));
-        if (iter != startc.end() && itr != startc.end() && find(iter->second) != find(itr->second))
-            tie(iter->second, itr->second);
-        itr = startc.find(make_pair(iter->first.first +1, iter->first.second));
-        if (iter != startc.end() && itr != startc.end() && find(iter->second) != find(itr->second))
-            tie(iter->second, itr->second);
-        itr = startc.find(make_pair(iter->first.first , iter->first.second+1));
-        if (iter != startc.end() && itr != startc.end() && find(iter->second) != find(itr->second))
-            tie(iter->second, itr->second);
-        iter++;
-    }
-    for (i = 1; i <= n; i++)
-        fr[find(i)]++;
-    sort(fr + 1, fr + n + 1);
-    for (i = n; i >= n - k+1; i--)
-        res += fr[i];
-    g << res;
-    return 0;
+	ifstream f("banana.in");
+	ofstream g("banana.out");
+	f >> nr >> k;
+	for (i = 1; i <= nr; i++)
+	{
+		f >> x >> y;
+		// here we add the point to the matrix and give it an multitude and initialize the number of elements of the multitude.
+		startc.insert(make_pair(make_pair(x, y), i));
+		point[i] = i;
+		rang[i] = 1;
+	}
+	iter = startc.begin();
+	END = startc.end();
+	// for each point
+	while (iter != startc.end())
+	{
+		// For each point, we will check the 4 sides(N,S,E,W) for nearing multitudes so we can tie them together.
+		x = iter->first.first;
+		y = iter->first.second;
+		// group is the multitude our current point is in.
+		// if any of the other 4 points belong to a different multitude, we tie them together.
+		group = find(iter->second);
+		// N
+		itr = startc.find(make_pair(x - 1, y));
+		if (itr != END && group != find(itr->second))
+			tie(iter->second, itr->second);
+		// W
+		itr = startc.find(make_pair(x, y - 1));
+		if ( itr != END && group != find(itr->second))
+			tie(iter->second, itr->second);
+		// S
+		itr = startc.find(make_pair(x + 1, y));
+		if (itr != END && group != find(itr->second))
+			tie(iter->second, itr->second);
+		// E
+		itr = startc.find(make_pair(x, y + 1));
+		if (itr != END && group != find(itr->second))
+			tie(iter->second, itr->second);
+		iter++;
+	}
+	// Calculate how many points in each multitude.
+	for (i = 1; i <= nr; i++)
+		fr[find(i)]++;
+	// We sort the fr vector.
+	sort(fr + 1, fr + nr + 1);
+	// We add to the final answer the number of points in the top k multitudes.
+	for (i = nr; i >= nr - k + 1; i--)
+		res += fr[i];
+	g << res;
+	return 0;
 }
