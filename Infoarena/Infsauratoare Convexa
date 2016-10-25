@@ -1,0 +1,69 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, i, head;
+typedef pair<double, double> punct;
+punct vec[150150];
+punct stiva[150150];
+double cross(punct p1, punct p2, punct p3)
+{
+    return (p2.first - p1.first)*(p3.second - p1.second) - (p2.second - p1.second)*(p3.first - p1.first);
+}
+bool comp(punct p1, punct p2)
+{
+    return cross(vec[1], p1, p2) < 0;
+}
+void sort_points()
+{
+    int pos = 1;
+    for (i = 1; i <= n; i++)
+        if (vec[i] < vec[pos])
+            pos = i;
+    swap(vec[1], vec[pos]);
+    sort(vec + 2, vec + n + 1, comp);
+}
+void infasuratoare()
+{
+    stiva[1] = vec[1];
+    stiva[2] = vec[2];
+    head = 2;
+    for (i = 3; i <= n; i++)
+    {
+        while (head >= 2 && cross(stiva[head - 1], stiva[head], vec[i]) > 0)
+            head--;
+        head++;
+        stiva[head] = vec[i];
+    }
+}
+int main()
+{
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    ifstream f("infasuratoare.in");
+    ofstream g("infasuratoare.out");
+    f >> n;
+    for (i = 1; i <= n; i++)
+    {
+        f >> vec[i].first >> vec[i].second;
+    }
+    sort_points();
+    infasuratoare();
+    g << fixed;
+    g << head << '\n';
+    for (i = head; i >= 1; i--)
+        g << setprecision(12) << stiva[i].first << " " << stiva[i].second << '\n';
+    return 0;
+}
