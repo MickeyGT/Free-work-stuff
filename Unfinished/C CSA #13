@@ -1,0 +1,78 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+multiset<int>st1;
+multiset<int,greater<int>>st2;
+multiset<int>::iterator it,iter;
+unordered_map<int, int>l1,l2;
+unordered_map<int, int>::iterator itr1,itr2;
+map<int, int>coresp;
+map<int, int>::iterator par;
+int t, n,k,i,j,el,nr1,nr2;
+int main()
+{
+	cin >> t;
+	for (k = 1; k <= t; k++)
+	{
+		cin >> n;
+		for (i = 1; i <= n; i++)
+		{
+			cin >> el;
+			l1.insert(make_pair(el, i));
+			st1.insert(el);
+		}
+		for (i = 1; i <= n; i++)
+		{
+			cin >> el;
+			l2.insert(make_pair(el, i));
+			st2.insert(el);
+		}
+		iter = st2.begin();
+		it = st1.begin();
+		while (iter != st2.end() && it != st1.end())
+		{
+			itr1 = l1.find(*it);
+			itr2 = l2.find(*iter);
+			if (*it > *iter)
+				nr1++;
+			else
+				if(*iter>*it)
+				nr2++;
+			coresp.insert(make_pair(itr1->second, itr2->second));
+			iter++;
+			it++;
+		}
+		if (nr1 == nr2)
+		{
+			par = coresp.begin();
+			while (par != coresp.end())
+			{
+				cout << par->second<<' ';
+				par++;
+			}
+			cout << '\n';
+		}
+		else
+			cout <<"-1\n";
+		l1.clear();
+		l2.clear();
+		coresp.clear();
+		st1.clear();
+		st2.clear();
+		nr1 = nr2 = 0;
+	}
+	return 0;
+}
