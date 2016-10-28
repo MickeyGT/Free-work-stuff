@@ -7,3 +7,4 @@
 - Don't use set if you only need the items sorted. Use vector and sort it instead. Much much quicker for some reason.
 - Don't use ll for long long in scanf and printf, use lli.
 - Don't forget to use the <functional> header for pre-made STL comparators.
+- Don't forget there are 26 letters in the english alphabet, not 25.
