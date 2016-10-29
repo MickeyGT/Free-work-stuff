@@ -1,0 +1,45 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+vector<pair<int, int>>v;
+vector<pair<int, int>>::iterator it;
+int i, n, x, y,top,bottom,nr;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("granita.in");
+	ofstream g("granita.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+	{
+		f >> x >> y;
+		v.push_back(make_pair(x, y));
+	}
+	sort(v.begin(),v.end());
+	for (it = v.begin(); it != v.end(); it++)
+	{
+		if (it->first >= bottom&&it->second <= top)
+			nr++;
+		else
+		{
+			top = max(top, it->second);
+			bottom = min(bottom, it->first);
+		}
+	}
+	g << nr;
+	return 0;
+}
