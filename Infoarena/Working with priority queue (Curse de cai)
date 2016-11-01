@@ -1,0 +1,84 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, i, el, rez, t, k,tot;
+vector<int>alex;
+vector<int>ben;
+vector<int>::iterator it, iter, itr;
+int main()
+{
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    ifstream f("cai.in");
+    ofstream g("cai.out");
+    f >> t;
+    for (k = 1; k <= t; k++)
+    {
+        alex.clear();
+        ben.clear();
+        rez = 0;
+        f >> n;
+        for (i = 1; i <= n; i++)
+        {
+            f >> el;
+            alex.push_back(el);
+        }
+        for (i = 1; i <= n; i++)
+        {
+            f >> el;
+            ben.push_back(el);
+        }
+        sort(alex.begin(),alex.end());
+        sort(ben.begin(), ben.end());
+        it = alex.begin();
+        tot = -1 * 1 << 30;
+        while (it != alex.end())
+        {
+            itr = it;
+            rez = 0;
+            iter = ben.begin();
+            while (iter != ben.end()&&itr!=alex.end())
+            {
+                if (*itr > *iter)
+                    rez += 200;
+                else
+                    if (*itr == *iter)
+                        rez += 0;
+                    else
+                        rez -= 200;
+                iter++;
+                itr++;
+            }
+            itr = alex.begin();
+            while (iter != ben.end() && itr != alex.end())
+            {
+                if (*itr > *iter)
+                    rez += 200;
+                else
+                    if (*itr == *iter)
+                        rez += 0;
+                    else
+                        rez -= 200;
+                iter++;
+                itr++;
+            }
+            it++;
+            tot = max(tot, rez);
+        }
+        g << tot << '\n';
+    }
+    return 0;
+}
