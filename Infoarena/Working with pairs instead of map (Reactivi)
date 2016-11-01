@@ -1,0 +1,55 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int frmax[200], frmin[200],i,n,x,y,nr;
+pair<int, int>mp[8080],it;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("reactivi.in");
+	ofstream g("reactivi.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+	{
+		f >> x >> y;
+		mp[i]=(make_pair(x, y));
+	}
+	sort(mp + 1, mp + n + 1);
+	it = mp[1];
+	nr = 1;
+	i = 1;
+	frmin[1] = it.first;
+	frmax[1] = it.second;
+	while (i <= n)
+	{
+		it = mp[i];
+		if (it.first > frmax[nr])
+		{
+			nr++;
+			frmin[nr] = it.first;
+			frmax[nr] = it.second;
+		}
+		else
+		{
+			frmin[nr] = max(frmin[nr], it.first);
+			frmax[nr] = min(frmax[nr], it.second);
+		}
+		i++;
+	}
+	g << nr;
+	return 0;
+}
