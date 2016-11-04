@@ -15,16 +15,15 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int t, n,v[2020],k,i,j,diff;
-map<int, int>mp[2002];
-map<int, int>::iterator it,iter;
-map<int, int>freq;
+int t, n, v[2020], k, i, j, diff,nr;
+unordered_set<int>st;
+unordered_set<int>::iterator it;
 int main()
 {
-	ifstream f("file.in");
-	ofstream g("file.out");
-	//ifstream f("progr.in");
-	//ofstream g("progr.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("progr.in");
+	ofstream g("progr.out");
 	f >> t;
 	for (k = 1; k <= t; k++)
 	{
@@ -32,36 +31,20 @@ int main()
 		for (i = 1; i <= n; i++)
 		{
 			f >> v[i];
+			st.insert(v[i]);
 		}
 		sort(v + 1, v + n + 1);
-		for(i=1;i<=n;i++)
-			for (j = i - 1; j >= 1; j--)
+		for (i = 1; i <= n-1; i++)
+			for(j=i;j<=n;j++)
 			{
-				diff = v[i] - v[j];
-				it = mp[j].find(diff);
-				if (it != mp[j].end())
-					mp[i].insert(make_pair(diff, it->second + 1));
-				else
-					mp[i].insert(make_pair(diff, 1));
+				diff = v[j] - v[i];
+				it = st.find(v[i] - diff);
+				if (!(it != st.end()))
+					nr++;
 			}
-		for (i = 1; i <= n; i++)
-		{
-			it = mp[i].begin();
-			while (it != mp[i].end())
-			{
-				iter = freq.find(it->first);
-				if (iter == freq.end())
-					freq.insert(make_pair(it->first, it->second));
-				else
-					if (iter->second < it->second)
-						iter->second = it->second;
-				it++;
-			}
-			mp[i].clear();
-		}
-		g << freq.size()<<'\n';
-		freq.clear();
-		memset(v, 0, sizeof(v));
+		g << nr<<'\n';
+		nr = 0;
+		st.clear();
 	}
 	return 0;
 }
