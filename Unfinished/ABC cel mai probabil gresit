@@ -14,58 +14,76 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int n, b, c,v[30300],rez[30300],sum,i,diff,sumr;
+int n, b, c, v[30300], rez[30300], sum, i, diff, sumr,min1,l,r,mid;
+int computeplus(int diff)
+{
+	sumr = 0;
+	for (i = 1; i <= n; i++)
+	{
+		rez[i] = min(b, diff + v[i]);
+		sumr += rez[i];
+	}
+	if (sumr > c)
+		return 1;
+	else
+		return 0;
+}
+int computeneg(int diff)
+{
+	sumr = 0;
+	for (i = 1; i <= n; i++)
+	{
+		rez[i] = max(1, v[i]-diff);
+		sumr += rez[i];
+	}
+	if (sumr > c)
+		return 0;
+	else
+		return 1;
+}
 int main()
 {
 	ifstream f("file.in");
 	ofstream g("file.out");
-	//ifstream f("reactivi.in");
-	//ofstream g("reactivi.out");
+	//ifstream f("abc.in");
+	//ofstream g("abc.out");
 	f >> n >> b >> c;
+	min1 = 1 << 30;
 	for (i = 1; i <= n; i++)
 	{
 		f >> v[i];
 		sum += v[i];
+		min1 = min(min1, v[i]);
 	}
 	if (sum <= c)
 	{
-		diff = ceil(double(c - sum) / n);
-		for (i = 1; i <= n; i++)
+		l = min1;
+		r = b;
+		while (l <= r)
 		{
-			rez[i] = v[i] + diff;
-			sumr += rez[i];
-		}
-		i = n;
-		while (sumr != c)
-		{
-			sumr--;
-			rez[i]--;
-			i--;
-		}
-		for (i = 1; i <= n; i++)
-		{
-			g << rez[i] << " ";
+			mid = (l + r) / 2;
+			if (computeplus(mid))
+				r = mid - 1;
+			else
+				l = mid + 1;
 		}
 	}
 	else
 	{
-		diff = ceil(double(c - sum) / n);
-		for (i = 1; i <= n; i++)
+		l = min1;
+		r = b;
+		while (l <= r)
 		{
-			rez[i] = v[i] + diff;
-			sumr += rez[i];
+			mid = (l + r) / 2;
+			if (computeneg(mid))
+				r = mid - 1;
+			else
+				l = mid + 1;
 		}
-		i = n;
-		while (sumr != c)
-		{
-			sumr--;
-			rez[i]--;
-			i--;
-		}
-		for (i = 1; i <= n; i++)
-		{
-			g << rez[i] << " ";
-		}
+	}
+	for (i = 1; i <= n; i++)
+	{
+		g << rez[i] << " ";
 	}
 	return 0;
 }
