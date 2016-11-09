@@ -1,0 +1,47 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<deque>
+#include<math.h>
+#include<set>
+#include<functional>
+#include<iomanip>
+using namespace std;
+map<int, int,greater<int>>mp;
+map<int, int, greater<int>>::iterator it, iter, itr;
+int i, j, k, nr, n,c,x,y;
+double maxx, maxy, panta, coordx;
+int main()
+{
+	cin >> c;
+	for (k = 1; k <= c; k++)
+	{
+		cin >> n;
+		for (i = 1; i <= n; i++)
+		{
+			cin >> x >> y;
+			mp.insert(make_pair(x, y));
+		}
+		it = mp.begin();
+		maxy = it->second;
+		if (it != mp.end())
+		{
+			iter = it;
+			iter++;
+		}
+		while (iter != mp.end())
+		{
+			if (iter->second > maxy)
+			{
+				panta = (iter->second - it->second) / (iter->first - it->first);
+				coordx = ((-1*(iter->second - it->second)) / panta) + iter->first;
+			}
+			it = iter;
+			iter++;
+		}
+	}
+	return 0;
+}
