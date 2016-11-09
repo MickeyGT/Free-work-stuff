@@ -10,15 +10,17 @@
 #include<functional>
 #include<iomanip>
 using namespace std;
-map<int, int,greater<int>>mp;
-map<int, int, greater<int>>::iterator it, iter, itr;
-int i, j, k, nr, n,c,x,y;
-double maxx, maxy, panta, coordx;
+map<double, double, greater<double>>mp;
+map<double, double, greater<double>>::iterator it, iter, itr;
+int i, j, k, nr, n, c, x, y;
+double maxx, maxy, panta, coordx,rez;
 int main()
 {
 	cin >> c;
 	for (k = 1; k <= c; k++)
 	{
+		mp.clear();
+		rez = maxy=0;
 		cin >> n;
 		for (i = 1; i <= n; i++)
 		{
@@ -37,11 +39,14 @@ int main()
 			if (iter->second > maxy)
 			{
 				panta = (iter->second - it->second) / (iter->first - it->first);
-				coordx = ((-1*(iter->second - it->second)) / panta) + iter->first;
+				coordx = ((-1 * (iter->second - maxy)) / panta) + iter->first;
+				rez += sqrt((coordx - iter->first)*(coordx - iter->first) + (maxy - iter->second)*(maxy - iter->second));
+				maxy = iter->second;
 			}
 			it = iter;
 			iter++;
 		}
+		cout << fixed<<setprecision(2)<<rez<<'\n';
 	}
 	return 0;
 }
