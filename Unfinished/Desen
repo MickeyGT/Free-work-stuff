@@ -1,0 +1,62 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n,i,j,k,nr,ok,ind;
+double len, dist,x,y,min1;
+struct punct
+{
+	double x;
+	double y;
+	int legat;
+	double dist;
+}v[1010];
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("desen.in");
+	ofstream g("desen.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+	{
+		if (i == 1)
+		{
+			f >> x >> y;
+			v[i].x = x;
+			v[i].y = y;
+			v[i].legat = i;
+			v[i].dist = 0;
+			g << "0.000000\n";
+		}
+		else
+		{
+			min1 = 1 << 30;
+			ind = 0;
+			for (j = 1; j < i; j++)
+			{
+				dist = sqrt((v[i].x-v[j].x)*(v[i].x - v[j].x)+ (v[i].y - v[j].y)*(v[i].y - v[j].y));
+				if (dist < min1)
+				{
+					min1 = dist;
+					ind = j;
+				}
+			}
+
+		}
+	}
+
+	return 0;
+}
