@@ -1,0 +1,76 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, m, q, i, j, k, ok, nr, x, y, c, mcost[176][176], rez,px1,px2,py1,py2;
+deque<pair<int,int>>que;
+pair<int, int>el;
+bool mat[176][176], viz[176][176];
+//ifstream f("file.in");
+//ofstream g("file.out");
+ifstream f("alee.in");
+ofstream g("alee.out");
+void bfs()
+{
+	que.push_back(make_pair(px1,py1));
+	mcost[px1][py1] = 1;
+	while (que.size() != 0)
+	{
+		el = *que.begin();
+		x = el.first;
+		y = el.second;
+		que.pop_front();
+		if (x+1>=1&&x+1<=n&&y>=1&&y<=n&& viz[x+1][y] == 0&&mat[x+1][y]==0)
+		{
+			que.push_back(make_pair(x+1,y));
+			viz[x + 1][y] = 1;
+			mcost[x+1][y] = mcost[x][y]+ 1;
+		}
+		if (x >= 1 && x <= n&&y-1 >= 1 && y-1 <= n&& viz[x][y-1] == 0 && mat[x][y-1] == 0)
+		{
+			que.push_back(make_pair(x, y-1));
+			viz[x][y-1] = 1;
+			mcost[x][y-1] = mcost[x][y] + 1;
+		}
+		if (x - 1 >= 1 && x - 1 <= n&&y >= 1 && y <= n&& viz[x-1][y] == 0 && mat[x - 1][y] == 0)
+		{
+			que.push_back(make_pair(x - 1, y));
+			mcost[x-1][y] = mcost[x][y] + 1;
+			viz[x - 1][y] = 1;
+		}
+		if (x >= 1 && x <= n&&y+1 >= 1 && y+1 <= n&& viz[x][y+1] == 0 && mat[x][y+1] == 0)
+		{ 
+			que.push_back(make_pair(x, y+1));
+			mcost[x][y+1] = mcost[x][y] + 1;
+			viz[x][y+1] = 1;
+		}
+		viz[x][y] = 1;
+	}
+	g << mcost[px2][py2];
+}
+int main()
+{
+
+	f >> n >> m;
+	for (i = 1; i <= m; i++)
+	{
+		f >> x >> y;
+		mat[x][y] = 1;
+	}
+	f >> px1 >> py1;
+	f >> px2 >> py2;
+	bfs();
+	return 0;
+}
