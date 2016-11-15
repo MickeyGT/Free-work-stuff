@@ -1,0 +1,50 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<queue>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, t, k, i, m, x, y, viz[50500];
+vector<int>v[50500];
+vector<int>rez;
+vector<int>::reverse_iterator iter;
+void DFS(int x)
+{
+	viz[x] = 1;
+	for (auto it = v[x].begin(); it != v[x].end(); it++)
+		if (viz[*it] == 0)
+		{
+			DFS(*it);
+		}
+	rez.push_back(x);
+}
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("sortaret.in");
+	ofstream g("sortaret.out");
+	f >> n >> m;
+	for (i = 1; i <= m; i++)
+	{
+		f >> x >> y;
+		v[x].push_back(y);
+	}
+	for (i = 1; i <= n; i++)
+		if (viz[i] == 0)
+			DFS(i);
+	for (iter = rez.rbegin(); iter != rez.rend(); iter++)
+		g << *iter << ' ';
+	return 0;
+}
