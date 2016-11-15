@@ -1,0 +1,33 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<queue>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int k2,k3,k5,k6,a;
+long long rez;
+int main()
+{
+    cin >> k2>>k3>>k5>>k6;
+    a = min(k2, k5);
+    a = min(a, k6);
+    rez = a * 256;
+    k2 -= a;
+    k5 -= a;
+    k6 -= a;
+    a = min(k2, k3);
+    rez += a * 32;
+    cout << rez;
+    return 0;
+}
