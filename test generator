@@ -1,0 +1,38 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<queue>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iostream>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+ofstream g("file.out");
+int n,viz[1001],i,x,y,cost;
+int main()
+{
+	cin >> n;
+	srand(NULL);
+	g << n<<'\n';
+	for (i = 1; i <= n; i++)
+	{
+		x=rand()%n;
+		cost = rand() % 1000;
+		g << i << " " << x <<' '<<cost<<'\n';
+	}
+	g << n << '\n';
+	for (i = 1; i <= n; i++)
+	{
+		x = rand() % n;
+		g << i << " " << x << '\n';
+	}
+	return 0;
+}
