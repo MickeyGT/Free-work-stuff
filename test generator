@@ -24,7 +24,7 @@ int main()
 	g << n<<'\n';
 	for (i = 1; i <= n; i++)
 	{
-		x=rand()%n;
+		x=rand()%i;
 		cost = rand() % 1000;
 		g << i << " " << x <<' '<<cost<<'\n';
 	}
