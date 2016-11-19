@@ -1,0 +1,89 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<queue>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iostream>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int euler[200200],nr,n,m,x,y,i,curlv,rmq[21][200200],power,j,putere,poz[100100],p2[22];
+vector<int>v[100100];
+//ifstream f("file.in");
+//ofstream g("file.out");
+ifstream f("lca.in");
+ofstream g("lca.out");
+void precalceuler(int nod)
+{
+    if (poz[nod] == 0)
+        poz[nod] = nr;
+    euler[nr++] = nod;
+    if (v[nod].size() != 0)
+    {
+        for (auto it = v[nod].begin(); it != v[nod].end(); it++)
+        {
+            precalceuler(*it);
+            euler[nr++] = nod;
+        }
+    }
+}
+void precalcrmq()
+{
+    for (i = 1; i <= nr; i++)
+        rmq[0][i] = euler[i];
+    power = log2(nr);
+    for (j = 1; j <= power; j++)
+    {
+        putere = p2[j];
+        for (i = 1; i <= nr - putere; i++)
+        {
+            rmq[j][i] = min(rmq[j - 1][i], rmq[j - 1][i+(1<<(j-1))]);
+        }
+    }
+}
+void lca(int x, int y)
+{
+    int dist,poz1,poz2;
+    poz1 = poz[x];
+    poz2 = poz[y];
+    if (poz1 > poz2)
+        swap(poz1, poz2);
+    dist = poz2 - poz1;
+    if (dist == 0)
+        power = 0;
+    else
+        power = log2(dist);
+    g << min(rmq[power][poz1], rmq[power][poz2-p2[power]+1])<<'\n';
+}
+int main()
+{
+ 
+    f >> n >> m;
+    p2[0] = 1;
+    for (i = 1; i <= 22; i++)
+        p2[i] = p2[i - 1] * 2;
+    for (i = 2; i <= n; i++)
+    {
+        f >> x;
+        v[x].push_back(i);
+    }
+    curlv = 0;
+    nr = 1;
+    precalceuler(1);
+    nr--;
+    precalcrmq();
+    for (i = 1; i <= m; i++)
+    {
+        f >> x >> y;
+        lca(x, y);
+    }
+    return 0;
+}
