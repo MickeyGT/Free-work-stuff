@@ -15,60 +15,60 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int euler[100200],nr,n,m,x,y,i,level[50100],curlv,rmq[21][100200],power,j,putere,poz[50100],p2[22],cost[50500],curcost,viz[50100];
-vector<pair<int,int>>v[50100];
+int euler[200200],nr,n,m,x,y,i,level[200200],curlv,rmq[22][200200],power,j,putere,poz[200200],p2[23],cost[200200],curcost,viz[200200];
+vector<pair<int,int>>v[200200];
 //ifstream f("file.in");
 //ofstream g("file.out");
-void precalceuler(int nod)
+void dfs(int nod, int lev)
 {
-	if (poz[nod] == 0)
-		poz[nod] = nr;
-	euler[nr++] = nod;
-	viz[nod] = 1;
 	cost[nod] = curcost;
-	level[nod] = curlv;
+	euler[++nr] = nod; //nodul actual este adaugat in reprezentarea Euler a arborelui
+	level[nr] = lev; //se retine nivelul fiecarei pozitii din reprezentarea Euler a arborelui
+	poz[nod] = nr;
+	viz[nod] = 1;//se retine si prima aparitie a fiecarui nod in reprezentarea Euler a arborelui
 	if (v[nod].size() != 0)
 	{
-		curlv++;
 		for (auto it = v[nod].begin(); it != v[nod].end(); it++)
 			if (viz[it->first] == 0)
 			{
 				curcost += it->second;
-				precalceuler(it->first);
+				dfs(it->first, lev + 1);
 				curcost -= it->second;
-				euler[nr++] = nod;
+				euler[++nr] = nod;
+				level[nr] = lev;
 			}
-		curlv--;
 	}
-	
 }
 void precalcrmq()
 {
 	for (i = 1; i <= nr; i++)
-		rmq[0][i] = euler[i];
+		rmq[0][i] = i;
 	power = log2(nr);
 	for (j = 1; j <= power; j++)
 	{
-		putere = p2[j];
+		putere = p2[j-1];
 		for (i = 1; i <= nr - putere; i++)
 		{
-			rmq[j][i] = min(rmq[j - 1][i], rmq[j - 1][i+(1<<(j-1))]);
+			rmq[j][i] = rmq[j - 1][i]; 
+			if(level[rmq[j-1][i+putere]]<level[rmq[j][i]])
+				rmq[j][i]= rmq[j - 1][i + putere];
 		}
 	}
 }
 void lca(int x, int y)
 {
-	int dist,poz1,poz2,ancestor;
+	int dist,poz1,poz2,ancestor,sh;
 	poz1 = poz[x];
 	poz2 = poz[y];
 	if (poz1 > poz2)
 		swap(poz1, poz2);
-	dist = poz2 - poz1;
-	if (dist == 0)
-		power = 0;
-	else
-		power = log2(dist);
-	ancestor = min(rmq[power][poz1], rmq[power][poz2-p2[power]+1]);
+	dist = poz2 - poz1 + 1;
+	power = log2(dist);
+	ancestor = rmq[power][poz1]; 
+	sh = dist - (p2[power]);
+	if(level[rmq[power][poz1]]>level[rmq[power][poz1+sh]])
+		ancestor= rmq[power][poz1 + sh];
+	ancestor = euler[ancestor];
 	cout << cost[x] + cost[y] - 2 * cost[ancestor]<<'\n';
 	//g << cost[x] + cost[y] - 2 * cost[ancestor] << '\n';
 }
@@ -88,9 +88,9 @@ int main()
 		v[y].push_back(make_pair(x,curcost));
 	}
 	curlv = 0;
-	nr = 1;
+	nr = 0;
 	curcost = 0;
-	precalceuler(0);
+	dfs(0,0);
 	nr--;
 	precalcrmq();
 	cin >> m;
