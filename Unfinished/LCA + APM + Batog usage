@@ -1,0 +1,186 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<queue>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iostream>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int nr,c, n, m, x, y, i, level[15200], curlv, power, j, putere, curcost, viz[15200],number,rad;
+char chr;
+vector<pair<int, int>>v[15200];
+pair<int, int>batog[15200];
+pair<int, int>up[15200];
+
+//ofstream g("file.out");
+ofstream g("radiatie.out");
+int k, point[15200], rang[15200];
+struct edge
+{
+	int x;
+	int y;
+	int c;
+}ed;
+vector<edge>vec;
+vector<edge>::iterator iter;
+int rez;
+bool comp(edge a, edge b)
+{
+	return a.c < b.c;
+}
+void find(int x, int y)
+{
+	int compx = x, aux, compy = y;
+	while (point[x] != x)
+		x = point[x];
+	while (point[y] != y)
+		y = point[y];
+	if (x != y)
+	{
+		if (rang[x] > rang[y])
+			point[y] = x;
+		else
+			point[x] = y;
+		if (rang[x] == rang[y])
+			rang[y]++;
+		nr++;
+		v[iter->x].push_back(make_pair(iter->y, iter->c));
+		v[iter->y].push_back(make_pair(iter->x, iter->c));
+	}
+}
+void dfs(int nod, int lev,int prev,int cost)
+{
+	level[nod] = lev; 
+	viz[nod] = 1;
+	if (lev%rad == 0)
+	{
+		prev = nod;
+		cost = 0;
+	}
+	if (v[nod].size() != 0)
+	{
+		for (auto it = v[nod].begin(); it != v[nod].end(); it++)
+			if (viz[it->first] == 0)
+			{
+				batog[it->first].first = prev;
+				cost = max(cost, it->second);
+				batog[it->first].second = cost;
+				up[it->first].first = nod;
+				up[it->first].second = it->second;
+				dfs(it->first, lev + 1,prev,cost);
+			}
+	}
+}
+void lca(int x, int y)
+{
+	int max1,lx,ly;
+	lx = level[x];
+	ly = level[y];
+	max1 = 0;
+	while (batog[x].first != batog[y].first)
+	{
+		if (level[x] > level[y])
+		{
+			max1 = max(batog[x].second, max1);
+			x = batog[x].first;
+		}
+		else
+		{
+			max1 = max(batog[y].second, max1);
+			y = batog[y].first;
+		}
+	}
+	while (level[x] != level[y])
+	{
+		if (level[x] > level[y])
+		{
+			max1 = max(up[x].second, max1);
+			x = up[x].first;
+		}
+		else
+		{
+			max1 = max(up[y].second, max1);
+			y = up[y].first;
+		}
+	}
+	while (x != y)
+	{
+		max1 = max(up[x].second, max1);
+		x = up[x].first;
+		max1 = max(up[y].second, max1);
+		y = up[y].first;
+	}
+	g << max1 << '\n';
+}
+inline int get_nr()
+{
+	number = 0;
+	chr = getc(stdin);
+	while (!isdigit(chr))
+	{
+		chr = getc(stdin);
+	}
+	while (isdigit(chr))
+	{
+		number = number * 10 + chr - '0';
+		chr = getc(stdin);
+	}
+	return number;
+}
+int main()
+{
+	freopen("radiatie.in", "r", stdin);
+	//freopen("file.in", "r", stdin);
+	//f >> n >> m >> k;
+	n = get_nr();
+	m = get_nr();
+	k = get_nr();
+	rad = sqrt(n);
+	for (i = 1; i <= m; i++)
+	{
+		//f >> x >> y >> c;
+		x = get_nr();
+		y = get_nr();
+		c = get_nr();
+		ed.x = x;
+		ed.y = y;
+		ed.c = c;
+		vec.push_back(ed);
+	}
+	sort(vec.begin(), vec.end(), comp);
+	
+	for (i = 1; i <= n; i++)
+	{
+		point[i] = i;
+		rang[i] = 1;
+	}
+	nr = 0;
+	iter = vec.begin();
+	while (nr != n - 1)
+	{
+		find(iter->x, iter->y);
+		if (iter != vec.end())
+			iter++;
+	}
+	dfs(1,0,0,0);
+	for (j = 1; j <= k; j++)
+	{
+		//f >> x >> y;
+		x = get_nr();
+		y = get_nr();
+		if (x == y)
+			g << "0\n";
+		else
+			lca(x, y);
+	}
+	return 0;
+}
