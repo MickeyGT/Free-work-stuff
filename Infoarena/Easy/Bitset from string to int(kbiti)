@@ -1,0 +1,18 @@
+#include<fstream>
+#include<bitset>
+using namespace std;
+long long t, k;
+string s;
+int main()
+{
+    ifstream f("kbiti.in");
+    ofstream g("kbiti.out");
+    f >> t;
+    for (k = 1; k <= t; k++)
+    {
+        f >> s;
+        bitset<33>b(s);
+        g << b.to_ulong() + 1LL<<'\n';
+    }
+    return 0;
+}
