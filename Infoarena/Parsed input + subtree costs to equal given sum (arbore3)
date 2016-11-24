@@ -1,0 +1,106 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<queue>
+#include<math.h>
+#include<functional>
+#include<unordered_set>
+#include<set>
+#include<iostream>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, s, i, j, k, nr, ok,tata,cost[1100100],number,rez;
+char chr;
+unordered_map<int, int>mp;
+unordered_map<int, int>::iterator iter;
+vector<int>v[1100100];
+class InParser 
+{
+private:
+	FILE *fin;
+	char *buff;
+	int sp;
+
+	char read_ch() 
+	{
+		++sp;
+		if (sp == 4096) 
+		{
+			sp = 0;
+			fread(buff, 1, 4096, fin);
+		}
+		return buff[sp];
+	}
+
+public:
+	InParser(const char* nume) 
+	{
+		fin = fopen(nume, "r");
+		buff = new char[4096]();
+		sp = 4095;
+	}
+
+	InParser& operator >> (int &n) 
+	{
+		char c;
+		while (!isdigit(c = read_ch()) && c != '-');
+		int sgn = 1;
+		if (c == '-') 
+		{
+			n = 0;
+			sgn = -1;
+		}
+		else {
+			n = c - '0';
+		}
+		while (isdigit(c = read_ch())) 
+		{
+			n = 10 * n + c - '0';
+		}
+		n *= sgn;
+		return *this;
+	}
+};
+void dfs(int nod,int sum)
+{
+	iter = mp.find(sum-s);
+	if (iter != mp.end())
+	{
+		rez += iter->second;
+	}
+	mp[sum]++;
+	if (v[nod].size() != 0)
+	{
+		for (auto it = v[nod].begin(); it != v[nod].end(); it++)
+		{
+			dfs(*it,sum+cost[*it]);
+		}
+	}
+	mp[sum]--;
+}
+
+int main()
+{
+	
+	InParser fin("arbore3.in");
+	//InParser fin("file.in");
+	ofstream g("arbore3.out");
+	//ofstream g("file.out");
+	fin >> n;
+	fin >> s;
+	for (i = 1; i <= n; i++)
+	{
+		fin >> tata>>cost[i];
+		v[tata].push_back(i);
+	}
+	mp[0] = 1;
+	dfs(1,cost[1]);
+	g << rez;
+	return 0;
+}
