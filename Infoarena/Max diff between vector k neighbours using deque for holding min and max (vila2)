@@ -1,0 +1,43 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, k, i, j, nr, ok,el,diffmax,v[100100];
+deque<int>qmin,qmax;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("vila2.in");
+	ofstream g("vila2.out");
+	f >> n >> k;
+	for (i = 1; i <= n; i++)
+	{
+		f >> v[i];
+		while (qmin.size()!=0 && qmin.back() > v[i])
+			qmin.pop_back();
+		qmin.push_back(v[i]);
+		while (qmax.size() != 0 && qmax.back() < v[i])
+			qmax.pop_back();
+		qmax.push_back(v[i]);
+		if (qmin.front() == v[i - k - 1])
+			qmin.pop_front();
+		if (qmax.front() == v[i - k - 1])
+			qmax.pop_front();
+		diffmax = max(diffmax, qmax.front() - qmin.front());
+	}
+	g << diffmax;
+	return 0;
+}
