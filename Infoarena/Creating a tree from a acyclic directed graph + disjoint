@@ -1,0 +1,93 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, n, m, k, j, point[100100],level[100100],tata,fiu,x,y,root,el,culv;
+vector<int>v[100100];
+deque<int>que;
+int find(int x, int y)
+{
+	while (point[x] != x)
+		x = point[x];
+	while (point[y] != y)
+		y = point[y];
+	return x == y;
+}
+int main()
+{
+	ifstream f("disconnect.in");
+	ofstream g("disconnect.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	f >> n >> m;
+	f >> root >> y;
+	v[root].push_back(y);
+	for (i = 1; i <= n-2; i++)
+	{
+		f >> x >> y;
+		v[x].push_back(y);
+		v[y].push_back(x);
+	}
+	point[root] = root;
+	que.push_back(root);
+	culv = 1;
+	while (que.size() != 0)
+	{
+		int dim = que.size();
+		for (i = 1; i <= dim; i++)
+		{
+			el = *que.begin();
+			que.pop_front();
+			for (auto it = v[el].begin(); it != v[el].end(); it++)
+				if(level[*it]==0&&*it!=root)
+			{
+				point[*it] = el;
+				level[*it] = culv;
+				que.push_back(*it);
+			}
+		}
+		culv++;
+	}
+	int V = 0;
+	for (k = 1; k <= m; ++k) 
+	{
+		int type, x, y; 
+		f >> type >> x >> y;
+
+		int a = x ^ V;
+		int b = y ^ V;
+
+		if (type == 1) 
+		{
+			if (level[a] < level[b])
+				point[b] = b;
+			else
+				point[a] = a;
+		}
+		else
+			if (find(a, b)) 
+			{
+				g << "YES\n";
+				V = a;
+			}
+			else 
+			{
+				g << "NO\n";
+				V = b;
+			}
+	}
+	
+	return 0;
+}
