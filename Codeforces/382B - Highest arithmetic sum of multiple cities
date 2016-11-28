@@ -1,0 +1,103 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<functional>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+double k, nr, ok, len, poz, n1, n2, el, sum;
+double s1, s2;
+int  i, j, n;
+multiset<double, greater<double>>v;
+multiset<double, greater<double>>::iterator it;
+int main()
+{
+	cin >> n >> n1 >> n2;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> el;
+		v.insert(el);
+	}
+	i = 0;
+	if (n1 > n2)
+	{
+		for (it = v.begin(); i != n2&& it != v.end(); it++, i++)
+			s2 += *it;
+		i = 0;
+		for (; i != n1&& it != v.end(); it++, i++)
+			s1 += *it;
+	}
+	else
+	{
+		for (it = v.begin(); i != n1&& it != v.end(); it++, i++)
+			s1 += *it;
+		i = 0;
+		for (; i != n2&& it != v.end(); it++, i++)
+			s2 += *it;
+	}
+	s1 = s1 / n1;
+	s2 = s2 / n2;
+	cout << setprecision(8) << fixed << s1 + s2;
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<functional>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+double k, nr, ok, len, poz, n1, n2, el, sum;
+double s1, s2;
+int  i, j,n,v[100100];
+
+int main()
+{
+	cin >> n >> n1 >> n2;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> v[i];
+	}
+	sort(v + 1, v + n + 1);
+	if (n1 > n2)
+	{
+		for (i=n; i >= n-n2+1&&i>=1; i--)
+			s2 += v[i];
+		for (;i >= n - n2-n1 + 1 && i >= 1; i--)
+			s1 += v[i];
+	}
+	else
+	{
+		for (i = n; i >= n - n1 + 1 && i >= 1; i--)
+			s1 += v[i];
+		for (; i >= n - n2 - n1 + 1 && i >= 1; i--)
+			s2 += v[i];
+	}
+	s1 = s1 / n1;
+	s2 = s2 / n2;
+	cout << setprecision(8)<<fixed<<s1 + s2;
+	return 0;
+}
