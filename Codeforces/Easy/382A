@@ -1,0 +1,75 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, nr, n, m, ok,len,poz;
+char s[500];
+int main()
+{
+	cin >> n>>k;
+	cin >> s;
+	len = strlen(s);
+	for (i = 0; i <= len - 1; i++)
+		if (s[i] == 'G')
+		{
+			if (ok)
+			{
+				while (i >= poz)
+				{
+					i -= k;
+					if (s[i] == 'T')
+					{
+						cout << "YES\n";
+						return 0;
+					}
+					else
+						if (s[i] == '#')
+						{
+							cout << "NO\n";
+							return 0;
+						}
+				}
+				cout << "NO\n";
+				return 0;
+			}
+			else
+			{
+				while (i <= n)
+				{
+					i += k;
+					if (s[i] == 'T')
+					{
+						cout << "YES\n";
+						return 0;
+					}
+					else
+						if (s[i] == '#')
+						{
+							cout << "NO\n";
+							return 0;
+						}
+				}
+				cout << "NO\n";
+				return 0;
+			}
+		}
+		else
+			if (s[i] == 'T')
+			{
+				ok = 1;
+				poz = i;
+			}
+	return 0;
+}
