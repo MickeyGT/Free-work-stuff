@@ -15,7 +15,7 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int i, j, k, l, ok, nr, n, m,nr;
+int i, j, k, l, ok, nr, n, m;
 char mat[300][300];
 int main()
 {
@@ -26,7 +26,7 @@ int main()
 	for (i = 1; i <= n; i++)
 		for (j = 1; j <= m; j++)
 		{
-			if (mat[i][j] == 'T'&&mat[i + 1][j] == 'T'&&mat[i - 1][j] == 'T'&&mat[i - 1][j - 1] == 'T'&&mat[i - 1][j + 1] == 'T')
+			if (mat[i][j] == 't'&&mat[i + 1][j] == 't'&&mat[i - 1][j] == 't'&&mat[i - 1][j - 1] == 't'&&mat[i - 1][j + 1] == 't')
 				nr++;
 		}
 	cout << nr;
