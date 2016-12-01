@@ -1,0 +1,84 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<functional>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+vector<pair<char, int>>v;
+vector<pair<char, int>>::iterator it, iter;
+char s[100100];
+int i, j, k, nr, ok, len, n, nrp;
+int main()
+{
+	cin >> n >> k;
+	cin >> s;
+	len = strlen(s);
+	while (i <= strlen(s) - 1)
+	{
+		char c = s[i];
+		i++;
+		nr = 1;
+		while (c == s[i])
+		{
+			i++;
+			nr++;
+		}
+		v.push_back({ c,nr });
+	}
+	ok = 1;
+	while (ok)
+	{
+		ok = 0;
+		it = v.begin();
+		while (it != v.end())
+		{
+			if (it->second == 0)
+			{
+				iter = it;
+				if (iter != v.end())
+					iter++;
+				v.erase(it);
+				it = v.begin();
+			}
+			iter = it;
+			if (iter != v.end())
+				iter++;
+			while (iter != v.end() && it->first == iter->first)
+			{
+				it->second += iter->second;
+				v.erase(iter);
+				iter = it;
+				if (iter != v.end())
+					iter++;
+			}
+			if (it!=v.end()&&it->second >= k)
+			{
+				it->second = it->second%k;
+				ok = 1;
+			}
+			if(it!=v.end())
+				it++;
+		}
+	}
+	it = v.begin();
+	while (it != v.end())
+	{
+		char c = it->first;
+		int nr = it->second;
+		for (i = 1; i <= nr; i++)
+			cout << c;
+		it++;
+	}
+	return 0;
+}
