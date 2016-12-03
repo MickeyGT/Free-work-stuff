@@ -1,0 +1,176 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+short distmax[1030][1030], n, i, j, k, nr, dist, min1, pozi, pozj, mat[1030][1030], xmax, ymax, max1;
+struct point
+{
+	short x;
+	short y;
+	short val;
+}el;
+vector<pair<short, short>>v;
+vector<point>vec;
+class InParser
+{
+private:
+	FILE *fin;
+	char *buff;
+	int sp;
+
+	char read_ch()
+	{
+		++sp;
+		if (sp == 16384)
+		{
+			sp = 0;
+			fread(buff, 1, 16384, fin);
+		}
+		return buff[sp];
+	}
+
+public:
+	InParser(const char* nume)
+	{
+		fin = fopen(nume, "r");
+		buff = new char[16384]();
+		sp = 16383;
+	}
+
+	InParser& operator >> (short &n)
+	{
+		char c;
+		while (!isdigit(c = read_ch()) && c != '-');
+		short sgn = 1;
+		if (c == '-')
+		{
+			n = 0;
+			sgn = -1;
+		}
+		else {
+			n = c - '0';
+		}
+		while (isdigit(c = read_ch()))
+		{
+			n = 10 * n + c - '0';
+		}
+		n *= sgn;
+		return *this;
+	}
+};
+
+void lee(point p)
+{
+	short x, y;
+	x = p.x;
+	y = p.y;
+	if (mat[x][y]<mat[x + 1][y] && x + 1 <= n&&distmax[x + 1][y] < distmax[x][y] + 1)
+	{
+		distmax[x + 1][y] = distmax[x][y] + 1;
+		if (distmax[x + 1][y] > max1)
+		{
+			max1 = distmax[x + 1][y];
+			xmax = x + 1;
+			ymax = y;
+		}
+	}
+	if (mat[x][y]<mat[x][y - 1] && y - 1 >= 1 && distmax[x][y - 1] < distmax[x][y] + 1)
+	{
+		distmax[x][y - 1] = distmax[x][y] + 1;
+		if (distmax[x][y - 1] > max1)
+		{
+			max1 = distmax[x][y - 1];
+			xmax = x;
+			ymax = y - 1;
+		}
+	}
+	if (mat[x][y]<mat[x - 1][y] && x - 1 >= 1 &&  distmax[x - 1][y] < distmax[x][y] + 1)
+	{
+		distmax[x - 1][y] = distmax[x][y] + 1;
+		if (distmax[x - 1][y] > max1)
+		{
+			max1 = distmax[x - 1][y];
+			xmax = x - 1;
+			ymax = y;
+		}
+	}
+	if (mat[x][y]<mat[x][y + 1] && y + 1 <= n&&  distmax[x][y + 1] < distmax[x][y] + 1)
+	{
+		distmax[x][y + 1] = distmax[x][y] + 1;
+		if (distmax[x][y + 1] > max1)
+		{
+			max1 = distmax[x][y + 1];
+			xmax = x;
+			ymax = y + 1;
+		}
+	}
+}
+
+bool comp(point a, point b)
+{
+	return a.val < b.val;
+}
+int main()
+{
+	InParser fin("alpin.in");
+	//InParser fin("file.in");
+	//ofstream g("file.out");
+	ofstream g("alpin.out");
+	fin >> n;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= n; j++)
+		{
+			fin >> el.val;
+			mat[i][j] = el.val;
+			el.x = i;
+			el.y = j;
+			vec.push_back(el);
+		}
+	sort(vec.begin(), vec.end(), comp);
+	for (auto it = vec.begin(); it != vec.end(); it++)
+		lee(*it);
+	g << max1 + 1 << '\n';
+	i = xmax;
+	j = ymax;
+	while (max1 != 0)
+	{
+		max1--;
+		v.push_back({ i,j });
+		if (distmax[i - 1][j] == max1&&i - 1 >= 1)
+		{
+			i--;
+		}
+		else
+			if (distmax[i + 1][j] == max1&&i + 1 <= n)
+			{
+				i++;
+			}
+			else
+				if (distmax[i][j - 1] == max1&&j - 1 >= 1)
+				{
+					j--;
+				}
+				else
+					if (distmax[i][j + 1] == max1&&j + 1 <= n)
+					{
+						j++;
+					}
+	}
+	v.push_back({ i,j });
+	for (auto it = v.rbegin(); it != v.rend(); it++)
+		g << it->first << ' ' << it->second << '\n';
+	return 0;
+
+}
