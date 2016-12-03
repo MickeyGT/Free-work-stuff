@@ -1,0 +1,65 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, m,i,j,k,x,y,cost[50500],crcost;
+vector<pair<int, int>>v[50500];
+struct muchie
+{
+	int nod, crcost;
+	bool operator <(const muchie &aux) const
+	{
+		return crcost > aux.crcost;
+	}
+}el;
+priority_queue <muchie> que;
+int main()
+{
+	ifstream f("file.in");
+	ofstream g("file.out");
+	//ifstream f("dijkstra.in");
+	//ofstream g("dijkstra.out");
+	f >> n >> m;
+	for (i = 1; i <= m; i++)
+	{
+		f >> x >> y >> crcost;
+		v[x].push_back({ y,crcost });
+	}
+	for (i = 2; i <= n; i++)
+		cost[i] = 1<<30;
+	que.push({1,0});
+	while (que.size() != 0)
+	{
+		el = que.top();
+		int nod = el.nod;
+		int crcost = el.crcost;
+		que.pop();
+		if (crcost> cost[nod])
+			continue;
+		for (auto it = v[nod].begin(); it != v[nod].end(); it++)
+			if (cost[it->first] > cost[nod] + it->second)
+			{
+				cost[it->first] = cost[nod] + it->second;
+				que.push({ it->first, cost[it->first] });
+			}
+	}
+	for (i = 2; i <= n; i++)
+		if (cost[i] == 1 << 30)
+			g << "0 ";
+		else
+			g << cost[i] << " ";
+	return 0;
+}
