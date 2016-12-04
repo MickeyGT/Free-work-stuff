@@ -1,0 +1,58 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+long long p, q, a, b, nr,rad,i,nrmax,el;
+unordered_map<long long, long long>nrdiv;
+unordered_map<long long, long long>::iterator it, iter;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("gfact.in");
+	ofstream g("gfact.out");
+	f >> p >> q;
+	rad = sqrt(p);
+	for (i = 2; i <= rad; i++)
+		while (p%i == 0)
+		{
+			nrdiv[i] += q;
+			p = p / i;
+		}
+	if (p!=1&&p != 0 && p%p == 0)
+		nrdiv[p] += q;
+	for (it = nrdiv.begin(); it != nrdiv.end(); it++)
+	{
+		i = it->first;
+		nr = 0;
+		while (it->second > 0)
+		{
+			el = i;
+			while (el % it->first == 0)
+			{
+				nr++;
+				it->second--;
+				el = el / it->first;
+			}
+			if(it->second>0)
+				i += it->first;
+		}
+		if (i > nrmax)
+			nrmax = i;
+	}
+	g << nrmax;
+	return 0;
+}
