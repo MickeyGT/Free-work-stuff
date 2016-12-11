@@ -21,50 +21,56 @@ unordered_map<int, int>::iterator it;
 vector<int>leg[50500];
 vector<int>::iterator iter;
 deque<int>que;
-void bfs(int nod)
+void dfs(int nod)
 {
-	que.push_back(nod);
-	viz[nod] = 1;
-	while (que.size() != 0)
+	if (viz[nod] == 0)
 	{
-		int el = que.front();
-		que.pop_front();
-		for (iter = leg[el].begin(); iter != leg[el].end();iter++)
-			if(viz[*iter]==0)
-			{
-				viz[*iter] = 1;
-				que.push_back(*iter);
-			}
+		viz[nod] = 1;
+		for (auto iter = leg[nod].begin(); iter != leg[nod].end(); iter++)
+			dfs(*iter);
 	}
 }
 int main()
 {
-	ifstream f("autobuze.in");
-	ofstream g("autobuze.out");
-	//ifstream f("file.in");
-	//ofstream g("file.out");
+	//ifstream f("autobuze.in");
+	//ofstream g("autobuze.out");
+	ifstream f("file.in");
+	ofstream g("file.out");
 	f >> n;
 	for (i = 1; i <= n; i++)
 	{
 		f >> v[i];
 		elmax = max(elmax, v[i]);
 	}
-	sort(v + 1, v + n + 1);
+	//sort(v + 1, v + n + 1);
 	for (i = 1; i <= n; i++)
 		st.insert(make_pair(v[i], i));
 	
 	for (i = 1; i <= n; i++)
 		if(viz[i]==0)
 		{
-			for (j = 2; v[i] * j <= elmax; j++)
+			if (elmax / v[i] < n)
 			{
-				it = st.find(v[i] * j);
-				if (it != st.end())
+				for (j = 2; v[i] * j <= elmax; j++)
 				{
-					viz[it->second] = 1;
-					leg[i].push_back(it->second);
-					leg[it->second].push_back(i);
+					it = st.find(v[i] * j);
+					if (it != st.end())
+					{
+						viz[it->second] = 1;
+						leg[i].push_back(it->second);
+						leg[it->second].push_back(i);
+					}
 				}
+			}
+			else
+			{
+				for (j = 1; j<=n; j++)
+					if(v[j]%v[i]==0&&i!=j)
+					{
+							viz[j] = 1;
+							leg[i].push_back(j);
+							leg[j].push_back(i);
+					}
 			}
 		}
 	memset(viz, 0, sizeof(viz));
@@ -72,7 +78,7 @@ int main()
 		if (viz[i] == 0)
 		{
 			nr++;
-			bfs(i);
+			dfs(i);
 		}
 	g << nr;
 	return 0;
