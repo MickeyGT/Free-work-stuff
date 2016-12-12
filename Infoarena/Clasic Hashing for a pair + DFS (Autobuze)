@@ -1,0 +1,86 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, v[50500], i, j, k, ok, nr, viz[50500], elmax;
+vector<pair<int, int>>hsh[393241];
+vector<pair<int, int>>::iterator it;
+vector<int>leg[50500];
+vector<int>::iterator iter;
+deque<int>que;
+void dfs(int nod)
+{
+    if (viz[nod] == 0)
+    {
+        viz[nod] = 1;
+        for (auto iter = leg[nod].begin(); iter != leg[nod].end(); iter++)
+            dfs(*iter);
+    }
+}
+int main()
+{
+    ifstream f("autobuze.in");
+    ofstream g("autobuze.out");
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    f >> n;
+    for (i = 1; i <= n; i++)
+    {
+        f >> v[i];
+        elmax = max(elmax, v[i]);
+    }
+    sort(v + 1, v + n + 1);
+    for (i = 1; i <= n; i++)
+        hsh[v[i]% 393241].push_back(make_pair(v[i], i));
+ 
+    for (i = 1; i <= n; i++)
+        if (viz[i] == 0)
+        {
+            if (elmax / v[i] < n)
+            {
+                for (j = 2; v[i] * j <= elmax; j++)
+                {
+                    it = hsh[v[i] * j% 393241].begin();
+                    for(;it != hsh[v[i] * j % 393241].end();it++)
+                        if(it->first== v[i] * j)
+                        {
+                            viz[it->second] = 1;
+                            leg[i].push_back(it->second);
+                            leg[it->second].push_back(i);
+                        }
+                }
+            }
+            else
+            {
+                for (j = i + 1; j <= n; j++)
+                    if (v[j] % v[i] == 0)
+                    {
+                        viz[j] = 1;
+                        leg[i].push_back(j);
+                        leg[j].push_back(i);
+                    }
+            }
+        }
+    memset(viz, 0, sizeof(viz));
+    for (i = 1; i <= n; i++)
+        if (viz[i] == 0)
+        {
+            nr++;
+            dfs(i);
+        }
+    g << nr;
+    return 0;
+}
