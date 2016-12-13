@@ -9,3 +9,4 @@
 - Don't forget to use the <functional> header for pre-made STL comparators.
 - Don't forget there are 26 letters in the english alphabet, not 25.
 - Don't forget to use multiset instead of set when you think multiple appearances might occur.
+- Don't forget that any even number can be written as a sum of 2 prime numbers.
