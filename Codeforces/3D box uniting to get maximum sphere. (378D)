@@ -61,7 +61,10 @@ int main()
 		{
 			update_min(a, b, c + itr->second.first);
 			if (c > itr->second.first)
+			{
 				itr->second.first = c;
+				itr->second.second = i;
+			}
 		}
 		else
 			mp.insert(make_pair(make_pair(a, b), make_pair(c, i)));
@@ -70,7 +73,10 @@ int main()
 		{
 			update_min(a, b + itr->second.first, c);
 			if (b > itr->second.first)
+			{
 				itr->second.first = b;
+				itr->second.second = i;
+			}
 		}
 		else
 			mp.insert(make_pair(make_pair(a, c), make_pair(b, i)));
@@ -79,7 +85,10 @@ int main()
 		{
 			update_min(a + itr->second.first, b, c);
 			if (a > itr->second.first)
+			{
 				itr->second.first = a;
+				itr->second.second = i;
+			}
 		}
 		else
 			mp.insert(make_pair(make_pair(b, c), make_pair(a, i)));
