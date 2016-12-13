@@ -1,0 +1,49 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+vector<long long>hsh[12290];
+vector<long long>::iterator it,sf;
+long long i, q, n, nr, rez;
+int main()
+{
+    ifstream f("dtcsu.in");
+    ofstream g("dtcsu.out");
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    for (i = 1; i <= 276997; ++i)
+    {
+        f >> nr;
+        if (nr%2==1)
+            hsh[nr % 12289].push_back(nr);
+    }
+    f >> q;
+    for (i = 1; i <= q; ++i)
+    {
+        f >> n;
+        if (n)
+        {
+            while (n % 2 == 0)
+                n /= 2;
+            sf = hsh[n % 12289].end();
+            for (it = hsh[n % 12289].begin(); it != sf; ++it)
+                if (*it == n)
+                    rez++;
+        }
+    }
+    g << rez;
+    return 0;
+}
