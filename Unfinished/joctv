@@ -1,0 +1,46 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int mat[110][110], col[110], lin[110],i,j,k,n,nr,ok,dpcol[110],dplin[110];
+int main()
+{
+	//ifstream f("cifra.in");
+	//ofstream g("cifra.out");
+	ifstream f("file.in");
+	ofstream g("file.out");
+	f >> n;
+	for(i=1;i<=n;i++)
+		for (j = 1; j <= n; j++)
+		{
+			f >> mat[i][j];
+			lin[i] += mat[i][j];
+			col[j] += mat[i][j];
+		}
+	dplin[1] = lin[1];
+	dpcol[1] = col[1];
+	for (i = 1; i <= n; i++)
+	{
+		dplin[i] = dplin[i - 1] + lin[i];
+		dpcol[i] = dpcol[i - 1] + col[i];
+	}
+	for(i=1;i<=n;i++)
+		for (j = i; j <= n; j++)
+		{
+			
+		}
+	return 0;
+}
