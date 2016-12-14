@@ -1,0 +1,50 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+char number[110];
+int rasp[100] = 
+{
+	0,1,5,2,8,3,9,2,8,7,
+	7,8,4,7,3,8,4,1,5,4,
+	4,5,9,6,2,7,3,6,2,1,
+	1,2,8,1,7,2,8,5,9,8,
+	8,9,3,0,6,1,7,0,6,5,
+	5,6,2,5,1,6,2,9,3,2,
+	2,3,7,4,0,5,1,4,0,9,
+	9,0,6,9,5,0,6,3,7,6,
+	6,7,1,8,4,9,5,8,4,3,
+	3,4,0,3,9,4,0,7,1,0
+};
+int i, n, t,len;
+int main()
+{
+	ifstream f("cifra.in");
+	ofstream g("cifra.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	f >> t;
+	for (i = 1; i <= t; i++)
+	{
+		f >> number;
+		len = strlen(number);
+		n=number[len - 1] - '0';
+		if (len != 1)
+			n += ((number[len - 2] - '0') * 10);
+		g << rasp[n] << '\n';
+	}
+	return 0;
+}
