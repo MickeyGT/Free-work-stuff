@@ -1,0 +1,216 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+unsigned short distmax[130][130], n, i, j, k, nr, dist, min1, pozi, pozj, mat[130][130], xmax, ymax, max1,m,p,rez=65001;
+struct point
+{
+	unsigned short x;
+	unsigned short y;
+	unsigned short val;
+}el;
+vector<point>vec;
+class InParser
+{
+private:
+	FILE *fin;
+	char *buff;
+	unsigned short sp;
+
+	char read_ch()
+	{
+		++sp;
+		if (sp == 16384)
+		{
+			sp = 0;
+			fread(buff, 1, 16384, fin);
+		}
+		return buff[sp];
+	}
+
+public:
+	InParser(const char* nume)
+	{
+		fin = fopen(nume, "r");
+		buff = new char[16384]();
+		sp = 16383;
+	}
+
+	InParser& operator >> (unsigned short &n)
+	{
+		char c;
+		while (!isdigit(c = read_ch()) && c != '-');
+		unsigned short sgn = 1;
+		if (c == '-')
+		{
+			n = 0;
+			sgn = -1;
+		}
+		else {
+			n = c - '0';
+		}
+		while (isdigit(c = read_ch()))
+		{
+			n = 10 * n + c - '0';
+		}
+		n *= sgn;
+		return *this;
+	}
+};
+
+int ismin(int i, int j,int val)
+{
+	unsigned short x, y, min1 = 65001, mx, my;
+	x = i;
+	y = j;
+	if (min1>mat[x + 1][y] && x + 1 <= n)
+	{
+		min1 = mat[x + 1][y];
+	}
+	if (min1>mat[x - 1][y] && x - 1 >= 1)
+	{
+		min1 = mat[x - 1][y];
+	}
+	if (min1>mat[x][y + 1] && y + 1 <= m)
+	{
+		min1 = mat[x][y + 1];
+	}
+	if (min1>mat[x][y - 1] && y - 1 >= 1)
+	{
+		min1 = mat[x][y - 1];
+	}
+	return (min1 == val);
+}
+void lee(point p)
+{
+	unsigned short x, y,min1= 65001,mx,my;
+	x = p.x;
+	y = p.y;
+	if (min1>mat[x + 1][y] && x + 1 <= n)
+	{
+			min1 = mat[x + 1][y];
+			mx = x + 1;
+			my = y;
+	}
+	if (min1>mat[x - 1][y] && x - 1 >= 1)
+	{
+		min1 = mat[x - 1][y];
+		mx = x - 1;
+		my = y;
+	}
+	if (min1>mat[x][y+1] && y + 1 <= m)
+	{
+		min1 = mat[x][y+1];
+		mx = x;
+		my = y+1;
+	}
+	if (min1>mat[x][y-1] && y-1 >= 1)
+	{
+		min1 = mat[x][y-1];
+		mx = x;
+		my = y-1;
+	}
+
+	if (mat[x][y]>mat[mx][my] && distmax[mx][my] < distmax[x][y] + 1)
+	{
+		distmax[mx][my] = distmax[x][y] + 1;
+		if (distmax[mx][my] > max1)
+		{
+			max1 = distmax[mx][my];
+			xmax = mx;
+			ymax = my;
+		}
+	}
+}
+
+bool comp(point a, point b)
+{
+	return a.val > b.val;
+}
+int main()
+{
+	InParser fin("bila.in");
+	//InParser fin("file.in");
+	//ofstream g("file.out");
+	ofstream g("bila.out");
+	fin >> n>>m;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+		{
+			fin >> el.val;
+			mat[i][j] = el.val;
+			el.x = i;
+			el.y = j;
+			vec.push_back(el);
+		}
+	sort(vec.begin(), vec.end(), comp);
+	for (auto it = vec.begin(); it != vec.end(); it++)
+	{
+		if(distmax[it->x][it->y] == 0)
+			distmax[it->x][it->y] = 1;
+		lee(*it);
+	}
+	g << max1<< ' ';
+	dist = max1;
+	for(k=1;k<=n;k++)
+		for (p = 1; p <= m; p++)
+			if(distmax[k][p]==dist)
+			{
+				i = k;
+				j = p;
+				max1 = dist;
+				while (max1 != 0)
+				{
+					max1--;
+					if (distmax[i - 1][j] == max1&&i - 1 >= 1)
+					{
+						if (ismin(i - 1, j, mat[i][j]))
+						{
+							i--;
+							continue;
+						}
+					}
+
+					if (distmax[i + 1][j] == max1&&i + 1 <= n)
+					{
+						if (ismin(i + 1, j, mat[i][j]))
+						{
+							i++;
+							continue;
+						}
+					}
+					if (distmax[i][j - 1] == max1&&j - 1 >= 1)
+					{
+						if (ismin(i, j - 1, mat[i][j]))
+						{
+							j--;
+							continue;
+						}
+					}
+					if (distmax[i][j + 1] == max1&&j + 1 <= m)
+					{
+						if (ismin(i, j + 1, mat[i][j]))
+						{
+							j++;
+							continue;
+						}
+					}
+				}
+				rez = min(mat[i][j], rez);
+			}
+	g << rez;
+	return 0;
+
+}
