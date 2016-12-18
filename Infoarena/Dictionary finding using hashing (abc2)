@@ -1,0 +1,66 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+unsigned int i, j, n, m, k, el,len,p3[23],nr,rez,lun;
+char text[10000100],cuv[25];
+vector<unsigned int>hashed[196614];
+vector<unsigned int>::iterator it;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("abc2.in");
+	ofstream g("abc2.out");
+	f >> text;
+	p3[0] = 1;
+	for (i = 1; i <= 22; i++)
+		p3[i] = p3[i - 1] * 3;
+	while (f >> cuv)
+	{
+		if(len==0)
+			len = strlen(cuv);
+		nr = 0;
+		for (i = 0; i <= len - 1; i++)
+			nr += p3[len - 1 - i] * (cuv[i] - 'a');
+		hashed[nr% 196613].push_back(nr);
+	}
+	nr = 0;
+	for(i=0;i<=len-1;i++)
+		nr += p3[len - 1 - i] * (text[i] - 'a');
+	for(it=hashed[nr % 196613].begin();it!=hashed[nr % 196613].end();it++)
+		if (*it == nr)
+		{
+			rez++;
+			break;
+		}
+	lun = strlen(text);
+	for (; i <= lun - 1; i++)
+	{
+		nr -= p3[len - 1] * (text[i-len] - 'a');
+		nr = nr * 3;
+		nr += (text[i] - 'a');
+		for (it = hashed[nr % 196613].begin(); it != hashed[nr % 196613].end(); it++)
+			if (*it == nr)
+			{
+				rez++;
+				break;
+			}
+	}
+	g << rez;
+	return 0;
+}
