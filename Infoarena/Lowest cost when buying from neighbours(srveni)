@@ -1,0 +1,76 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, m, i, j, k,cost[100100],x,y,price,viz[100100];
+vector<int>v[100100];
+vector<int>::iterator iter;
+vector<pair<int, int>>mp;
+vector<pair<int, int>>::iterator it;
+deque<int>que;
+void bfs(int nod)
+{
+	int el;
+	que.push_back(nod);
+	while (que.size() != 0)
+	{
+		el = que.front();
+		que.pop_front();
+		for (iter = v[el].begin(); iter != v[el].end(); iter++)
+			if (viz[*iter] == 0)
+			{
+				viz[*iter] = 1;
+				cost[*iter] = it->first;
+				que.push_back(*iter);
+			}
+	}
+}
+int comp(pair<int, int> a, pair<int, int> b)
+{
+	return a.first < b.first;
+}
+int main()
+{	
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("srevni.in");
+	ofstream g("srevni.out");
+	f >> n >> m;
+	for (i = 1; i <= n; i++)
+	{
+		f >> price;
+		mp.push_back({ price,i });
+	}
+	sort(mp.begin(), mp.end(), comp);
+	for (i = 1; i <= m; i++)
+	{
+		f >> x >> y;
+		v[y].push_back(x);
+	}
+	for (it = mp.begin(); it != mp.end(); it++)
+	{
+		if (viz[it->second] == 0)
+		{
+			viz[it->second] = 1;
+			cost[it->second] = it->first;			
+			bfs(it->second);
+		}
+	}
+	for (i = 1; i <= n; i++)
+		g << cost[i]<<' ';
+	return 0;
+}
