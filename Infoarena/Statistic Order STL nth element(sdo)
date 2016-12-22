@@ -1,0 +1,32 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, k, v[3000300],i;
+int main()
+{	
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("sdo.in");
+	ofstream g("sdo.out");
+	f >> n >> k;
+	for (i = 1; i <= n; i++)
+		f >> v[i];
+	nth_element(v + 1, v + k, v + n + 1);
+	g << v[k];
+	return 0;
+}
