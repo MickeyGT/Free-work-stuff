@@ -1,0 +1,64 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+long long sum, k, n, curr, i, el;
+int main()
+{	
+	ifstream f("ksecv3.in");
+	f >> n >> k;
+	for (i = 1; i <= n; i++)
+	{
+		f >> el;
+		sum += el;
+	}
+	sum = sum / k;
+	f.close();
+	ofstream g("ksecv3.out");
+	ifstream h("ksecv3.in");
+	h >> n >> k;
+	for (i = 1; i <= n; i++)
+	{
+		h >> el;
+		curr += el;
+		if (curr == sum)
+		{
+			curr = 0;
+		}
+		else
+			if (curr > sum)
+			{
+				g << -1;
+				return 0;
+			}
+	}
+	h.close();
+	ifstream j("ksecv3.in");
+	j >> n >> k;
+	for (i = 1; i <= n; i++)
+	{
+		j >> el;
+		curr += el;
+		if (curr == sum)
+		{
+			curr = 0;
+			g << i << ' ';
+		}
+	}
+	j.close();
+	return 0;
+}
