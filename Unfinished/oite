@@ -1,0 +1,48 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, l,c,v[1050],nr,max1,min1;
+unordered_map<int, vector<pair<short,short>>>mp;
+unordered_map<int, vector<pair<short,short>>>::iterator it, iter;
+vector<pair<short, short>>::iterator its,itd;
+
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("oite.in");
+	ofstream g("oite.out");
+	f >> c >> l;
+	for (i = 1; i <= c; i++)
+		f >> v[i];
+	sort(v + 1, v + c + 1);
+	for(i=1;i<=c-1;i++)
+		for (j = i + 1; j <= c; j++)
+		{
+			it = mp.find(l - v[i] - v[j]);
+			if (it != mp.end())
+				for (itd = it->second.begin(); itd != it->second.end(); itd++)
+				{
+					if (itd->first!=i&&itd->second!=i&&itd->second!=j&&itd->first!=j)
+						nr++;
+				}
+			mp[v[i] + v[j]].push_back({i,j});
+		}
+	g << nr/3;
+	return 0;
+}
