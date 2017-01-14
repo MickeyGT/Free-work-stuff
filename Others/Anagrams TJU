@@ -1,0 +1,45 @@
+#include<iostream>
+#include<string.h>
+#include <algorithm>
+#include<ctype.h>
+#include <vector>
+using namespace std;
+int n, t, j, i,fr1[500],fr2[500],l1,l2,ok;
+char start[100], fsh[100];
+int main()
+{
+	cin >> t;
+	for (j = 1; j <= t; j++)
+	{
+		cin >> start >> fsh;
+		memset(fr1, 0, sizeof(fr1));
+		memset(fr2, 0, sizeof(fr2));
+		l1 = strlen(start);
+		l2 = strlen(fsh);
+		for (i = 0; i <= l1; i++)
+			start[i] = tolower(start[i]);
+		for (i = 0; i <= l2; i++)
+			fsh[i] = tolower(fsh[i]);
+		ok = 1;
+		if (l1 != l2)
+		{
+			cout << "No\n";
+			continue;
+		}
+		for (i = 0; i <= l1; i++)
+		{
+			fr1[start[i]]++;
+			fr2[fsh[i]]++;
+		}
+		for(i=0;i<=499;i++)
+			if (fr1[i] != fr2[i])
+			{
+				cout << "No\n";
+				ok = 0;
+				break;
+			}
+		if(ok==1)
+			cout << "Yes\n";
+	}
+	return 0;
+}
