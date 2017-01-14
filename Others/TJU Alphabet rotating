@@ -1,0 +1,19 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+int d,n,i,j,len;
+char s[110];
+int main()
+{
+	cin >> n;
+	for (j = 1; j <= n; j++)
+	{
+		cin >> s;
+		cin >> d;
+		len = strlen(s);
+		for (i = 0; i <= len - 1; i++)
+			s[i] = ((s[i] - 'a') + d) % 26 + 'a';
+		cout << s<<'\n';
+	}
+	return 0;
+}
