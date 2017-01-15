@@ -1,0 +1,40 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, m, n, ok, nr;
+int isprime(int nr)
+{
+	for (int i = 2; i <= nr / 2; i++)
+		if (nr%i == 0)
+			return 1;
+	return 0;
+}
+int main()
+{
+	cin >> n;
+	for (i = 1; i <= 1000; i++)
+	{
+		nr = n*i + 1;
+		if (isprime(nr))
+		{
+			cout << i;
+			return 0;
+		}
+	}
+	return 0;
+}
