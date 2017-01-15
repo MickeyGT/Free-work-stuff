@@ -1,0 +1,54 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, nr,n,m,nrpb,nreb;
+string s;
+unordered_map<string, int>pb;
+unordered_map<string, int>eb;
+unordered_map<string, int>total;
+int main()
+{
+	cin >> n >> m;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> s;
+		pb[s]++;
+		total[s]++;
+	}
+	for (i = 1; i <= m; i++)
+	{
+		cin >> s;
+		eb[s]++;
+		total[s]++;
+	}
+	for (auto it = total.begin(); it != total.end(); it++)
+		if (it->second == 2)
+			nr++;
+	nrpb = pb.size() - nr;
+	nreb = eb.size() - nr;
+	nrpb += nr / 2;
+	nreb += nr / 2;
+	if (nrpb > nreb)
+		cout << "YES";
+	else
+		if (nrpb == nreb&&nr % 2 == 1)
+			cout << "YES";
+		else
+			cout << "NO";
+	return 0;
+}
