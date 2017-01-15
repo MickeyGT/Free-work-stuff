@@ -1,0 +1,67 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, mat[55][55],n,m,comp,x,y,ty;
+bool dp[5011][101][101];
+unordered_map<int, bool>mp;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("luna.in");
+	ofstream g("luna.out");
+	f >> n >> m;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+			f >> mat[i][j];
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+		{
+			comp = mat[i][j];
+			mp.insert({ comp,1 });
+			x = i;
+			y = m;
+			while (mat[x][j] == comp)
+			{
+				ty = j;
+				while (x<=n&&ty<=y&&mat[x][ty] == comp)
+				{
+					dp[comp][x-i+1][ty - j + 1] = 1;
+					dp[comp][ty - j + 1][x - i + 1] = 1;
+					ty++;
+				}
+				x++;
+				y = ty;
+			}
+		}
+	f >> k;
+	for (i = 1; i <= k; i++)
+	{
+		f >> comp >> x >> y;
+		if (mp.find(comp) != mp.end())
+		{
+			if (dp[comp][x][y] == 1)
+				g << "Cererea poate fi satisfacuta!\n";
+			else
+				g << "Cererea nu poate fi satisfacuta!\n";
+		}
+		else
+			g << "Tara de provenienta nu are parcele pe Luna!\n";
+	}
+	return 0;
+}
