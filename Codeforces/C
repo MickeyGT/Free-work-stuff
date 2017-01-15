@@ -1,0 +1,73 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+using namespace std;
+int n, m, k, point[100100], rang[100100], type, x, y,nr;
+int find(int x, int y)
+{
+	int compx = x, aux, compy = y;
+	while (point[x] != x)
+		x = point[x];
+	while (point[y] != y)
+		y = point[y];
+	while (point[compx] != compx)
+	{
+		aux = point[compx];
+		point[compx] = x;
+		compx = aux;
+	}
+	while (point[compy] != compy)
+	{
+		aux = point[compy];
+		point[compy] = y;
+		compy = aux;
+	}
+	return x == y;
+}
+void tie(int x, int y)
+{
+	while (point[x] != x)
+		x = point[x];
+	while (point[y] != y)
+		y = point[y];
+	if (rang[x] > rang[y])
+		point[y] = x;
+	else
+		point[x] = y;
+	if (rang[x] == rang[y])
+		rang[y]++;
+}
+int main()
+{
+	cin >> n;
+	for (k = 1; k <= n; k++)
+	{
+		point[k] = k;
+		rang[k] = 1;
+	}
+	for (k = 1; k <= n; k++)
+	{
+		cin>> x;
+		tie(x, k);
+	}
+	for (k = 1; k <= n; k++)
+		if (point[k] == k)
+			nr++;
+	cout << nr;
+	return 0;
+}
