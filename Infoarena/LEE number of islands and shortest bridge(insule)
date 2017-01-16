@@ -1,0 +1,141 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int mat[110][110],i,j,k,n,m,nrmin,nrr[4];
+bool viz[110][110];
+char s[110];
+deque<pair<int, int>>deq;
+pair<int, int>el;
+//ifstream f("file.in");
+//ofstream g("file.out");
+ifstream f("insule.in");
+ofstream g("insule.out");
+void lee(int x, int y)
+{
+	int elx, ely, type;
+	nrr[mat[x][y]]++;
+	deq.clear();
+	deq.push_back({ i,j });
+	while (deq.size() != 0)
+	{
+		el = deq.front();
+		deq.pop_front();
+		viz[el.first][el.second] = 1;
+		if (el.first-1>=1&&viz[el.first-1][el.second] == 0 && mat[el.first-1][el.second] == mat[x][y])
+		{
+			viz[el.first-1][el.second] = 1;
+			deq.push_back({ el.first-1,el.second });
+		}
+		if (el.first + 1 <= n && viz[el.first+1][el.second] == 0 && mat[el.first+1][el.second] == mat[x][y])
+		{
+			viz[el.first+1][el.second] = 1;
+			deq.push_back({ el.first+1,el.second });
+		}
+		if (el.second-1>=1&&viz[el.first][el.second-1] == 0 && mat[el.first][el.second-1] == mat[x][y])
+		{
+			viz[el.first][el.second-1] = 1;
+			deq.push_back({ el.first,el.second-1});
+		}
+		if (el.second+1<=m&&viz[el.first][el.second+1] == 0 && mat[el.first][el.second+1] == mat[x][y])
+		{
+			viz[el.first][el.second+1] = 1;
+			deq.push_back({ el.first,el.second+1});
+		}
+	}
+}
+void getnr()
+{
+	int len,dist;
+	dist = 0;
+	memset(viz, 0, sizeof(viz));
+	while (deq.size() != 0)
+	{
+		len = deq.size();
+		for (k = 1; k <= len; k++)
+		{
+			el = deq.front();
+			deq.pop_front();
+			if (el.first - 1 >= 1 && mat[el.first - 1][el.second] == 2&&dist!=0)
+			{
+				g << dist;
+				return;
+			}
+			if (el.first + 1 <= n && mat[el.first + 1][el.second] == 2 && dist != 0)
+			{
+				g << dist;
+				return;
+			}
+			if (el.second - 1 >= 1 && mat[el.first][el.second - 1] == 2 && dist != 0)
+			{
+				g << dist;
+				return;
+			}
+			if (el.second + 1 <= m&&mat[el.first][el.second + 1] == 2 && dist != 0)
+			{
+				g << dist;
+				return;
+			}
+
+			viz[el.first][el.second] = 1;
+			if (el.first - 1 >= 1 && viz[el.first - 1][el.second] == 0 && mat[el.first - 1][el.second] == 0)
+			{
+				viz[el.first - 1][el.second] = 1;
+				deq.push_back({ el.first - 1,el.second });
+			}
+			if (el.first + 1 <= n && viz[el.first + 1][el.second] == 0 && mat[el.first + 1][el.second] == 0)
+			{
+				viz[el.first + 1][el.second] = 1;
+				deq.push_back({ el.first + 1,el.second });
+			}
+			if (el.second - 1 >= 1 && viz[el.first][el.second - 1] == 0 && mat[el.first][el.second - 1] == 0)
+			{
+				viz[el.first][el.second - 1] = 1;
+				deq.push_back({ el.first,el.second - 1 });
+			}
+			if (el.second + 1 <= m&&viz[el.first][el.second + 1] == 0 && mat[el.first][el.second + 1] == 0)
+			{
+				viz[el.first][el.second + 1] = 1;
+				deq.push_back({ el.first,el.second + 1 });
+			}
+		}
+		dist++;
+	}
+}
+int main()
+{
+	f >> n >> m;
+	for (i = 1; i <= n; i++)
+	{
+		f >> s;
+		for (j = 1; j <= m; j++)
+			mat[i][j] = s[j - 1] - '0';
+	}
+	for(i=1;i<=n;i++)
+		for(j=1;j<=m;j++)
+			if (viz[i][j]==0&&(mat[i][j] == 1|| mat[i][j] == 2|| mat[i][j] == 3))
+			{
+				lee(i, j);
+			}
+	g << nrr[1] << ' ' << nrr[2] <<' '<< nrr[3] << ' ';
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+			if (mat[i][j] == 1)
+				deq.push_back({ i,j });
+	getnr();
+	return 0;
+}
