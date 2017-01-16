@@ -16,7 +16,7 @@
 #include<iomanip>
 #include<bitset>
 using namespace std;
-int i, j, k, mat[55][55],n,m,comp,x,y,ty;
+int i, j, k, mat[51][51], n, m, comp, x, y, ty;
 bool dp[5011][101][101];
 unordered_map<int, bool>mp;
 int main()
@@ -36,17 +36,17 @@ int main()
 			mp.insert({ comp,1 });
 			x = i;
 			y = m;
-			while (mat[x][j] == comp)
+			while ((mat[x][j] == comp&&mat[x-1][j]==comp)||(mat[x][j]==comp&&x==i))
 			{
 				ty = j;
-				while (x<=n&&ty<=y&&mat[x][ty] == comp)
+				while (x <= n&&ty <= y&&mat[x][ty] == comp)
 				{
-					dp[comp][x-i+1][ty - j + 1] = 1;
+					dp[comp][x - i + 1][ty - j + 1] = 1;
 					dp[comp][ty - j + 1][x - i + 1] = 1;
 					ty++;
 				}
 				x++;
-				y = ty;
+				y = ty-1;
 			}
 		}
 	f >> k;
@@ -55,10 +55,10 @@ int main()
 		f >> comp >> x >> y;
 		if (mp.find(comp) != mp.end())
 		{
-			if (dp[comp][x][y] == 1)
-				g << "Cererea poate fi satisfacuta!\n";
-			else
-				g << "Cererea nu poate fi satisfacuta!\n";
+				if (dp[comp][x][y] == 1)
+					g << "Cererea poate fi satisfacuta!\n";
+				else
+					g << "Cererea nu poate fi satisfacuta!\n";
 		}
 		else
 			g << "Tara de provenienta nu are parcele pe Luna!\n";
