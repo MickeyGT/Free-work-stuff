@@ -1,0 +1,35 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+long long i, j, k, nr, ok, n, m,v[1001000],max1,sum;
+string s;
+int main()
+{
+	cin >> n;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> v[i];
+		max1 = max(max1, v[i]);
+	}
+	for (i = 1; i <= n; i++)
+	{
+		sum += max1 - v[i];
+	}
+	cout << sum;
+	return 0;
+}
