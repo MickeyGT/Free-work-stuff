@@ -1,0 +1,35 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+long long i, j, k, n, nr;
+double m,d;
+int main()
+{
+	cin >> m >> d;
+	if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)
+		m = 31;
+	else
+		if (m == 4 || m == 6 || m == 9 || m == 11)
+			m = 30;
+		else
+			m = 28;
+	nr = 7 - d + 1;
+	m -= nr;
+	cout << ceil((double(m / 7)))+1;
+	return 0;
+}
