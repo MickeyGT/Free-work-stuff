@@ -1,0 +1,72 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+long long i, j, k, n, nr, m;
+int main()
+{
+	cin >> n >> m >> k;
+	m -= n;
+	nr++;
+	if (m >= 1)
+	{
+		i = 0;
+		while (m >= i * 2 + 1 && k - i >= 1 && k + i <= n)
+		{
+			m -= i * 2 + 1;
+			i++;
+			nr++;
+		}
+		if (!(k - i >= 1 && k + i <= n))
+		{
+			if (k - i == 0)
+			{
+				j = 1;
+				i--;
+				while (k + i + j <= n&&m >= i * 2 + 1 + j)
+				{
+					nr++;
+					m -= i * 2 + 1 + j;
+					j++;
+				}
+				while (m >= n)
+				{
+					m -= n;
+					nr++;
+				}
+			}
+			else
+			{
+				j = 1;
+				i--;
+				while (k - i - j >= 1 && m >= i * 2 + 1 + j)
+				{
+					nr++;
+					m -= i * 2 + 1 + j;
+					j++;
+				}
+				while (m >= n)
+				{
+					m -= n;
+					nr++;
+				}
+			}
+		}
+	}
+	cout << nr;
+	return 0;
+}
