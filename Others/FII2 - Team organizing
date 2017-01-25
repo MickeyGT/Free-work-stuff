@@ -1,0 +1,71 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, n, nr, m, v[10100], afis[1100],prv;
+vector<int>mp[1100];
+deque<int>deq;
+deque<int>rez;
+int main()
+{
+	//ios_base::sync_with_stdio(false);
+	cin >> n;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> v[i];
+		mp[v[i]].push_back(i);
+	}
+	sort(v + 1, v + n + 1);
+	for (i = 1; i <= n; i++)
+	{
+		deq.push_back(v[i]);
+		if (v[i] <= deq.size())
+			rez.push_front(i);
+	}
+	prv = 0;
+	for (auto it = rez.begin(); it != rez.end(); it++)
+	{
+		if (prv == 0 || prv - *it >= 2)
+		{
+			memset(afis, 0, sizeof(afis));
+			for (i = 1; i <= *it; i++)
+			{
+				afis[v[i]]++;
+			}
+			nr++;
+		}
+		prv = *it;
+	}
+	cout << nr << '\n';
+	prv = 0;
+	for (auto it = rez.begin(); it != rez.end(); it++)
+	{
+		if (prv == 0 || prv - *it >= 2)
+		{
+			cout << *it << ' ';
+			memset(afis, 0, sizeof(afis));
+			for (i = 1; i <= *it; i++)
+			{
+				cout << mp[v[i]][afis[v[i]]] << ' ';
+				afis[v[i]]++;
+			}
+			cout << '\n';
+		}
+		prv = *it;
+	}
+	return 0;
+}
