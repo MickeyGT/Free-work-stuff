@@ -1,0 +1,159 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, i, j, k, nr, viz[255][255], dist,m,moves,turn=1,country,brazil,mexico,nrb,nrm;
+int mat[255][255];
+char s[300];
+deque<pair<int, int>>que;
+pair<int, int>x;
+void bfs(int country)
+{
+	memset(viz, 0, sizeof(viz));
+	int player;
+	if (turn == 0)
+	{
+		player = brazil;
+		que.push_back({ n,1 });
+	}
+	else
+	{
+		player = mexico;
+		que.push_back({ 1,m });
+	}
+	while (que.size() != 0)
+	{
+		int dim = que.size();
+		for (j = 1; j <= dim; j++)
+		{
+			x = que.front();
+			que.pop_front();
+			if (x.first - 1 >= 1 && viz[x.first - 1][x.second] == 0&&(mat[x.first-1][x.second]==country|| mat[x.first - 1][x.second]==player))
+			{
+				viz[x.first - 1][x.second] = 1;
+				que.push_back({ x.first - 1 ,x.second });
+				if (turn == 0)
+					mat[x.first-1][x.second] = brazil;
+				else
+					mat[x.first-1][x.second] = mexico;
+			}
+			if (x.second + 1 <= m && viz[x.first][x.second + 1] == 0 && (mat[x.first][x.second+1] == country|| mat[x.first][x.second + 1] == player))
+			{
+				viz[x.first][x.second + 1] = 1;
+				que.push_back({ x.first,x.second + 1 });
+				if (turn == 0)
+					mat[x.first][x.second + 1] = brazil;
+				else
+					mat[x.first][x.second + 1] = mexico;
+			}
+			if (x.first + 1 <= n&&viz[x.first + 1][x.second] == 0 && (mat[x.first+1][x.second] == country|| mat[x.first + 1][x.second] == player))
+			{
+				viz[x.first + 1][x.second] = 1;
+				que.push_back({ x.first + 1 ,x.second });
+				if (turn == 0)
+					mat[x.first+1][x.second] = brazil;
+				else
+					mat[x.first+1][x.second] = mexico;
+			}
+			if (x.second - 1 >= 1 && viz[x.first][x.second - 1] == 0 && (mat[x.first][x.second-1] == country|| mat[x.first][x.second - 1] == player))
+			{
+				viz[x.first][x.second - 1] = 1;
+				que.push_back({ x.first,x.second - 1 });
+				if (turn == 0)
+					mat[x.first][x.second - 1] = brazil;
+				else
+					mat[x.first][x.second - 1] = mexico;
+			}
+		}
+	}
+}
+void umple(int val, int x, int y,int dest)
+{
+	memset(viz, 0, sizeof(viz));
+	que.clear();
+	que.push_back({ x,y });
+	pair<int, int>el;
+	while (que.size() != 0)
+	{
+		el = que.front();
+		que.pop_front();
+		viz[el.first][el.second] = 1;
+		if (el.first - 1 >= 1 && viz[el.first - 1][el.second] == 0 && mat[el.first - 1][el.second] == dest)
+		{
+			viz[el.first - 1][el.second] = 1;
+			mat[el.first - 1][el.second] = val;
+			que.push_back({ el.first - 1,el.second });
+		}
+		if (el.first + 1 <= n && viz[el.first + 1][el.second] == 0 && mat[el.first + 1][el.second] == dest)
+		{
+			viz[el.first + 1][el.second] = 1;
+			mat[el.first + 1][el.second] = val;
+			que.push_back({ el.first + 1,el.second });
+		}
+		if (el.second - 1 >= 1 && viz[el.first][el.second - 1] == 0 && mat[el.first][el.second - 1] == dest)
+		{
+			viz[el.first][el.second - 1] = 1;
+			mat[el.first][el.second - 1] = val;
+			que.push_back({ el.first,el.second - 1 });
+		}
+		if (el.second + 1 <= m&&viz[el.first][el.second + 1] == 0 && mat[el.first][el.second + 1] == dest)
+		{
+			viz[el.first][el.second + 1] = 1;
+			mat[el.first][el.second + 1] = val;
+			que.push_back({ el.first,el.second + 1 });
+		}
+	}
+}
+int main()
+{
+	cin >> n >> m;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> s;
+		for (j = 0; j <= m - 1; j++)
+		{
+			mat[i][j + 1] = s[j] - '0';
+		}
+	}
+	brazil = mat[n][1];
+	mexico = mat[1][m];
+	umple('B', n, 1, brazil);
+	umple('M', 1, m, mexico);
+	brazil = 'B';
+	mexico = 'M';
+	mat[n][1] = 'B';
+	mat[1][m] = 'M';
+	cin >> moves;
+	for (k = 1; k <= moves; k++)
+	{
+		cin >> country;
+		if (turn == 1)
+			turn = 0;
+		else
+			turn = 1;
+		bfs(country);
+	}
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+			if (mat[i][j] == brazil)
+				nrb++;
+			else
+				if (mat[i][j] == mexico)
+					nrm++;
+	cout << nrb << '\n' << nrm;
+	return 0;
+}
