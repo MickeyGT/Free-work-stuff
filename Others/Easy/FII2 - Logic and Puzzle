@@ -1,0 +1,36 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, n, nr, m,v[10100],sum,el,x,y;
+
+
+int main()
+{
+	//ios_base::sync_with_stdio(false);
+	cin >> n>>k;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> x >> y;
+		sum += x - y - 2;
+	}
+	if (k - 2 + sum <= 0)
+		cout << "Big Bang!";
+	else
+		cout << k - 2 + sum;
+	return 0;
+}
