@@ -1,0 +1,41 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+long long i, n, j, k, nr, ok, el,r,b,sum,red[100100],blue[100100],y;
+int main()
+{
+	cin >> n >> r >> b;
+	for (i = 1; i <= r; i++)
+		cin >> red[i];
+	for (i = 1; i <= b; i++)
+		cin >> blue[i];
+	sort(red + 1, red + r + 1);
+	sort(blue + 1, blue + b + 1);
+	for (i = 1; i <= r; i++)
+	{
+		auto el = lower_bound(blue + 1, blue + b + 1, red[i]);
+		int x = el-(blue);
+		if (x != 1)
+			y = x - 1;
+		else
+			y = x;
+		sum += min(abs(red[i] - blue[x]), abs(red[i] - blue[y]));
+	}
+	cout << sum;
+	return 0;
+}
