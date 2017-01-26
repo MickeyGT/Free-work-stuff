@@ -1,0 +1,98 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, i, j, k, nr, viz[255][255], dist, rez[255][255],m,res;
+int mat[255][255];
+deque<pair<int, int>>que;
+pair<int, int>x;
+void bfs()
+{
+	while (que.size() != 0)
+	{
+		int dim = que.size();
+		for (j = 1; j <= dim; j++)
+		{
+			x = que.front();
+			//updatam rezultatul pentru celula curenta cu distanta la care suntem.
+			rez[x.first][x.second] = dist;
+			que.pop_front();
+			//pentru cei 4 vecini(N,S,E,V) ii bagam in coada daca nu au mai fost vizitati si ii vizitam.
+			if (x.first - 1 >= 1 && viz[x.first - 1][x.second] == 0)
+			{
+				viz[x.first - 1][x.second] = 1;
+				que.push_back({ x.first - 1 ,x.second });
+			}
+			if (x.second + 1 <= m && viz[x.first][x.second + 1] == 0)
+			{
+				viz[x.first][x.second + 1] = 1;
+				que.push_back({ x.first,x.second + 1 });
+			}
+			if (x.first + 1 <= n&&viz[x.first + 1][x.second] == 0)
+			{
+				viz[x.first + 1][x.second] = 1;
+				que.push_back({ x.first + 1 ,x.second });
+			}
+			if (x.second - 1 >= 1 && viz[x.first][x.second - 1] == 0)
+			{
+				viz[x.first][x.second - 1] = 1;
+				que.push_back({ x.first,x.second - 1 });
+			}
+			//////////////////
+			if (x.first - 1 >= 1 &&x.second-1>=1&& viz[x.first - 1][x.second-1] == 0)
+			{
+				viz[x.first - 1][x.second-1] = 1;
+				que.push_back({ x.first - 1 ,x.second-1 });
+			}
+			if (x.second + 1 <= m &&x.first-1>=1&& viz[x.first-1][x.second + 1] == 0)
+			{
+				viz[x.first-1][x.second + 1] = 1;
+				que.push_back({ x.first-1,x.second + 1 });
+			}
+			if (x.first + 1 <= n&&x.second+1<=m&&viz[x.first + 1][x.second+1] == 0)
+			{
+				viz[x.first + 1][x.second+1] = 1;
+				que.push_back({ x.first + 1 ,x.second+1});
+			}
+			if (x.second - 1 >= 1 &&x.first+1<=n&& viz[x.first+1][x.second - 1] == 0)
+			{
+				viz[x.first+1][x.second - 1] = 1;
+				que.push_back({ x.first+1,x.second - 1 });
+			}
+		}
+		//marim distanta curenta.
+		dist++;
+	}
+}
+int main()
+{
+
+	cin >> n>>m;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+		{
+			cin >> mat[i][j];
+			if (mat[i][j] == 1)
+			{
+				que.push_back({ i,j });
+				viz[i][j] = 1;
+			}
+		}
+	bfs();
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+			res = max(res, rez[i][j]);
+	cout << res;
+	return 0;
+}
