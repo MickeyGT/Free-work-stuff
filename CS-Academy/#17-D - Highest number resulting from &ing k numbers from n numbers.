@@ -1,0 +1,61 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int n, i, j, k, nr, ok,msb,res;
+char type, rez[50];
+string number;
+unordered_multimap<int, string>st;
+unordered_multimap<int, string>::iterator it,iter;
+int main()
+{
+	cin >> n >> k;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> nr;
+		msb = max(msb, int(log2(nr)));
+		bitset<30>numb(nr);
+		number = numb.to_string<char, std::string::traits_type, std::string::allocator_type>();
+		st.insert({ nr,number });
+	}
+	msb = 30 - (msb + 1);
+	for (j = msb; j <= 29; j++)
+	{
+		nr = 0;
+		for (it = st.begin(); it != st.end(); it++)
+		{
+			if (it->second[j] == '1')
+				nr++;
+		}
+		if (nr >= k)
+		{
+			for (it = st.begin(); it != st.end();)
+			{
+				if (it->second[j] != '1')
+				{
+					iter = it;
+					iter++;
+					st.erase(it);
+					it = iter;
+				}
+				else
+					it++;
+			}
+		}
+	}
+	res = (1 << 31) - 1;
+	for (it = st.begin(); it != st.end(); it++)
+		res = res&it->first;
+	cout << res;
+	return 0;
+}
