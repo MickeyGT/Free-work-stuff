@@ -1,0 +1,49 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, nr, m, n, el, p, q, c;
+unordered_map<int, vector<int>>mp;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("costuri.in");
+	ofstream g("costuri.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+	{
+		f >> nr;
+		el = nr;
+		if (nr == 0)
+			p = 0;
+		else
+			p = 1;
+		while (el != 0)
+		{
+			p *= el % 10;
+			el /= 10;
+		}
+		mp[p].push_back(nr);
+	}
+	f >> q;
+	for (i = 1; i <= q; i++)
+	{
+		f >> c >> p;
+		if (mp[p].size() < c)
+			g << "-1\n";
+		else
+			g << mp[p].at(c - 1) << '\n';
+	}
+	return 0;
+}
