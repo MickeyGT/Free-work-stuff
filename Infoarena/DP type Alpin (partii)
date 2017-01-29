@@ -1,0 +1,113 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, nr, m, n, p, q, c, mat[1010][1010], up[1010][1010], down[1010][1010], rght[1010][1010], lft[1010][1010], x, y, val, max1;
+struct element
+{
+	int x, y, val;
+}el;
+bool comp(element a, element b)
+{
+	return a.val < b.val;
+}
+vector<element>mp;
+vector<element>::iterator it, iter;
+class InParser
+{
+private:
+	FILE *fin;
+	char *buff;
+	int sp;
+
+	char read_ch()
+	{
+		++sp;
+		if (sp == 4096)
+		{
+			sp = 0;
+			fread(buff, 1, 4096, fin);
+		}
+		return buff[sp];
+	}
+
+public:
+	InParser(const char* nume)
+	{
+		fin = fopen(nume, "r");
+		buff = new char[4096]();
+		sp = 4095;
+	}
+
+	InParser& operator >> (int &n)
+	{
+		char c;
+		while (!isdigit(c = read_ch()) && c != '-');
+		int sgn = 1;
+		if (c == '-')
+		{
+			n = 0;
+			sgn = -1;
+		}
+		else {
+			n = c - '0';
+		}
+		while (isdigit(c = read_ch()))
+		{
+			n = 10 * n + c - '0';
+		}
+		n *= sgn;
+		return *this;
+	}
+};
+int main()
+{
+	InParser fin("partii.in");
+	//InParser fin("file.in");
+	ofstream g("partii.out");
+	//ofstream g("file.out");
+	fin >> n >> m;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+		{
+			fin >> mat[i][j];
+			el.val = mat[i][j];
+			el.x = i;
+			el.y = j;
+			mp.push_back(el);
+		}
+	sort(mp.begin(), mp.end(), comp);
+	for (it = mp.begin(); it != mp.end(); it++)
+	{
+		x = it->x;
+		y = it->y;
+		up[x][y] = 1;
+		down[x][y] = 1;
+		rght[x][y] = 1;
+		lft[x][y] = 1;
+		val = it->val;
+		if (x - 1 >= 1 && mat[x - 1][y] < val)
+			up[x][y] = up[x - 1][y] + 1;
+		if (x + 1 <= n && mat[x + 1][y] < val)
+			down[x][y] = down[x + 1][y] + 1;
+		if (y + 1 <= m&& mat[x][y + 1] < val)
+			rght[x][y] = rght[x][y + 1] + 1;
+		if (y - 1 >= 1 && mat[x][y - 1] < val)
+			lft[x][y] = lft[x][y - 1] + 1;
+	}
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+			max1 = max(max1, up[i][j] + down[i][j] + lft[i][j] + rght[i][j] - 3);
+	g << max1;
+	return 0;
+}
