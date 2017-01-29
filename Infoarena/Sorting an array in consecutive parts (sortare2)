@@ -1,0 +1,52 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, nr, m, v[100100], poz[100100], dp[100100], n, max1, poz1;
+int main()
+{
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    ifstream f("sortare2.in");
+    ofstream g("sortare2.out");
+    f >> n;
+    for (i = 1; i <= n; i++)
+        dp[i] = 1;
+    for (i = 1; i <= n; i++)
+    {
+        f >> v[i];
+        poz[v[i]] = i;
+        if (poz[v[i] - 1] < i&&poz[v[i] - 1] != 0)
+            dp[v[i]] = dp[v[i] - 1] + 1;
+    }
+    for (i = 1; i <= n; i++)
+    {
+        if (dp[i] > max1)
+        {
+            max1 = dp[i];
+            poz1 = i;
+        }
+    }
+    for (i = poz1 - max1; i >= 1; i--)
+    {
+        nr++;
+        i = i - dp[i] + 1;
+    }
+    for (i = n; i >= poz1 + 1; i--)
+    {
+        nr++;
+        i =i- dp[i] + 1;
+    }
+    g << nr;
+    return 0;
+}
