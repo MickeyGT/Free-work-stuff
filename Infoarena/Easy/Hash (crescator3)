@@ -1,0 +1,55 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, nr, m, n, x, y, max1, v[100100], rez, prv;
+unordered_set<int>st;
+int sumcif(int nr)
+{
+	int sum = 0;
+	while (nr != 0)
+	{
+		sum += nr % 10;
+		nr /= 10;
+	}
+	return sum;
+}
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("crescator3.in");
+	ofstream g("crescator3.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+	{
+		f >> v[i];
+		if (i == 1)
+		{
+			prv = v[i];
+			st.insert(prv);
+		}
+		else
+		{
+			prv = prv + sumcif(prv);
+			st.insert(prv);
+		}
+	}
+	for (i = 1; i <= n; i++)
+	{
+		if (st.find(v[i]) != st.end())
+			rez++;
+	}
+	g << rez;
+	return 0;
+}
