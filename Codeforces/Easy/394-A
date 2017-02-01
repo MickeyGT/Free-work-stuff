@@ -1,0 +1,28 @@
+#include <cassert>
+#include <fstream>
+#include <cstring>
+#include <queue>
+#include <algorithm>
+#include <bitset>
+#include <ctime>
+#include <set>
+#include <cmath>
+#include <unordered_map>
+#include <iomanip>
+#include <map>
+#include <stack>
+#include <vector>
+#include <bitset>
+#include <functional>
+#include <iostream>
+using namespace std;
+int i, j, k, n, m, min1, max1, nr;
+int main()
+{
+	cin >> n >> m;
+	if (abs(n - m) <= 1&&((n!=0)||(m!=0)))
+		cout << "YES";
+	else
+		cout << "NO";
+	return 0;
+}
