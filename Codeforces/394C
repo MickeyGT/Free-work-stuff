@@ -1,0 +1,57 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int symb[100], letter[100], digit[100],n,m,i,rez,nr,k,minl,mind,j;
+char s[100];
+int main()
+{
+	cin >> n >> m;
+	for (k = 1; k <= n; k++)
+	{
+		cin >> s;
+		symb[k] = letter[k] = digit[k] = 1000;
+		for (i = 0; i < m; i++)
+		{
+			if ((s[i] == '*' || s[i] == '#' || s[i] == '&'))
+				if (i <= m / 2)
+					symb[k] = min(symb[k], i);
+				else
+					symb[k] = min(symb[k], m - i);
+			else
+				if (isdigit(s[i]))
+					if (i <= m / 2)
+						digit[k] = min(digit[k], i);
+					else
+						digit[k] = min(digit[k], m - i);
+				else
+					if (isalpha(s[i]))
+						if (i <= m / 2)
+							letter[k] = min(letter[k], i);
+						else
+							letter[k] = min(letter[k], m - i);
+		}
+	}
+	rez = 10000;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= n; j++)
+			for (k = 1; k <= n; k++)
+				if (i != j&&i != k&&j != k&&symb[i] != 1000 && letter[j] != 1000&& digit[k] != 1000)
+					rez = min(rez, symb[i] + letter[j] + digit[k]);
+	cout << rez;
+	return 0;
+}
