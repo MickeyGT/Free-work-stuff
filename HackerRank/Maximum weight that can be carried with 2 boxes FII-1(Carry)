@@ -1,0 +1,57 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,t,rez,v1[5],v2[5],g1,g2;
+bool comp(int a, int b)
+{
+	return a > b;
+}
+int main()
+{
+	cin >> t;
+	for (k = 1; k <= t; k++)
+	{
+		cin >> v1[1] >> v1[2] >> v1[3] >> g1;
+		cin >> v2[1] >> v2[2] >> v2[3] >> g2;
+		if (g1 > g2)
+		{
+			sort(v1 + 1, v1 + 4,comp);
+			sort(v2 + 1, v2 + 4);
+			if (v1[1] >= v2[1] && v1[2] >= v2[2])
+				cout << g1 + g2<<'\n';
+			else
+				cout << 2 * g2<<'\n';
+		}
+		else
+		{
+			sort(v2 + 1, v2 + 4, comp);
+			sort(v1 + 1, v1 + 4);
+			if (v2[1] >= v1[1] && v2[2] >= v1[2])
+				cout << g1 + g2 << '\n';
+			else
+				cout << 2 * g1 << '\n';
+		}
+	}
+	return 0;
+}
