@@ -1,0 +1,38 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+unsigned long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,t,rez;
+int main()
+{
+	cin >> t;
+	for (k = 1; k <= t; k++)
+	{
+		cin >> n >> m;
+		if (n < m)
+			swap(n, m);
+		rez = (n-m)*(m*(m+1)/2)+(m*(m+1)*(2*m+1))/6;
+		printf("%llu\n",rez);
+	}
+	return 0;
+}
