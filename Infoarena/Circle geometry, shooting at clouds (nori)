@@ -1,0 +1,91 @@
+#include <cassert>
+#include <fstream>
+#include <cstring>
+#include <queue>
+#include <algorithm>
+#include<string.h>
+#include <bitset>
+#include <ctime>
+#include <set>
+#include <cmath>
+#include <unordered_map>
+#include <iomanip>
+#include <map>
+#include <stack>
+#include <vector>
+#include <bitset>
+#include <functional>
+#include <iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int i, j, k, nr, m, n, p, q, c, r,ok;
+double center, raza, a, b, ta, tb, t, panta1, panta2, x, y;
+double dist(int x1, int y1, int x2, int y2)
+{
+	return sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+}
+vector<pair<double, double>>v;
+vector<pair<double, double>>::iterator it,prv;
+bool comp(pair<double, double>a, pair<double, double>b)
+{
+	return a.first > b.first;
+}
+bool complwr(pair<double, double>a, double b)
+{
+	return a.first < b;
+}
+string rez;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("nori.in");
+	ofstream g("nori.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+	{
+		f >> x >> y >> r;
+		center = dist(0, 0, x, y);
+		raza = r;
+		a = asin(raza / center);
+		b = atan2(-y, -x);
+		t = b + a;
+		ta = x + raza*-1 * sin(t);
+		tb = y + raza* cos(t);
+		panta1 = tb / ta;
+		//
+		t = b - a;
+		ta = x + raza*sin(t);
+		tb = y + raza*-1 * cos(t);
+		panta2 = tb / ta;
+		v.push_back({ panta2,panta1 });
+	}
+	sort(v.begin(), v.end());
+	f >> m;
+	for (i = 1; i <= m; i++)
+	{
+		f >> a >> b;
+		panta1 = b / a;
+		it = lower_bound(v.begin(), v.end(), panta1, complwr);
+		ok = 0;
+		for (prv = it, j = 1; prv != v.end() && j <= 50; j++, prv++)
+		{
+			if (prv != v.end() && prv->second < panta1)
+			{
+				ok = 1;
+				break;
+			}
+		}
+		if (ok)
+			rez += '0';
+		else
+			rez += '1';
+	}
+	g << rez;
+	return 0;
+}
