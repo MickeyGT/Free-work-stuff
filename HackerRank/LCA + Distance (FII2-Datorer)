@@ -1,0 +1,139 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+using namespace std;
+int euler[5000], nr, n, m, x, y, i, level[5000], curlv, rmq[22][5000], power, j, putere, poz[5000], p2[23], cost[5000], curcost, viz[5000],costi[5000],parent[5000];
+vector<int>v[5000];
+void dfs(int nod, int lev)
+{
+	cost[nod] = curcost;
+	euler[++nr] = nod;
+	level[nr] = lev;
+	poz[nod] = nr;
+	viz[nod] = 1;
+	if (v[nod].size() != 0)
+	{
+		for (auto it = v[nod].begin(); it != v[nod].end(); it++)
+			if (viz[*it] == 0)
+			{
+				parent[*it] = nod;
+				curcost += costi[*it];
+				dfs(*it, lev + 1);
+				curcost -= costi[*it];
+				euler[++nr] = nod;
+				level[nr] = lev;
+			}
+	}
+}
+void precalcrmq()
+{
+	for (i = 1; i <= nr; i++)
+		rmq[0][i] = i;
+	power = log2(nr);
+	for (j = 1; j <= power; j++)
+	{
+		putere = p2[j - 1];
+		for (i = 1; i <= nr - putere; i++)
+		{
+			rmq[j][i] = rmq[j - 1][i];
+			if (level[rmq[j - 1][i + putere]]<level[rmq[j][i]])
+				rmq[j][i] = rmq[j - 1][i + putere];
+		}
+	}
+}
+void lca(int x, int y)
+{
+	int dist, poz1, poz2, ancestor, sh;
+	poz1 = poz[x];
+	poz2 = poz[y];
+	if (poz1 > poz2)
+		swap(poz1, poz2);
+	dist = poz2 - poz1 + 1;
+	power = log2(dist);
+	ancestor = rmq[power][poz1];
+	sh = dist - (p2[power]);
+	if (level[rmq[power][poz1]]>level[rmq[power][poz1 + sh]])
+		ancestor = rmq[power][poz1 + sh];
+	ancestor = euler[ancestor];
+	cout << double((cost[x] + cost[y] - cost[ancestor]))/double((level[poz[x]]-level[poz[ancestor]]+level[poz[y]]-level[poz[ancestor]]+1)) << '\n';
+}
+void increase(int x, int y, int incr)
+{
+	if (level[y] > level[x])
+		swap(x, y);
+	while (level[x] != level[y])
+	{
+		costi[x] += incr;
+		x = parent[x];
+	}
+	while (x != y)
+	{
+		costi[x] += incr;
+		costi[y] += incr;
+		x = parent[x];
+		y = parent[y];
+	}
+	costi[x] += incr;
+}
+int main()
+{
+
+	cin >> n;
+	p2[0] = 1;
+	for (i = 1; i <= 22; i++)
+		p2[i] = p2[i - 1] * 2;
+	for (i = 1; i <= n; i++)
+		cin >> costi[i];
+	for (i = 2; i <= n; i++)
+	{
+		cin >> x >> y;
+		v[x].push_back(y);
+		v[y].push_back(x);
+	}
+	cin >> m;
+	curlv = 0;
+	nr = 0;
+	curcost = costi[1];
+	dfs(1, 0);
+	nr--;
+	for (i = 1; i <= m; i++)
+	{
+		cin >> x >> y >> curcost;
+		increase(x, y, curcost);
+	}
+	memset(viz, 0, sizeof(viz));
+	curlv = 0;
+	nr = 0;
+	curcost = costi[1];
+	dfs(1, 0);
+	nr--;
+	precalcrmq();
+	cin >> m;
+	for (i = 1; i <= m; i++)
+	{
+		cin >> x >> y;
+		lca(x, y);
+	}
+	return 0;
+}
