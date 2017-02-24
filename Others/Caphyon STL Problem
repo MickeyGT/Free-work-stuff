@@ -1,0 +1,101 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+string s;
+int i, j, nr, n;
+vector<string> database;
+
+vector<string> LoadIndex()
+{
+	vector<string> words;
+
+	ifstream inputFile("file.in");
+	for (string line; std::getline(inputFile, line); )
+		words.push_back(line);
+
+	return words;
+}
+
+void SaveIndex(const vector<string> & words)
+{
+	ofstream outputFile("file.out");
+	for (const auto & word : words)
+		outputFile << word << endl;
+}
+
+
+int binarySearch(int inceput, int sfarsit,string s)
+{
+	int mid;
+	if (inceput == sfarsit&&(database[inceput] == s|| database[inceput] > s||database[inceput].size()==0))
+		return inceput;
+	else
+		if (inceput == sfarsit&&database[inceput] < s)
+			return inceput + 1;
+		else
+			if (inceput > sfarsit&&database[sfarsit] == s)
+				return sfarsit;
+			else
+				if(inceput>sfarsit)
+					return inceput;
+	mid = (inceput + sfarsit) / 2;
+	while (database[mid].size() == 0)
+		mid++;
+	if (database[mid] == s|| mid == database.size() - 1)
+		return mid;
+	else
+		if (database[mid] > s)
+			return binarySearch(inceput, mid - 1, s);
+		else
+			return binarySearch(mid + 1, sfarsit, s);
+}
+
+void updateArray(string s)
+{
+	int poz = binarySearch(0, database.size() - 1, s);
+	if (database[poz].size() == 0||poz==database.size()-1)
+		database[poz] = s;
+	else
+		database.insert(database.begin() + poz, s);
+}
+int main()
+{
+	database = LoadIndex();
+	database.push_back("zzzzzzzzzzzzzzzzz");
+	cout << binarySearch(0, database.size() - 1, "ggg") << '\n';
+	cout << binarySearch(0, database.size() - 1, "iii") << '\n';
+	cout << binarySearch(0, database.size() - 1, "mmm") << '\n';
+	cout << binarySearch(0, database.size() - 1, "nnn") << '\n';
+	cout << binarySearch(0, database.size() - 1, "ppp") << '\n';
+	cout << binarySearch(0, database.size() - 1, "aac") << '\n';
+
+	updateArray("aaa");
+	updateArray("zza");
+	updateArray("nnn");
+	updateArray("aac");
+	updateArray("ffx");
+	updateArray("ggx");
+	SaveIndex(database); // do not delete
+	return 0;
+}
