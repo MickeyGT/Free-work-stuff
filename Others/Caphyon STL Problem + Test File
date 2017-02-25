@@ -1,0 +1,142 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+string s;
+int i, j, nr, n;
+vector<string> database;
+
+vector<string> LoadIndex()
+{
+	vector<string> words;
+
+	ifstream inputFile("file.in");
+	for (string line; std::getline(inputFile, line); )
+		words.push_back(line);
+
+	return words;
+}
+
+void SaveIndex(const vector<string> & words)
+{
+	ofstream outputFile("file.out");
+	for (const auto & word : words)
+		outputFile << word << endl;
+}
+
+// O(log2(n) + max amount of spaces between 2 words) complexity because of the binary search and because we have to skip the spaces.
+int binarySearch(int inceput, int sfarsit,string s)
+{
+	int mid;
+	// sequence for determining correct position for string insertion/lookup.
+	if (inceput == sfarsit&&(database[inceput] == s|| database[inceput] > s||database[inceput].size()==0))
+		return inceput;
+	else
+		if (inceput == sfarsit&&database[inceput] < s)
+			return inceput + 1;
+		else
+			if (inceput > sfarsit&&database[sfarsit] == s)
+				return sfarsit;
+			else
+				if(inceput>sfarsit)
+					return inceput;
+	mid = (inceput + sfarsit) / 2;
+	while (database[mid].size() == 0)
+		mid++;
+	if (database[mid] == s|| mid == database.size() - 1)  // if we're at the end or if our string matches.
+		return mid;
+	else
+		if (database[mid] > s)
+			return binarySearch(inceput, mid - 1, s);
+		else
+			return binarySearch(mid + 1, sfarsit, s);
+}
+
+// O(log2(n)) complexity because of the binary search for the positon. 
+// Can be O(log2(n)+n) because of the insert function from stl having a complexity of O(n).
+void updateArray(string s) 
+{
+	int poz = binarySearch(0, database.size() - 1, s);  // We use our binary search function to find the position.
+	if (database[poz].size() == 0||poz==database.size()-1) // if it's space at that position or if it is the end of the array
+		database[poz] = s;  // we overwrite the space.
+	else
+		database.insert(database.begin() + poz, s); //we use the insert function and insert at that position and move everything after it.
+}
+int main()
+{
+	database = LoadIndex();
+	database.push_back("zzzz");
+	cout << binarySearch(0, database.size() - 1, "ggg") << '\n'; //ggg can be found at position 10.
+	cout << binarySearch(0, database.size() - 1, "iii") << '\n'; //iii can be found at position 16.
+	cout << binarySearch(0, database.size() - 1, "mmm") << '\n'; //mmm can be found at position 22.
+	cout << binarySearch(0, database.size() - 1, "nnn") << '\n'; //nnn is not in the vector but should be inserted at position 23 before ooo
+	cout << binarySearch(0, database.size() - 1, "ppp") << '\n'; //ppp is not in the vector but should be inserted in the last database position(32).
+	cout << binarySearch(0, database.size() - 1, "aac") << '\n'; //aac is not in the vector but should be inserted in place of bbb(position 2).
+	cout << binarySearch(0, database.size() - 1, "llx") << '\n'; //llx is not in the vector but should be inserted in place of mmm(position 22).
+
+	updateArray("aa0"); //aaa should be inserted at position 0 before aaa.
+	updateArray("zza"); //zza should be inserted at the last position of the databse due to spaces following last string ooo.
+	updateArray("nnn"); //nnn should be inserted at position 23 between mmm and ooo in the space there.
+	updateArray("aac"); //aac should be inserted in the place of bbb and have everything after bbb move 1 position.
+	updateArray("ffx"); //ffx should be inserted in the place of ggg and have everything after ggg move 1 position.
+	updateArray("ggx"); //ggx should be inserted in the place of hhh and have everything after hhh move 1 position.
+	SaveIndex(database);
+	return 0;
+}
+
+
+
+//////////////////////////
+
+
+aaa
+bbb
+
+ccc
+ddd
+
+eee
+
+fff
+ggg
+hhh
+
+
+
+
+iii
+
+
+kkk
+
+lll
+mmm
+
+ooo
+
+
+
+
+
+
+
