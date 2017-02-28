@@ -1,0 +1,153 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int nrc, i, j, k, ok, nr, nrt, id, x, y, w, h, cuvsus=-1, cuvjos=-1, cuvdr=-1, cuvst=-1, dsus, djos, ddr, dst, idrez;
+double maxval,val;
+string name;
+struct cuvant
+{
+	string name;
+	int x,y,w,h;
+}text;
+struct templateP
+{
+	int id;
+	double pt, pr, pb, pl;
+	string ct, cr, cb, cl;
+}temp;
+vector<cuvant>cuvinte;
+vector<templateP>templates;
+int main()
+{
+	ifstream f("file.in");
+	f >> nrc;
+	for (i = 1; i <= nrc; i++) // citirea cuvintelor
+	{
+		string name;
+		f >> name >> x >> y >> w >> h;
+		text.name = name,text.x = x,text.y = y,text.w = w,text.h = h;
+		cuvinte.push_back(text);
+	}
+	f >> nrt;
+	for (i = 1; i <= nrt; i++) // citirea template-urilor
+	{
+		int id;
+		double pt=0, pr=0, pb=0, pl=0;
+		string ct, cr, cb, cl;
+		f >> id >> ct;
+		if (ct != "-")
+			f >> pt;
+		f >> cr;
+		if (cr != "-")
+			f >> pr;
+		f >> cb;
+		if (cb != "-")
+			f >> pb;
+		f >> cl;
+		if (cl != "-")
+			f >> pl;
+		temp.id = id,temp.ct = ct,temp.pt = pt,temp.cr = cr;
+		temp.pr = pr,temp.cb = cb,temp.pb = pb,temp.cl = cl;
+		temp.pl = pl;
+		templates.push_back(temp);
+	}
+	f >> id;
+	// stocarea mai usuoara a parametrilor cuvantului cu id-ul dat.
+	x = cuvinte[id].x,y = cuvinte[id].y,w = cuvinte[id].w,h = cuvinte[id].h; 
+	i = 0;
+	dsus = djos = ddr = dst = 1 << 30;
+	// stabilirea vecinilor cuvantului cu id-ul dat.
+	for (auto it = cuvinte.begin(); it != cuvinte.end(); it++,i++)
+	{
+		text = *it;
+		if (text.x == x) // daca sunt pe aceasi coloana
+		{
+			// daca distanta intre cele 2 cuvinte pe linie este mai mica decat valoarea curenta si nu se suprapun.
+			if (dsus > text.y - text.h-y&&text.y - text.h > y)
+			{
+				dsus = text.y - text.h - y;
+				cuvsus = i;
+			}
+			// daca distanta intre cele 2 cuvinte pe linie este mai mica decat valoarea curenta si nu se suprapun.
+			if (djos > y-h-text.y && y - h - text.y>0)
+			{
+				djos = y - h - text.y;
+				cuvjos = i;
+			}
+		}
+		else
+			if (text.y == y) // daca sunt pe aceasi linie
+			{
+				// daca distanta intre cele 2 cuvinte pe coloana este mai mica decat valoarea curenta si nu se suprapun.
+				if (dst > x - (text.x + text.w)&&text.x + text.w < x)
+				{
+					dst = x - (text.x + text.w);
+					cuvst = i;
+				}
+				// daca distanta intre cele 2 cuvinte pe coloana este mai mica decat valoarea curenta si nu se suprapun.
+				if (ddr > text.x - (x + w) && text.x - (x + w)>0)
+				{
+					ddr = text.x - (x + w);
+					cuvdr = i;
+				}
+			}
+	}
+	maxval = -1;
+	// pentru fiecare template in parte, calculam valoarea template-ului pentru id-ul dat.
+	for (auto it = templates.begin(); it != templates.end(); it++)
+	{
+		temp = *it;
+		val = 0;
+		// testam pentru fiecare directie in parte daca avem cuvant in directia respectiva
+		// si daca textul din cuvantul potrivit se potriveste cu ce este in template si adaugam la val.
+		if (cuvsus!=-1 && temp.ct == cuvinte[cuvsus].name)
+			val += temp.pt;
+		if (cuvdr != -1 && temp.cr == cuvinte[cuvdr].name)
+			val += temp.pr;
+		if (cuvjos != -1 && temp.cb == cuvinte[cuvjos].name)
+			val += temp.pb;
+		if (cuvst != -1 && temp.cl == cuvinte[cuvst].name)
+			val += temp.pl;
+		if (val > maxval) // daca valoarea template-ului curent este mai mare decat valoarea maxima
+		{
+			idrez = temp.id;  // inlocuim Id-ul rezultatului.
+			maxval = val;  // inlocuim valoarea maxima cu valoarea template-ului curent.
+		}
+	}
+	cout << idrez;  //afisam id-ul primului template cu valoarea maxima.
+
+	/*
+	Analiza complexitatii:
+	O(n) - Citirea cuvintelor.
+	O(t) - Citirea Template-urilor.
+	O(n) - Gasirea celor 4 vecini.
+	O(t) - Calcularea template-ului cu valoarea maxima.
+
+	Total: O(2*n+2*t) ~ O(n+t) ~ complexitate liniara.
+
+	Complexitatea ar putea fi mai mica daca id-ul s-ar da la inceput si cuvantul s-ar da de asemenea primul
+	pentru ca nu ar mai fi necesara stocarea cuvintelor si a template-ului.
+	*/
+	return 0;
+}
