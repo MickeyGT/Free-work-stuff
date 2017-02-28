@@ -120,7 +120,7 @@ int main()
 		temp = *it;
 		val = 0;
 		// testam pentru fiecare directie in parte daca avem cuvant in directia respectiva
-		// si daca textul din cuvantul potrivit se potriveste cu ce este in template si adaugam la val.
+		// si daca textul din cuvantul respectiv se potriveste cu ce este in template si daca este, adaugam la val.
 		if (cuvsus!=-1 && temp.ct == cuvinte[cuvsus].name)
 			val += temp.pt;
 		if (cuvdr != -1 && temp.cr == cuvinte[cuvdr].name)
