@@ -23,7 +23,8 @@
 #include<ctype.h>
 using namespace std;
 string s;
-int i, j, nr, n;
+int i, j, nr, n, vsize;
+vector<int>v, dp;
 vector<string> database;
 
 vector<string> LoadIndex()
@@ -44,68 +45,116 @@ void SaveIndex(const vector<string> & words)
 		outputFile << word << endl;
 }
 
-// O(log2(n) + max amount of spaces between 2 words) complexity because of the binary search and because we have to skip the spaces.
-int binarySearch(int inceput, int sfarsit,string s)
+int binarySearch(string s)
 {
-	int mid;
-	// sequence for determining correct position for string insertion/lookup.
-	if (inceput == sfarsit&&(database[inceput] == s|| database[inceput] > s||database[inceput].size()==0))
-		return inceput;
+	auto it = lower_bound(database.begin(), database.end(), s);
+	int nr = (it - database.begin()) + 1;
+	if (nr<database.size() && *it == s)
+		return nr + dp[nr] - 1;
 	else
-		if (inceput == sfarsit&&database[inceput] < s)
-			return inceput + 1;
-		else
-			if (inceput > sfarsit&&database[sfarsit] == s)
-				return sfarsit;
+		if (nr <= database.size())
+		{
+			if (v[nr] != 0)
+				return dp[nr] + nr - 2;
 			else
-				if(inceput>sfarsit)
-					return inceput;
-	mid = (inceput + sfarsit) / 2;
-	while (database[mid].size() == 0)
-		mid++;
-	if (database[mid] == s|| mid == database.size() - 1)  // if we're at the end or if our string matches.
-		return mid;
-	else
-		if (database[mid] > s)
-			return binarySearch(inceput, mid - 1, s);
+				return dp[nr] + nr - 1;
+		}
 		else
-			return binarySearch(mid + 1, sfarsit, s);
+			return dp[vsize] + vsize - 2;
 }
 
-// O(log2(n)) complexity because of the binary search for the positon. 
-// Can be O(log2(n)+n) because of the insert function from stl having a complexity of O(n).
-void updateArray(string s) 
+void updateArray(string s)
 {
-	int poz = binarySearch(0, database.size() - 1, s);  // We use our binary search function to find the position.
-	if (database[poz].size() == 0||poz==database.size()-1) // if it's space at that position or if it is the end of the array
-		database[poz] = s;  // we overwrite the space.
+	auto it = lower_bound(database.begin(), database.end(), s);
+	int nr = (it - database.begin()) + 1;
+	if (v[nr] != 0)
+	{
+		database.insert(database.begin() + (nr-1), s);
+		v.insert(v.begin() + nr, v[nr]-1);
+		v[nr+1] = 0;
+		dp.insert(dp.begin() + nr, dp[nr]);
+		for (i = nr; i <= vsize + 1; i++)
+			dp[i] = dp[i - 1] + v[i];
+		vsize++;
+	}
 	else
-		database.insert(database.begin() + poz, s); //we use the insert function and insert at that position and move everything after it.
+	{
+		database.insert(database.begin() + (nr-1), s);
+		v.insert(v.begin() + (nr), 0);
+		dp.insert(dp.begin() + nr, dp[nr]);	
+		vsize++;
+	}
+}
+
+void prelucrare(vector<string> data)
+{
+	vector<string>temp;
+	int nr = 0;
+	vsize = 1;
+	for (auto it = data.begin(); it != data.end(); it++)
+	{
+		if ((*it).size() == 0)
+		{
+			nr++;
+		}
+		else
+		{
+			temp.push_back(*it);
+			v[vsize] = nr;
+			nr = 0;
+			vsize++;
+		}
+	}
+	vsize--;
+	database.clear();
+	data.clear();
+	for (auto it = temp.begin(); it != temp.end(); it++)
+		database.push_back(*it);
+}
+void vectorFinal(vector<string> data)
+{
+	vector<string>temp;
+	for (i = 1; i <= vsize; i++)
+	{
+		for (j = 1; j <= v[i]; j++)
+			temp.push_back(" ");
+		temp.push_back(data[i - 1]);
+	}
+	database.clear();
+	for (auto it = temp.begin(); it != temp.end(); it++)
+	{
+		database.push_back(*it);
+	}
 }
 int main()
 {
+	v.resize(10000);
+	dp.resize(10000);
 	database = LoadIndex();
-	database.push_back("zzzz");
-	cout << binarySearch(0, database.size() - 1, "ggg") << '\n'; //ggg can be found at position 10.
-	cout << binarySearch(0, database.size() - 1, "iii") << '\n'; //iii can be found at position 16.
-	cout << binarySearch(0, database.size() - 1, "mmm") << '\n'; //mmm can be found at position 22.
-	cout << binarySearch(0, database.size() - 1, "nnn") << '\n'; //nnn is not in the vector but should be inserted at position 23 before ooo
-	cout << binarySearch(0, database.size() - 1, "ppp") << '\n'; //ppp is not in the vector but should be inserted in the last database position(32).
-	cout << binarySearch(0, database.size() - 1, "aac") << '\n'; //aac is not in the vector but should be inserted in place of bbb(position 2).
-	cout << binarySearch(0, database.size() - 1, "llx") << '\n'; //llx is not in the vector but should be inserted in place of mmm(position 22).
+	database.push_back("~~~~~~");
+	prelucrare(database);
+	for (i = 1; i <= vsize; i++)
+		dp[i] = dp[i - 1] + v[i];
+	cout << binarySearch("ggg") << '\n'; 
+	cout << binarySearch("iii") << '\n'; 
+	cout << binarySearch("mmm") << '\n'; 
+	cout << binarySearch("nnn") << '\n'; 
+	cout << binarySearch("ppp") << '\n'; 
+	cout << binarySearch("aac") << '\n';
+	cout << binarySearch("llx") << '\n'; 
 
-	updateArray("aa0"); //aaa should be inserted at position 0 before aaa.
-	updateArray("zza"); //zza should be inserted at the last position of the databse due to spaces following last string ooo.
-	updateArray("nnn"); //nnn should be inserted at position 23 between mmm and ooo in the space there.
-	updateArray("aac"); //aac should be inserted in the place of bbb and have everything after bbb move 1 position.
-	updateArray("ffx"); //ffx should be inserted in the place of ggg and have everything after ggg move 1 position.
-	updateArray("ggx"); //ggx should be inserted in the place of hhh and have everything after hhh move 1 position.
+	updateArray("aax"); 
+	updateArray("zza"); 
+	updateArray("nnn"); 
+	updateArray("aac"); 
+	updateArray("ffx"); 
+	updateArray("ggx"); 
+	database.pop_back();
+	vsize--;
+	vectorFinal(database);
 	SaveIndex(database);
 	return 0;
 }
-
-
-
 //////////////////////////
 
 
@@ -133,10 +182,6 @@ lll
 mmm
 
 ooo
-
-
-
-
 
 
 
