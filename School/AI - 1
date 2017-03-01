@@ -1,0 +1,135 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int i,j,k,ok,nr,n,m,el,min1,max1,x,y,a,b,v[100],dim;
+int fact(int n)
+{
+    if(n==0)
+        return 1;
+    else
+        return n*fact(n-1);
+}
+int fib(int n)
+{
+    if(n==2||n==1)
+        return 1;
+    else
+        return fib(n-2)+fib(n-1);
+}
+void afis(int v[100],int dim)
+{
+    if(dim==0)
+        return;
+    else
+    {
+        cout<<v[0]<<' ';
+        afis(v+1,dim-1);
+    }
+}
+void backafis(int v[100],int dim)
+{
+    if(dim==0)
+        return;
+    else
+    {
+        cout<<v[dim-1]<<' ';
+        afis(v,dim-1);
+    }
+}
+void ispalindrom(int v[100],int dim)
+{
+    if(dim<=1)
+        return;
+    else
+    {
+        if(v[0]!=v[dim-1])
+            ok=0;
+        ispalindrom(v+1,dim-2);
+    }
+}
+int minvec(int v[100],int dim)
+{
+    int min1=1<<30;
+    for(int i=0;i<=dim-1;i++)
+        min1=min(min1,v[i]);
+    return min1;
+}
+void factorprim(int n)
+{
+    int i,j,el;
+    for(i=2;i<=n;i++)
+        if(n%i==0)
+        {
+            cout<<i<<'*';
+            factorprim(n/i);
+            break;
+        }
+}
+int cautbin(int n,int in,int sf)
+{
+    int mid;
+    mid=(in+sf)/2;
+    if(in>sf)
+        return -1;
+    if(v[mid]==n)
+        return mid;
+
+    if(v[mid]>n)
+        return cautbin(n,in,mid-1);
+        else
+        return cautbin(n,mid+1,sf);
+}
+void hanoi(int src,int temp,int dest,int n)
+{
+    if(n==1)
+        cout<<"Mut de la "<<src<<" la "<<dest<<endl;
+    else
+    {
+        hanoi(src,dest,temp,n-1);
+        hanoi(src,temp,dest,1);
+        hanoi(temp,src,dest,n-1);
+    }
+}
+int main()
+{
+  cout<<fact(3)<<'\n';
+  cout<<fib(7)<<'\n';
+  int v[]={1,2,3,4,5,6,7,8,9};
+  dim=9;
+  afis(v,4);
+  cout<<'\n';
+  ok=1;
+  backafis(v,4);
+  ispalindrom(v,4);
+  if(ok)
+    cout<<"Da\n";
+  else
+    cout<<"Nu\n";
+  cout<<minvec(v,4)<<'\n';
+  //factorprim(66);
+  //cout<<"\b \b";
+  //cout<<cautbin(2,0,8);
+  hanoi(1,2,3,4);
+  return 0 ;
+}
