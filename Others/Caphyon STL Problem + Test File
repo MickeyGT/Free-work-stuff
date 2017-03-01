@@ -44,7 +44,7 @@ void SaveIndex(const vector<string> & words)
 	for (const auto & word : words)
 		outputFile << word << endl;
 }
-
+// complexity: O(log2(n)) because of the lower bound.
 int binarySearch(string s)
 {
 	auto it = lower_bound(database.begin(), database.end(), s);
@@ -63,11 +63,13 @@ int binarySearch(string s)
 			return dp[vsize] + vsize - 2;
 }
 
+// complexity: O(log2(n)) if we insert between 2 words and O(log2(n)+n) worst case if we
+// insert in a free space at the beggining of the array because we need to update the dp vector.
 void updateArray(string s)
 {
 	auto it = lower_bound(database.begin(), database.end(), s);
 	int nr = (it - database.begin()) + 1;
-	if (v[nr] != 0)
+	if (v[nr] != 0) // if we have free space to insert the word into.
 	{
 		database.insert(database.begin() + (nr-1), s);
 		v.insert(v.begin() + nr, v[nr]-1);
@@ -77,7 +79,7 @@ void updateArray(string s)
 			dp[i] = dp[i - 1] + v[i];
 		vsize++;
 	}
-	else
+	else // if we need to insert between 2 words.
 	{
 		database.insert(database.begin() + (nr-1), s);
 		v.insert(v.begin() + (nr), 0);
@@ -86,31 +88,35 @@ void updateArray(string s)
 	}
 }
 
+// separates the database into 2 vectors: one that only contains words and
+// one that contains the amount of spaces before a certain word.
 void prelucrare(vector<string> data)
 {
 	vector<string>temp;
-	int nr = 0;
-	vsize = 1;
+	int nr = 0; // number of spaces before a word.
+	vsize = 1; // represents the number of words different from nothing we have.
 	for (auto it = data.begin(); it != data.end(); it++)
 	{
 		if ((*it).size() == 0)
 		{
-			nr++;
+			nr++; // if it is a space, then we increase the number of spaces
 		}
 		else
 		{
-			temp.push_back(*it);
-			v[vsize] = nr;
-			nr = 0;
+			temp.push_back(*it); // push back the words
+			v[vsize] = nr; // set the number of spaces before the word.
+			nr = 0; // reset the number of spaces.
 			vsize++;
 		}
 	}
 	vsize--;
 	database.clear();
-	data.clear();
+	data.clear(); 
+	// transfering it from the temp vector to our main one.
 	for (auto it = temp.begin(); it != temp.end(); it++)
 		database.push_back(*it);
 }
+//function for inserting the spaces where they need to go before displaying.
 void vectorFinal(vector<string> data)
 {
 	vector<string>temp;
@@ -131,9 +137,9 @@ int main()
 	v.resize(10000);
 	dp.resize(10000);
 	database = LoadIndex();
-	database.push_back("~~~~~~");
+	database.push_back("~~~~~~"); //needed so we can have an upper bound. will be deleted at the end.
 	prelucrare(database);
-	for (i = 1; i <= vsize; i++)
+	for (i = 1; i <= vsize; i++) // partial sum vector so we know how many spaces we have until a word.
 		dp[i] = dp[i - 1] + v[i];
 	cout << binarySearch("ggg") << '\n'; 
 	cout << binarySearch("iii") << '\n'; 
@@ -149,9 +155,9 @@ int main()
 	updateArray("aac"); 
 	updateArray("ffx"); 
 	updateArray("ggx"); 
-	database.pop_back();
-	vsize--;
-	vectorFinal(database);
+	database.pop_back(); // pop-ing "~~~~~~"
+	vsize--; // decreasing size because of above operation.
+	vectorFinal(database); // final computing of the vector.
 	SaveIndex(database);
 	return 0;
 }
