@@ -1,0 +1,52 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,v[100100],este[100100],poz[100100];
+int main()
+{
+	cin >> n;
+	for (i = 1; i <= n; i++)
+	{
+		poz[i] = n;
+	}
+	max1 = n+1;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> v[i];
+		if (v[i] < max1)
+		{
+			for (j = max1-1; j >= v[i]+1; j--)
+				poz[j] = i;
+			max1 = v[i]+1;
+		}
+	}
+	nr = -1;
+	for (i = 1; i <= n; i++)
+	{
+		if(i>poz[v[i]])
+			nr = max(nr, i - poz[v[i]]);
+	}
+	cout << nr;
+	return 0;
+}
