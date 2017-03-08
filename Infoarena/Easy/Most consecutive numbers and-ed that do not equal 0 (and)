@@ -1,0 +1,50 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int n, v[40], i, el, lg, j, max1;
+
+int main()
+{
+	ifstream f("and.in");
+	ofstream g("and.out");
+	f >> n;
+	for (j = 1; j <= n; j++)
+	{
+		f >> el;
+		bitset<35>bit(el);
+		lg = log2(el);
+		for (i = 0; i <= 32; i++)
+			if (bit[i] == 1)
+				v[i]++;
+			else
+			{
+				max1 = max(max1, v[i]);
+				v[i] = 0;
+			}
+	}
+	for (i = 0; i < 39; i++)
+		max1 = max(max1, v[i]);
+	g << max1;
+	return 0;
+}
