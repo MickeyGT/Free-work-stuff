@@ -1,0 +1,132 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+ifstream f("file.in");
+ofstream g("file.out");
+
+char type;
+struct Trie
+{
+	int nrpr;
+	Trie *fiu[70];
+
+	Trie(int nr)
+	{
+		nrpr=nr;
+		memset(fiu, 0, sizeof(fiu));
+	}
+};
+
+Trie *root = new Trie(1);
+void add(string s)
+{
+	Trie *node = root;
+	int i, l = s.size();
+	for (i = 0; i < l; i++)
+	{
+		if (node->fiu[s[i] - 'A'] == 0)
+			node->fiu[s[i] - 'A'] = new Trie(1);
+		node = node->fiu[s[i] - 'A'];
+	}
+}
+
+void querry(string cuv)
+{
+	Trie *node = root;
+	transform(cuv.begin(), cuv.end(), cuv.begin(), ::tolower);
+	string str=cuv;
+	int i;
+	for (i = 0; i <= cuv.size() - 1; i++)
+	{
+		if(node->fiu[])
+	}
+	if (i != cuv.size())
+	{
+		g << "Search Bing for " << cuv << '\n';
+	}
+	else
+	{
+		while (1)
+		{
+			int rez, max=-1;
+			for (int i = 0; i <= 69; i++)
+				if(node->fiu[i]!=NULL&&node->fiu[i]->nrpr>max)
+				{
+					max = node->fiu[i]->nrpr;
+					rez = i;
+				}
+			if (max == -1)
+			{
+				g << str<<'\n';
+				break;
+			}
+			else
+			{
+				str += (rez + 'A');
+				node = node->fiu[rez];
+			}
+		}
+	}
+}
+
+void update(string str,int nr)
+{
+	Trie *node = root;
+	int i, l = str.size();
+	for (i = 0; i < l; i++)
+	{
+		node = node->fiu[str[i] - 'A'];
+		node->nrpr += nr;
+	}
+}
+
+int t,n,m,nr;
+string cuv;
+int main()
+{
+	f >> t;
+	for (int k = 1; k <= t; k++)
+	{
+		f >> n >> m;
+		for (int i = 1; i <= n; i++)
+		{
+			f >> cuv;
+			add(cuv);
+		}
+		for (int i = 1; i <= m; i++)
+		{
+			f >> type>>cuv;
+			if (type == 'Q')
+			{
+				querry(cuv);
+			}
+			else
+			{
+				f >> nr;
+				update(cuv, nr);
+			}
+		}
+	}
+	return 0;
+}
