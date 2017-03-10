@@ -1,0 +1,45 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+unordered_map<int, string>mp;
+int year;
+int main()
+{
+	ifstream f("random.in");
+	ofstream g("random.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	mp.insert({ 1982,"Robert Tarjan" });
+	mp.insert({ 1986,"Leslie Valiant" });
+	mp.insert({ 1990,"Alexander Razborov" });
+	mp.insert({ 1994,"Avi Wigderson" });
+	mp.insert({ 1998,"Peter Shor" });
+	mp.insert({ 2002,"Madhu Sudan" });
+	mp.insert({ 2010,"Daniel Spielman" });
+	mp.insert({ 2006,"Jon Kleinberg" });
+	mp.insert({ 2014,"Subhash Khot" });
+	f >> year;
+	g << mp.find(year)->second;
+	return 0;
+}
