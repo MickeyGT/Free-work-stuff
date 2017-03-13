@@ -1,0 +1,56 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y,lcolor,p1,p2,s1,s2;
+string v[100];
+string a, b;
+int main()
+{
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    ifstream f("readunare.in");
+    ofstream g("readunare.out");
+    v[0] = "{}";
+    v[1] = "{{}}";
+    v[2] = "{{{}},{}}";
+    for (i = 3; i <= 20; i++)
+    {
+        v[i] = '{';
+        for (j = i-1; j >= 1; j--)
+            v[i] += v[j] + ',';
+        v[i] += v[0];
+        v[i] += '}';
+    }
+    f >> a;
+    f >> b;
+    for (i = 0; i <= 20; i++)
+        if (a.size() == v[i].size())
+            s1 = i;
+    for (i = 0; i <= 20; i++)
+        if (b.size() == v[i].size())
+            s2 = i;
+    s1 += s2;
+    g << v[s1];
+    return 0;
+}
