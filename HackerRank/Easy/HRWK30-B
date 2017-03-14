@@ -1,0 +1,37 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int n, t, c, b,i,rez;
+string s;
+int main()
+{
+	cin >> n;
+	s = "int";
+	for (i = 2; i <= n; i++)
+	{
+		s = "min(int, " + s + ')';
+	}
+	cout << s;
+	return 0;
+}
