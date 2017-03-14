@@ -1,0 +1,54 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b, lcolor, t[100100], p1, p2, s1, s2, dpt[100100];
+long long c1[100100], c2[100100];
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("blaturi.in");
+	ofstream g("blaturi.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+	{
+		f >> t[i];
+		dpt[i] = dpt[i - 1] + t[i];
+	}
+	f >> p1 >> p2>>s1>>s2;
+	min1 = min(dpt[n]*p1+(n-1)*p2, dpt[n] * s1 + (n - 1)*s2);
+	for (i = 1; i <= n-1; i++)
+	{
+		if (i <= n / 2)
+		{
+			min1 = min(min1, dpt[i] * p1 + (dpt[n] - dpt[i])*s1 + max(0LL,(n - i * 2 - 1))*s2);
+		}
+		else
+		{
+			min1 = min(min1, dpt[i] * p1 + (dpt[n] - dpt[i])*s1 + max(0LL,n-(n - i)*2 - 1)*p2);
+		}
+	}
+	g << min1;
+	return 0;
+}
