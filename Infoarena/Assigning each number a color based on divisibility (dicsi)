@@ -1,0 +1,47 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int n, color[100100], i, j, nrc;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	ifstream f("dicsi.in");
+	ofstream g("dicsi.out");
+	f >> n;
+	for (i = 1; i <= n; i++)
+		color[i] = 1;
+	for (i = 1; i <= n; i++)
+	{
+		for (j = i * 2; j <= n; j += i)
+		{
+			color[j] = max(color[j], color[i] + 1);
+			nrc = max(nrc, color[j]);
+		}
+	}
+	g << nrc << '\n';
+	for (i = 1; i <= n; i++)
+		g << color[i] << ' ';
+	return 0;
+}
