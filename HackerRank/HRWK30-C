@@ -1,0 +1,80 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, x, y, z, ok, nr, n, m, el, min1, max1;
+string vocale, consoane;
+vector<string>finvoc, fincons, auxvoc,auxcons;
+int main()
+{
+	vocale = "aeiou";
+	consoane = "bcdfghjklmnpqrstvwxz";
+	cin >> n;
+	ok = 1;
+	for (i = 0; i <= vocale.size()-1; i++)
+		finvoc.push_back(string(1,vocale[i]));
+	for (i = 0; i <= consoane.size()-1; i++)
+		fincons.push_back(string(1,consoane[i]));
+	for(x=2;x<=n;x++)
+	{
+		if (ok)
+		{
+			auxvoc.resize(0);
+			for (j = 0; j <= fincons.size()-1; j++)
+				for (i = 0; i <= vocale.size() - 1; i++)
+					auxvoc.push_back(vocale[i] + fincons[j]);
+			auxcons.resize(0);
+			for (j = 0; j <= finvoc.size()-1; j++)
+				for (i = 0; i <= consoane.size() - 1; i++)
+					auxcons.push_back(consoane[i] + finvoc[j]);
+			ok = 0;
+		}
+		else
+		{
+			finvoc.resize(0);
+			for (j = 0; j <= auxcons.size()-1; j++)
+				for (i = 0; i <= vocale.size() - 1; i++)
+					finvoc.push_back(vocale[i] + auxcons[j]);
+			fincons.resize(0);
+			for (j = 0; j <= auxvoc.size()-1; j++)
+				for (i = 0; i <= consoane.size() - 1; i++)
+					fincons.push_back(consoane[i] + auxvoc[j]);
+			ok = 1;
+		}
+	}
+	if (ok)
+	{
+		for (j = 0; j <= fincons.size() - 1; j++)
+			cout << fincons[j] << '\n';
+		for (j = 0; j <= finvoc.size() - 1; j++)
+			cout << finvoc[j] << '\n';
+	}
+	else
+	{
+		for (j = 0; j <= auxcons.size() - 1; j++)
+			cout << auxcons[j] << '\n';
+		for (j = 0; j <= auxvoc.size() - 1; j++)
+			cout << auxvoc[j] << '\n';
+	}
+	return 0;
+}
