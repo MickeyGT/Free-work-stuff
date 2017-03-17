@@ -1,0 +1,66 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+unsigned long long i, j, k, x, y, z, ok, nr, n, m, el, min1, max1,cost;
+struct pom
+{
+	long long weight;
+	long long alt;
+}tree;
+list<pom>v;
+list<pom>::iterator iter,res;
+int main()
+{
+	cin >> n >> k;
+	for (i = 1; i <= n; i++)
+	{
+		unsigned long long weight, alt;
+		cin >> alt >> weight;
+		tree.weight = weight;
+		tree.alt = alt;
+		v.push_back(tree);
+	}
+	for (j = 1; j <= n-k; j++)
+	{
+		min1 = 1LL << 60;
+		iter = v.begin();
+		if (iter != v.end())
+			iter++;
+		i = 0;
+		for(auto it=v.begin();iter !=v.end()&&i<=v.size()-2;i++,it++,iter++)
+			if (min1 > (iter->alt - it->alt)*iter->weight)
+			{
+				min1 = (iter->alt - it->alt)*iter->weight;
+				res = iter;
+			}
+		cost += min1;
+		unsigned long long weight = res->weight;
+		res--;
+		res->weight += weight;
+		res++;
+		v.erase(res);
+	}
+	cout << cost;
+	return 0;
+}
