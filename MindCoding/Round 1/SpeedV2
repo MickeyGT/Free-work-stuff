@@ -1,0 +1,32 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, x, y, z, ok, nr, n, m, el, min1, max1;
+double t1,t2,k1,k2;
+int main()
+{
+	cin >> t1 >> k1 >> t2 >> k2;
+	cout << 1/(1/(t1 / k1) + 1/(t2 / k2));
+	return 0;
+}
