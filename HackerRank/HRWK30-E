@@ -22,15 +22,16 @@
 #include<array>
 #include<ctype.h>
 using namespace std;
-int i, j, k, x, y, z, ok, nr, n, m, el, min1, max1, cost, q, v[40400],lft,rght,valmax;
-int position[40400];
+int i, j, k, x, y, z, ok, nr, n, m, el, min1, max1, cost, q, v[40400], lft, rght, valmax;
+vector<int>position[40400];
+vector<int>::iterator it;
 int main()
 {
 	cin >> n >> q;
 	for (i = 1; i <= n; i++)
 	{
 		cin >> v[i];
-		position[v[i]] = i;
+		position[v[i]].push_back(i);
 		valmax = max(valmax, v[i]);
 	}
 	for (j = 1; j <= q; j++)
@@ -41,9 +42,11 @@ int main()
 		nr = 0;
 		if (rght - lft + 1 > valmax / x)
 		{
-			for (i = 1; i <= valmax / x; i++)
-				if (position[i*x + y] >= lft&&position[i*x + y] <= rght)
-					nr++;
+			for (i = 0; i <= valmax / x; i++)
+				if (position[i*x + y].size() != 0)
+					for (it = position[i*x + y].begin(); it != position[i*x + y].end(); it++)
+						if (*it >= lft&& *it <= rght)
+							nr++;
 		}
 		else
 		{
@@ -51,7 +54,7 @@ int main()
 				if (v[i] % x == y)
 					nr++;
 		}
-		cout << nr<<'\n';
+		cout << nr << '\n';
 	}
 	return 0;
 }
