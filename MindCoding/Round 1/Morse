@@ -1,0 +1,55 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int i, j, k, x, y, z, ok, nr, n, m, el, min1, max1;
+char letter;
+string morse,res;
+unordered_map<char, string>mp;
+unordered_map<string, int>rez;
+int main()
+{
+	for (i = 1; i <= 26; i++)
+	{
+		cin >> letter>>morse;
+		mp.insert({ letter,morse });
+	}
+	cin >> n;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> morse;
+		res = "";
+		for (j = 0; j <= morse.size() - 1; j++)
+		{
+			res += mp.find(morse[j])->second;
+		}
+		rez[res]++;
+	}
+	for (auto it = rez.begin(); it != rez.end(); it++)
+		max1 = max(max1, it->second);
+	if (max1 == 1)
+		cout << -1;
+	else
+		cout << max1;
+	return 0;
+}
