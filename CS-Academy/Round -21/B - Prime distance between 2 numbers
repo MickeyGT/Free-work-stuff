@@ -1,0 +1,58 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, x, y, z, ok, nr, n, m, el, min1, max1, cost, a, b;
+long long cmmdc(long long  a, long long  b) { if (!b) return a; else return cmmdc(b, a%b); }
+
+
+int main()
+{
+	cin >> a >> b;
+	x = a;
+	y = b;
+	el = cmmdc(a, b);
+	a /= el;
+	b /= el;
+	nr = 0;
+	el = a;
+	for(i=2;i<=100000;i++)
+		while(el%i==0)
+		{
+			nr++;
+			el /= i;
+		}
+	if (el!= 1)
+		nr++;
+	el = b;
+	for (i = 2; i <= 100000; i++)
+		while (el%i == 0)
+		{
+			nr++;
+			el /= i;
+		}
+	if (el != 1)
+		nr++;
+	cout << nr;
+	return 0;
+}
