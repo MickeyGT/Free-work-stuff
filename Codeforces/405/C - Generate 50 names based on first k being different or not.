@@ -1,0 +1,119 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, x, y, z, ok, nr, n, m, el, min1, max1, cost,a,b;
+string v[100],rez[100],names[51];
+string ans;
+int main()
+{
+	cin >> n>>k;
+	for (i = 1; i <= n - k + 1; i++)
+	{
+		cin >> ans;
+		v[i]=ans;
+	}
+	{
+		names[1] = "Barton";
+		names[2] = "Elias";
+		names[3] = "Antwan";
+		names[4] = "Cody";
+		names[5] = "Logan";
+		names[6] = "Cedrick";
+		names[7] = "Courtney";
+		names[8] = "Colby";
+		names[9] = "Myron";
+		names[10] = "Florentino";
+		names[11] = "Gerardo";
+		names[12] = "Lauren";
+		names[13] = "Luther";
+		names[14] = "Rubin";
+		names[15] = "Mac";
+		names[16] = "Leif";
+		names[17] = "Emmitt";
+		names[18] = "Robt";
+		names[19] = "Vincent";
+		names[20] = "Pierre";
+		names[21] = "Eduardo";
+		names[22] = "German";
+		names[23] = "Forrest";
+		names[24] = "Jamaal";
+		names[25] = "Anibal";
+		names[26] = "Gregg";
+		names[27] = "Noble";
+		names[28] = "Felton";
+		names[29] = "Joshua";
+		names[30] = "Wilson";
+		names[31] = "Laverne";
+		names[32] = "Mariano";
+		names[33] = "Darell";
+		names[34] = "Miles";
+		names[35] = "Vincenzo";
+		names[36] = "Clair";
+		names[37] = "Rodney";
+		names[38] = "Kip";
+		names[39] = "Jess";
+		names[40] = "Jorge";
+		names[41] = "Mathew";
+		names[42] = "Wally";
+		names[43] = "Dee";
+		names[44] = "Hollis";
+		names[45] = "Gerard";
+		names[46] = "Clifton";
+		names[47] = "Howard";
+		names[48] = "Samual";
+		names[49] = "Cornell";
+		names[50] = "Gabi";
+	}
+
+	if(v[1]=="YES")
+		for (i = 1; i <= k; i++)
+		{
+			nr++;
+			rez[i] = names[nr];
+		}
+	else
+	{
+		for (i = 1; i <= k-1; i++)
+		{
+			nr++;
+			rez[i] = names[nr];
+		}
+		rez[k] = rez[1];
+	}
+	for (i = 2; i <= n - k + 1; i++)
+	{
+		if (v[i] == "YES")
+		{
+			nr++;
+			rez[i+k-1] = names[nr];
+		}
+		else
+		{
+			rez[i + k - 1] = rez[i];
+		}
+	}
+	for (i = 1; i <= n; i++)
+		cout << rez[i] << ' ';
+	return 0;
+}
