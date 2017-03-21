@@ -1,0 +1,41 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<functional>
+#include<deque>
+#include<math.h>
+#include<unordered_set>
+#include<queue>
+#include<set>
+#include<iomanip>
+#include<bitset>
+using namespace std;
+int i, j, k, n, m, ok, nr,x,fr[110],max1,ciur[100100],dp[100100];
+int main()
+{
+	cin >> n;
+	for (i = 2; i <= 100000; i++)
+		if(ciur[i]==0)
+		{
+			dp[i] = 1;
+			for (j = 1; j*i <= 100000; j++)
+				ciur[i*j] = 1;
+		}
+	dp[1] = 0;
+	for (i = 1; i <= 100000; i++)
+		dp[i] = dp[i - 1] + dp[i];
+	for (i = 1; i <= n; i++)
+	{
+		cin >> x;
+		if (dp[x] % 2 == 1)
+			cout << "Alice\n";
+		else
+			cout << "Bob\n";
+	}
+	return 0;
+}
