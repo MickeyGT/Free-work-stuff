@@ -1,0 +1,69 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, x, y, z, ok, nr, n, m, el, min1, max1, cost, a, b, viz[150150];
+vector<int>v[150150];
+vector<int>comp[150150];
+
+void DFS(int nod)
+{
+	viz[nod] = 1;
+	comp[nr].push_back(nod);
+	for (auto it = v[nod].begin(); it != v[nod].end(); it++)
+		if (viz[*it] == 0)
+		{
+			DFS(*it);
+		}
+}
+int main()
+{
+	cin >> n >> m;
+	for (i = 1; i <= m; i++)
+	{
+		cin >> x >> y;
+		v[x].push_back(y);
+		v[y].push_back(x);
+	}
+	for (i = 1; i <= n; i++)
+		if (viz[i] == 0)
+		{
+			nr++;
+			DFS(i);
+		}
+
+	for (i = 1; i <= nr; i++)
+	{
+		el = 0;
+		for (auto it = comp[i].begin(); it != comp[i].end(); it++)
+			el += v[*it].size();
+
+		if (el != (1LL*comp[i].size()*(comp[i].size() - 1)))
+		{
+			cout << "NO";
+			return 0;
+		}
+	}
+	cout << "YES";
+	return 0;
+}
