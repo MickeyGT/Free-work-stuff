@@ -1,0 +1,65 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,id,tc,nrc,aprins[1010],rez;
+struct camera
+{
+	int id, tc, nrc;
+	vector<int>camereStinse;
+}camera,v[1010];
+int main()
+{
+	ifstream f("aprindere.in");
+	ofstream g("aprindere.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	f >> n >> m;
+	for (i = 0; i <= n-1; i++)
+		f >> aprins[i];
+	for (i = 1; i <= m; i++)
+	{
+		f >> id >> tc >> nrc;
+		camera.camereStinse.clear();
+		camera.id = id;
+		camera.tc = tc;
+		camera.nrc = nrc;
+		for (j = 1; j <= nrc; j++)
+		{
+			f >> el;
+			camera.camereStinse.push_back(el);
+		}
+		v[id] = camera;
+	}
+	for (i = 0; i <= n-1; i++)
+	{
+		if (!aprins[i])
+		{
+			rez += v[i].tc;
+			for (auto it = v[i].camereStinse.begin(); it != v[i].camereStinse.end(); it++)
+				aprins[*it]=!aprins[*it];
+		}
+	}
+	g << rez;
+	return 0;
+}
