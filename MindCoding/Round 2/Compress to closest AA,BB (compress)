@@ -1,0 +1,115 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,poz,loga,pw[35],rez;
+string s;
+
+int main()
+{
+	cin >> n>>m;
+	for (i = 1; i <= n; i++)
+	{
+		for (j = 1; j <= m; j++)
+		{
+			nr = 0;
+			cin >> s;
+			min1 = 1 << 30;
+			cout << '#';
+			{
+				if (s[1] <= '9')
+					nr += 16 * (s[1] - '0');
+				else
+					nr += 16 * (s[1] - 'A' + 10);
+				if (s[2] <= '9')
+					nr += (s[2] - '0');
+				else
+					nr += (s[2] - 'A' + 10);
+				for (k = 0; k <= 15; k++)
+				{
+					if (abs(k * 16 + k - nr) < min1)
+					{
+						min1 = abs(k * 16 + k - nr);
+						a = k;
+					}
+				}
+				if (a <= 9)
+					cout << char(a + '0');
+				else
+					cout << char(a + 'A' - 10);
+			}
+			{
+				nr = 0;
+				min1 = 1 << 30;
+				if (s[3] <= '9')
+					nr += 16 * (s[3] - '0');
+				else
+					nr += 16 * (s[3] - 'A' + 10);
+				if (s[4] <= '9')
+					nr += (s[4] - '0');
+				else
+					nr += (s[4] - 'A' + 10);
+				for (k = 0; k <= 15; k++)
+				{
+					if (abs(k * 16 + k - nr) < min1)
+					{
+						min1 = abs(k * 16 + k - nr);
+						a = k;
+					}
+				}
+				if (a <= 9)
+					cout << char(a + '0');
+				else
+					cout << char(a + 'A' - 10);
+			}
+			{
+				nr = 0;
+				min1 = 1 << 30;
+				if (s[5] <= '9')
+					nr += 16 * (s[5] - '0');
+				else
+					nr += 16 * (s[5] - 'A' + 10);
+				if (s[6] <= '9')
+					nr += (s[6] - '0');
+				else
+					nr += (s[6] - 'A' + 10);
+				for (k = 0; k <= 15; k++)
+				{
+					if (abs(k * 16 + k - nr) < min1)
+					{
+						min1 = abs(k * 16 + k - nr);
+						a = k;
+					}
+				}
+				if (a <= 9)
+					cout << char(a + '0');
+				else
+					cout << char(a + 'A' - 10);
+			}
+			cout << ' ';
+		}
+		cout << '\n';
+	}
+	
+	return 0;
+}
