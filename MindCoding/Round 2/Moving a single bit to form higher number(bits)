@@ -1,0 +1,56 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,poz,loga,pw[35],rez;
+
+
+int main()
+{
+	cin >> n;
+	pw[0] = 1;
+	for (i = 1; i <= 34; i++)
+		pw[i] = pw[i - 1] * 2;
+	for (j = 1; j<= n; j++)
+	{
+		cin >> el;
+		nr = 0;
+		rez = 0;
+		bitset<33>numb(el);
+		loga = log2(el);
+		for (i = 0; i <= loga; i++)
+			if (numb[i] == 1)
+			{
+				for(k=loga;k>i;k--)
+					if (numb[k] == 0)
+					{
+						numb[i] = 0;
+						numb[k] = 1;
+						break;
+					}
+				break;
+			}
+		cout << numb.to_ullong() << ' ';
+	}
+	return 0;
+}
