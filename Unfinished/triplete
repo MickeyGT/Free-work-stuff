@@ -1,0 +1,50 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, n, m, el, min1, max1, x, y, a, b, rez;
+bitset<4100>bit[4100],nr;
+vector<int>v[4100];
+int main()
+{
+	ifstream f("triplete.in");
+	ofstream g("triplete.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	f >> n >> m;
+	for (i = 1; i <= m; i++)
+	{
+		f >> x >> y;
+		bit[x][y] = 1;
+		bit[y][x] = 1;
+		v[x].push_back(y);
+	}
+	for (i = 1;i<=n;i++)
+		for (auto it = v[i].begin(); it != v[i].end(); it++)
+		{
+			nr = (bit[i] & bit[*it]);
+			rez += nr.count();
+		}
+	g << rez/3;
+	return 0;
+}
