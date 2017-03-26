@@ -1,0 +1,45 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, a, b;
+double xa,xb,ya,yb,x,y,r;
+double d1, d2;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> n>>xa>>ya>>xb>>yb>>r;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> x>>y;
+		d1 = sqrt((xa - x)*(xa - x) + (ya - y)*(ya - y));
+		d2 = sqrt((xb - x)*(xb - x) + (yb - y)*(yb - y));
+		if (d1 >=r&& d2<=r || d1<=r && d2>=r)
+		{
+			nr++;
+		}	
+	}
+	cout << nr;
+	return 0;
+}
