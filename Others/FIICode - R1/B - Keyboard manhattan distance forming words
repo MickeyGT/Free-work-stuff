@@ -1,0 +1,103 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, a, b,t,xc,yc,x,y,nrl;
+char c;
+pair<int,int>v[30];
+string s;
+char str[5050];
+int main()
+{
+    //ifstream f("file.in");
+    //ofstream g("file.out");
+    cin >> n>>m;
+    for (i = 1; i <= n; i++)
+    {
+        scanf("%s", str);
+        for (j = 0; j <= m-1; j++)
+        {
+            if (str[j] != '.')
+            {
+                v[str[j] - 'a'].first = i;
+                v[str[j] - 'a'].second = j+1;
+                nrl++;
+            }
+        }
+        if (nrl == 26)
+            break;
+    }
+    cin >> t;
+    for (j = 1; j <= t; j++)
+    {
+        cin >> s;
+        nr = 0;
+        ok = 1;
+        for(i=0;i<=s.size()-1;i++)
+            if (!(v[s[i] - 'a'].first != 0 && v[s[i] - 'a'].second != 0))
+            {
+                cout << "-1\n";
+                ok=0;
+                break;
+            }
+        if (ok == 0)
+            continue;
+        xc = v[s[0] - 'a'].first;
+        yc = v[s[0] - 'a'].second;
+        for (i = 1; i <= s.size() - 1; i++)
+        {
+            if (v[s[i] - 'a'].first != 0 && v[s[i] - 'a'].second != 0)
+            {
+                x = v[s[i] - 'a'].first;
+                y = v[s[i] - 'a'].second;
+                if (abs(x - xc) > abs(y - yc))
+                {
+                    nr += abs(y - yc);
+                    nr += abs(x - xc) - abs(y - yc);
+                }
+                else
+                {
+                    nr += abs(x - xc);
+                    nr += abs(y - yc) - abs(x - xc);
+                }
+                xc = x;
+                yc = y;
+            }
+            else
+            {
+                ok = 0;
+                break;
+            }
+        }
+        if (ok == 0)
+        {
+            cout << "-1\n";
+            continue;
+        }
+        else
+        {
+            cout << nr << '\n';
+        }
+    }
+    return 0;
+}
