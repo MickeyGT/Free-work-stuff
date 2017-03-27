@@ -1,0 +1,45 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b;
+vector<int>v;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> n;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> el;
+		v.push_back(el);
+	}
+	sort(v.begin(), v.end());
+	for (i = 0; i <= v.size() - 3; i++)
+		for (j = i + 1; j <= v.size() - 2; j++)
+			for (k = j + 1; k <= v.size() - 1; k++)
+				if (v[i] + v[j] > v[k])
+					nr++;
+	cout << nr;
+	return 0;
+}
