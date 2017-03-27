@@ -22,7 +22,7 @@
 #include<array>
 #include<ctype.h>
 using namespace std;
-long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,v1=-1,v2=-1,nr1,nr2;
+int i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b, v1 = -1, v2 = -1, nr1, nr2;
 unordered_map<int, int>mp;
 int main()
 {
@@ -34,8 +34,9 @@ int main()
 		cin >> el;
 		mp[el]++;
 	}
-	for(auto it=mp.begin();it!=mp.end();it++)
-		if(!(v1==it->second))
+	for (auto it = mp.begin(); it != mp.end(); it++)
+		if (!(v1 == it->second))
+		{
 			if (v1 == -1)
 			{
 				v1 = it->second;
@@ -45,11 +46,31 @@ int main()
 				{
 					v2 = it->second;
 				}
+		}
 	for (auto it = mp.begin(); it != mp.end(); it++)
 		if (it->second == v2)
 		{
-			cout << it->first;
-			return 0;
+			nr2++;
+		}
+		else
+			nr1++;
+	if (nr1 > nr2)
+		for (auto it = mp.begin(); it != mp.end(); it++)
+		{
+			if (it->second == v2)
+			{
+				cout << it->first;
+				return 0;
+			}
+		}
+	else
+		for (auto it = mp.begin(); it != mp.end(); it++)
+		{
+			if (it->second == v1)
+			{
+				cout << it->first;
+				return 0;
+			}
 		}
 	return 0;
 }
