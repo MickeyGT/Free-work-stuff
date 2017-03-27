@@ -1,0 +1,113 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int i, j, k, ok, nr, n, m, el, min1, max1,x1,x2,x3;
+bool mat[1010][1010],viz[1010][1010];
+int rez[1010][1010];
+deque<pair<int, int>>que;
+pair<int, int>x;
+unordered_map<int, int>mp;
+void bfs(int nr)
+{
+	while (que.size() != 0)
+	{
+		int dim = que.size();
+		for (k = 1; k <= dim; k++)
+		{
+			x = que.front();
+			rez[x.first][x.second] = nr;
+			que.pop_front();
+			if (x.first - 1 >= 1 && viz[x.first - 1][x.second] == 0 && mat[x.first - 1][x.second] == 1)
+			{
+				viz[x.first - 1][x.second] = 1;
+				que.push_back({ x.first - 1 ,x.second });
+			}
+			if (x.second + 1 <= m && viz[x.first][x.second + 1] == 0 && mat[x.first][x.second + 1] == 1)
+			{
+				viz[x.first][x.second + 1] = 1;
+				que.push_back({ x.first,x.second + 1 });
+			}
+			if (x.first + 1 <= n&&viz[x.first + 1][x.second] == 0 && mat[x.first + 1][x.second] == 1)
+			{
+				viz[x.first + 1][x.second] = 1;
+				que.push_back({ x.first + 1 ,x.second });
+			}
+			if (x.second - 1 >= 1 && viz[x.first][x.second - 1] == 0 && mat[x.first][x.second - 1] == 1)
+			{
+				viz[x.first][x.second - 1] = 1;
+				que.push_back({ x.first,x.second - 1 });
+			}
+		}
+	}
+}
+int main()
+{
+	cin >> n>> m;
+	for (i = 1; i <= n; i++)
+		for(j=1;j<=m;j++)
+		{
+			cin >> mat[i][j];
+		}
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+			if (viz[i][j] == 0 && mat[i][j] == 1)
+			{
+				nr++;
+				mp[nr] = 1;
+				que.push_front({ i,j });
+				bfs(nr);
+			}
+			else
+				if (mat[i][j] == 1)
+					mp[rez[i][j]]++;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+			if(mat[i][j]==0)
+			{
+				nr = 0;
+				x1 = x2 = x3 = -1;
+				if (i > 1 && rez[i - 1][j] != 0)
+				{
+					nr += mp[rez[i - 1][j]];
+					x1 = rez[i - 1][j];
+				}
+				if (j < m && rez[i][j + 1] != 0 && rez[i][j + 1] != x1)
+				{
+					nr += mp[rez[i][j + 1]];
+					x2 = rez[i][j + 1];
+				}
+				if (i < n && rez[i+1][j] != 0 && rez[i+1][j] != x1&& rez[i + 1][j] != x2)
+				{
+					nr += mp[rez[i + 1][j]];
+					x3 = rez[i + 1][j];
+				}
+				if (j > 1 && rez[i][j-1] != 0 && rez[i][j-1] != x1&& rez[i][j-1] != x2&& rez[i][j - 1] != x3)
+				{
+					nr += mp[rez[i][j-1]];
+				}
+				max1 = max(max1, nr);
+			}
+	cout << max1+1;
+	return 0;
+}
