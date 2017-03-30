@@ -1,0 +1,97 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b, v[100100], b1, q, l, prv;
+unordered_set<int>st;
+deque<int>que;
+int main()
+{
+	cin >> b1 >> q >> l >> m;
+	for (i = 1; i <= m; i++)
+	{
+		cin >> el;
+		st.insert(el);
+	}
+	if (abs(b1) > l)
+	{
+		cout << "0";
+		return 0;
+	}
+	else
+	if (q == -1)
+	{
+		if (st.find(b1) != st.end() && st.find(b1*(-1LL)) != st.end())
+			cout << "0";
+		else
+			cout << "inf";
+		return 0;
+	}
+		if (q == 1 && st.find(b1) != st.end())
+		{
+			cout << "0";
+			return 0;
+		}
+		else
+			if (q == 1 && (!(st.find(b1) != st.end())))
+			{
+				cout << "inf";
+				return 0;
+			}
+			else
+				if (q == 0)
+				{
+					nr = 2;
+					if (st.find(0) != st.end())
+					{
+						if (st.find(b1) != st.end())
+							cout << 0;
+						else
+							cout << 1;
+					}
+					else
+						cout << "inf";
+					return 0;
+				}
+				else
+					if (b1 == 0)
+					{
+						if (st.find(0) != st.end())
+							cout << 0;
+						else
+							cout << "inf";
+						return 0;
+					}
+					else
+					{
+						el = b1;
+						while (abs(el) <= l)
+						{
+							if (st.find(el) == st.end() && abs(el) <= l)
+								nr++;
+							el *= q;
+						}
+						cout << nr;
+					}
+	return 0;
+}
