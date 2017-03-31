@@ -1,0 +1,30 @@
+#include<fstream>
+#include<bitset>
+#include<vector>
+using namespace std;
+long long i, j, k, ok, n, m, el, min1, max1, x, y, a, b, rez,nr;
+bitset<4100>bit[4100];
+vector<int>v[4100];
+int main()
+{
+	ifstream f("triplete.in");
+	ofstream g("triplete.out");
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	f >> n >> m;
+	for (i = 1; i <= m; i++)
+	{
+		f >> x >> y;
+		bit[x][y] = 1;
+		bit[y][x] = 1;
+		v[x].push_back(y);
+		v[y].push_back(x);
+	}
+	for (i = 1; i <= n; i++)
+		for (j = 0; j < v[i].size(); j++)
+			for (k = 0; k < v[v[i][j]].size(); k++)
+				if (bit[i][v[v[i][j]][k]])
+					nr++;
+	g << nr / 6;
+	return 0;
+}
