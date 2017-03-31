@@ -1,0 +1,47 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b, fr[30], dp[30], poz;
+char col[2020][2020],s[2020];
+vector<pair<string, int>>v;
+int main()
+{
+	FILE *f;
+	FILE *g;
+	f = fopen("binar.in", "r");
+	g = fopen("binar.out", "w+");
+	fscanf(f, "%d %d ", &n, &m);
+	for (i = 0; i < n; i++)
+	{
+		fscanf(f, "%s", s);
+		for (j = 0; j <= m - 1; j++)
+			col[j][i] = s[j];
+	}
+	for (i = 0; i <= m - 1; i++)
+		v.push_back({ col[i],i + 1 });
+	sort(v.begin(), v.end());
+	for (auto it = v.begin(); it != v.end(); it++)
+		fprintf(g,"%d ",it->second);
+	return 0;
+}
