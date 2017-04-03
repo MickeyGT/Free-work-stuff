@@ -1,0 +1,130 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+int i, j, k, ok, nr, n, m, min1, max1, x, y, a, b,sz, viz[51][51];
+char mat[51][51], c;
+struct pairhash
+{
+public:
+	template <typename T, typename U>
+	std::size_t operator()(const std::pair<T, U> &x) const
+	{
+		return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
+	}
+};
+unordered_set<pair<int,int>,pairhash>que;
+string s;
+pair<int, int>el;
+int main()
+{
+	//ifstream f("cobai.in");
+	//ofstream g("cobai.out");
+	ifstream f("file.in");
+	ofstream g("file.out");
+	f >> n >> m;
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= m; j++)
+		{
+			f >> mat[i][j];
+			if (mat[i][j] == '.')
+			{
+				nr++;
+			}
+			else
+				if(mat[i][j]=='*')
+					que.insert({ i,j });
+		}
+	f >> s;
+	for(j=0;j<=s.size()-1;j++)
+	{
+		if (s[j] == 'N')
+		{
+			sz = que.size();
+			for (k = 1; k <= sz; k++)
+			{
+				el = *que.begin();
+				que.erase(que.begin());
+				x = el.first;
+				y = el.second;
+				while (x - 1 >= 1 && mat[x - 1][y] != '+'&& mat[x - 1][y] != '*')
+				{
+					que.insert({ x - 1,y });
+					x--;
+				}
+			}
+		}
+		else
+			if (s[j] == 'V')
+			{
+				sz = que.size();
+				for (k = 1; k <= sz; k++)
+				{
+					el = *que.begin();
+					que.erase(que.begin());
+					x = el.first;
+					y = el.second;
+					while (y - 1 >= 1 && mat[x][y - 1] != '+'&& mat[x][y - 1] != '*')
+					{
+						que.insert({ x,y - 1 });
+						y--;
+					}
+				}
+			}
+			else
+				if (s[j]=='E')
+				{
+					sz = que.size();
+					for (k = 1; k <= sz; k++)
+					{
+						el = *que.begin();
+						que.erase(que.begin());
+						x = el.first;
+						y = el.second;
+						while (y + 1 <= m && mat[x][y + 1] != '+'&& mat[x ][y+1] != '*')
+						{
+							que.insert({ x,y + 1 });
+							y++;
+						}
+					}	
+				}
+				else
+				{
+					sz = que.size();
+					for (k = 1; k <= sz; k++)
+					{
+						el = *que.begin();
+						que.erase(que.begin());
+						x = el.first;
+						y = el.second;
+						while (x + 1 <= n && mat[x + 1][y] != '+'&& mat[x + 1][y] != '*')
+						{
+							que.insert({ x + 1,y });
+							x++;
+						}
+					}
+				}
+	}
+	g << setprecision(2) << fixed << double(que.size()/double(nr))*100;
+	return 0;
+}
