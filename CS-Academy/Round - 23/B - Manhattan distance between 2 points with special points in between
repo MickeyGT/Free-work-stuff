@@ -1,0 +1,73 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,distance[1010],t,s,nrs,q;
+struct point
+{
+	int x, y, special, dist=1<<30,id;
+};
+point pr;
+vector<point>points,special,all;
+int main()
+{
+	cin >> n>>t;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> s >> x >> y;
+		pr.x = x;
+		pr.y = y;
+		pr.special = s;
+		all.push_back(pr);
+		if (s == 1)
+		{
+			pr.id = i;
+			special.push_back(pr);
+		}
+		else
+		{	
+			pr.id = i;
+			points.push_back(pr);
+		}
+	}
+	for (auto it = special.begin(); it != special.end(); it++)
+	{
+		for (auto iter = points.begin(); iter != points.end(); iter++)
+			if (iter->dist > abs(it->x - iter->x) + abs(it->y - iter->y))
+			{
+				iter->dist = abs(it->x - iter->x) + abs(it->y - iter->y);
+				all[iter->id - 1].dist = iter->dist;
+			}
+		all[it->id - 1].dist = 0;
+	}
+	cin >> q;
+	for (k = 1; k <= q; k++)
+	{
+		cin >> a >> b;
+		min1 = 1LL << 60;
+		min1 = abs(all[a-1].x - all[b-1].x) + abs(all[a-1].y - all[b-1].y);
+		min1 = min(min1, all[a - 1].dist + t + all[b - 1].dist);
+		cout << min1<<'\n';
+	}
+	return 0;
+}
