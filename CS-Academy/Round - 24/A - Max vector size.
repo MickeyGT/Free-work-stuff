@@ -1,0 +1,49 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> n;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> el;
+		if (nr == 0 && el == 0)
+			max1 = max(nr, max1);
+		else
+			if (el == 0)
+			{
+				nr--;
+			}
+			else
+			{
+				nr++;
+				max1 = max(nr, max1);
+			}
+	}
+	cout << max1;
+	return 0;
+}
