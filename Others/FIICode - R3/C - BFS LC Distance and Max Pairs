@@ -1,0 +1,80 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,niv[100100],level,viz[100100],freq[100100];
+vector<long long>v[100100];
+deque<long long>que;
+map<int, int>mp;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> n;
+	for (i = 1; i <= n - 1; i++)
+	{
+		cin >> x >> y;
+		v[x].push_back(y);
+		v[y].push_back(x);
+	}
+	level = 0;
+	que.push_back(1);
+	viz[1] = 1;
+	while (que.size() != 0)
+	{
+		nr = que.size();
+		for (j = 1; j <= nr; j++)
+		{
+			el = *que.begin();
+			que.pop_front();
+			viz[el] = 1;
+			niv[el] = level;
+			for (auto it = v[el].begin(); it != v[el].end(); it++)
+				if (viz[*it] == 0)
+				{
+					que.push_back(*it);
+					viz[*it] = 1;
+				}
+		}
+		level++;
+	}
+	level--;
+	nr = 0;
+	for (i = 1; i <= n; i++)
+		if (niv[i] == level)
+			nr++;
+	if (nr != 1)
+	{
+		cout << 2 * level << ' ';
+		cout << nr*(nr - 1) / 2;
+	}
+	else
+	{
+		for (i = 1; i <= n; i++)
+			freq[niv[i]]++;
+		while(freq[n])
+		cout << 2 * level << ' ';
+		cout << nr;
+	}
+	return 0;
+}
