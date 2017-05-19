@@ -1,0 +1,89 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+using namespace std;
+int nrMutari, l, c, d;
+
+static unsigned long g1, g2, g3;
+
+/*
+nrPoints1 = q;
+nrPoints2 = e;
+mat = m;
+player = p;
+nrbete = b;
+dir1,2,3,4 = h,j,k,g;
+dnew = d;
+*/
+void f(unsigned short l, unsigned short c, unsigned short d)
+{
+	static int q, e, m[5][7][7], p, b,r[60][6];
+	int h[] = { 1, 0, -1, 0 }, j[] = { 0, -1, 0, 1 }, k[] = {0,-1,-1,0}, o = 1, i = 0, y, a,v=1;
+	if (!g1)
+	{
+		g1 = 1;
+		b = q = e = p = 0;
+		for (; i < 180; i++)
+		{
+			m[i % 5][i / 30][i % 30 / 5] = 0;
+			r[i / 6][i % 6] = 1;
+		}
+	}
+	for (i = 0; i < 6; i++)
+		m[0][0][i] = m[3][i][0] = m[2][5][i] = m[1][i][5] = 2;
+
+
+
+	if (b > 59)
+	{
+		cout << "Jocul s-a terminat\n";
+		return;
+	}
+	if (m[d][l][c])
+		cout << "Jucatorul " << (p ? 'B' : 'A') << " mutare invalida\n";
+	else
+	{
+		b++;
+		int w = (d + 2) % 4;
+		m[d][l][c] = m[w][l + h[w]][c + j[w]] = 4;
+		for(i=1;i<=5;i++)
+			for (y = 1; y <= 5; y++)
+			{
+				o = 1;
+
+				for (a = 0; a <= 3; a++)
+					m[a][i + k[a]][y + k[a]] ? 0 : o = 0;
+
+				o&&r[i][y]? p ? e++ : q++,r[i][y]=0,v=0:0;
+			}
+
+		cout << "Jucatorul " << (p ? 'B' : 'A') << " mutare valida (" << q << ':' << e << ")\n";
+
+		v ? p = ~p : 0;
+
+		if (b > 59)
+			cout << "Jocul s-a terminat\n";
+	}
+
+}
+
+
+int main(int argc, char **argv)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		for (int j = 0; j < 6; ++j)
+		{
+			for (int d = 0; d < 4; ++d)
+			{
+				f(i, j, d);
+			}
+		}
+	}
+	return 0;
+}

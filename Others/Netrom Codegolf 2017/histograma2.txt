@@ -1,0 +1,79 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+using namespace std;
+string t[1010], el;
+int n;
+char s[1010];
+/*
+g - freq vector
+m - mat afisare
+u - frmax
+o - poz
+p - updated poz for a...z
+*/
+void f(string t[], char s[], int n)
+{
+	int i, j = 0, g[200], u = 0, o, p;
+	char m[150][300], c;
+	memset(m, 32, 45000);
+	for (; j < n; j++)
+	{
+		o = 3;
+		memset(g, 0, 800);
+		for (i = 0; i < t[j].size(); i++)
+			++g[t[j][i]];
+
+		for (i = 65; i < 123; i++, o += 4)
+			if (isalpha(i))
+			{
+				int &y = ++g[i];
+				p = o - (i > 96 ? 126 : 0);
+				m[0][p] = i;
+				y > u ? u = y : 0;
+				char  &x = m[y][p];
+				x = x>32 && x != '.' ? 'x' : s[j];
+				while (y > 1)
+				{
+					m[y][p]>32 ? 0 : m[y][p] = '.';
+					y--;
+				}
+			}
+		for (i = 1; i < 110; i++)
+		{
+			m[i][0] = (i - 1) / 10 + 48;
+			m[i][1] = (i - 1) % 10 + 48;
+			m[1][i + 2] = 45;
+			m[i % 11][0] = 32;
+			m[i][2] = '|';
+			m[1][107] = 62;
+		}
+	}
+	cout << "  ^";
+	u++;
+	while (u-- > 0)
+	{
+		cout << '\n';
+		for (j = 0; j < 108; j++)
+			cout << m[u][j];
+	}
+}
+
+
+int main()
+{
+	n = 3;
+	t[0] = "Aaaabbbb";
+	t[1] = "dfs fsd";
+	t[2] = "jhf gddh";
+	s[0] = '#';
+	s[1] = '*';
+	s[2] = '$';
+	f(t, s, n);
+	return 0;
+}

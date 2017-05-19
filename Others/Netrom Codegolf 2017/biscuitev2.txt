@@ -1,0 +1,92 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+using namespace std;
+int nrMutari, l, c, d;
+
+static unsigned long g1, g2, g3;
+
+/*
+nrPoints1 = q;
+nrPoints2 = e;
+mat = m;
+player = p;
+nrbete = b;
+dir1,2,3,4 = h,j,k,g;
+dnew = d;
+*/
+void f(unsigned short l, unsigned short c, unsigned short d)
+{
+	static int q, e, m[5][7][7], p, b;
+	int h[] = { 1, 0, -1, 0 }, j[] = { 0, -1, 0, 1 }, o = 1, i = 0,y;
+	static bitset<5>n[7][7];
+	if (!g1)
+	{
+		g1 = 1;
+		b = q = e = p = 0;
+		for (; i < 180; i++)
+		{
+			m[i % 5][i / 30][i % 30 / 5] = 0;
+			n[i / 30][i % 30 / 5][i % 5] = 0;
+		}
+	}
+	for (i = 0; i < 6; i++)
+		m[0][0][i] = m[3][i][0] = m[2][5][i] = m[1][i][5] = 4;
+
+
+
+	if (b > 59)
+	{
+		cout << "Jocul s-a terminat\n";
+		return;
+	}
+	if (m[d][l][c])
+		cout << "Jucatorul " << (p ? 'B' : 'A') << " mutare invalida\n";
+	else
+	{
+		b++;
+		int w = (d + 2) % 4;
+		m[d][l][c] = m[w][l + h[w]][c + j[w]] = 4;
+
+
+		d % 2 ? d % 3 ? n[l][c + 1][2] = n[l + 1][c + 1][0] = 1 : n[l][c][2] = n[l + 1][c][0] = 1 : d ? n[l + 1][c][1] = n[l + 1][c + 1][3] = 1 : n[l][c][1] = n[l][c + 1][3] = 1;
+
+
+		for(i=5;i<31;i++)
+			if (n[i / 5][i % 5 +1].count() > 3)
+			{
+				o = 0;
+				p ? e++ : q++;
+				n[i / 5][i % 5 +1].reset();
+			}
+
+		cout << "Jucatorul " << (p ? 'B' : 'A') << " mutare valida (" << q << ':' << e << ")\n";
+
+		o ? p = ~p : 0;
+
+		if (b > 59)
+			cout << "Jocul s-a terminat\n";
+	}
+
+}
+
+
+int main(int argc, char **argv)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		for (int j = 0; j < 6; ++j)
+		{
+			for (int d = 0; d < 4; ++d)
+			{
+				f(i, j, d);
+			}
+		}
+	}
+	return 0;
+}

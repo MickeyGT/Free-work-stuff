@@ -1,0 +1,134 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+using namespace std;
+int a1[60], a2[60];
+void f(int j1[], int j2[])
+{
+	int nrt=1, i, c1, c2, r1, r2,okrazboi=0,tmp;
+	vector<int>p1, p2, temp1,temp2;
+	string numbers[] = { "","1","2","3","4" ,"5" ,"6" ,"7" ,"8" ,"9" ,"10" ,"" ,"J" ,"Q" ,"K","A" };
+	for (i = 0; i < 26; i++)
+	{
+		if (j1[i] == 11)
+			j1[i] = 15;
+		p1.push_back(j1[i]);
+	}
+	for (i = 0; i < 26; i++)
+	{
+		if (j2[i] == 11)
+			j2[i] = 15;
+		p2.push_back(j2[i]);
+	}
+	while (nrt < 101)
+	{
+		
+		c1 = p1[0];
+		c2 = p2[0];
+		p1.erase(p1.begin());
+		p2.erase(p2.begin());
+		temp1.push_back(c1);
+		temp2.push_back(c2);
+		r1 = c1;
+		tmp = c2;
+		cout << "Jucator1 >> " << numbers[c1] << " vs " << numbers[c2] << " << Jucator2\n";
+		if (c1 == c2)
+		{
+			razboi:
+			cout << "Razboi!\n";
+		
+			if (p1.size() == 0 || p2.size() == 0)
+			{
+				cout << "Niciun castigator";
+				return;
+			}
+
+			cout << "Jucator1 >> ";
+			if(p1.size()<c2||p2.size()<c2)
+				c2 = p1.size() > p2.size() ? p2.size() : p1.size();
+			for (i = 1; i <= c2; i++)
+				if(p1.size()!=0)
+				{
+					r1 = p1[0];
+					temp1.push_back(r1);
+					cout << numbers[r1] << ' ';
+					p1.erase(p1.begin());
+				}
+			cout << "vs ";
+			tmp = p2[c2 - 1];
+			for (i = c2-1; i >= 0; i--)
+				if(p2.size()!=0)
+				{
+					r2 = p2[i];
+					cout << numbers[r2] << ' ';
+				}
+			for (i = 1; i <= c2; i++)
+				if (p2.size() != 0)
+				{
+					temp2.push_back(p2[0]);
+					p2.erase(p2.begin());
+				}
+			cout << "<< Jucator2\n";
+
+			if (r1 == tmp)
+			{
+				c2 = r1;
+				goto razboi;
+			}
+
+		}
+
+		cout << "Runda " << nrt++ << ": Jucatorul " << (r1 > tmp ? '1' : '2') << " ia cartile\n";
+		while(temp1.size())
+		{
+			r1 > tmp ? p1.push_back(temp1[0]) : p2.push_back(temp1[0]);
+			temp1.erase(temp1.begin());
+		}
+		while (temp2.size())
+		{
+			r1 > tmp ? p1.push_back(temp2[0]) : p2.push_back(temp2[0]);
+			temp2.erase(temp2.begin());
+		}
+
+		if (p1.size() == 52)
+		{
+			cout << "Jucatorul 1 a castigat\n";
+			return;
+		}
+
+		if (p2.size() == 52)
+		{
+			cout << "Jucatorul 2 a castigat\n";
+			return;
+		}
+
+	}
+	if (nrt >= 100)
+	{
+		cout<<"Niciun castigator";
+		return;
+	}
+	//use printf for some texts
+}
+
+int main()
+{
+	ifstream cin("file.in");
+	int a1[] = { 10, 13, 11,  7,  8,  5, 11,  5,  8,  8, 12,  6,  9,  9,  3,  6, 12,  7, 11,  3,  5, 14,  6,  7,  2, 4 };
+	int a2[] = { 9, 13, 14, 12, 13,  5,  4,  7, 11, 10,  3,  9, 13, 10,  2,  4,  2,  8,  4, 12, 14,  6, 14,  2,  3, 10 };
+	//int a1[] = { 14, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 10, 9, 9, 10, 10, 11, 11, 12, 12, 14, 13, 13 };
+	//int a2[] = { 14, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 11, 9, 12, 12, 10, 11, 8, 9, 2, 14, 13, 13 };
+	//int a1[] = { 12, 10, 10,  7,  3, 10,  8, 13,  5,  2,  14, 8, 11,  6, 13,  6, 13,  4,  8,  9, 14,  3,  9,  9,  7, 12 };
+	//int a2[] = { 11,  4,  7,  5,  2, 10,  14, 5,  8,  2, 12,  6,  14, 4,  3,  3,  12, 7, 11,  5,  9,  2,  6, 11,  4, 13 };
+	//int a1[] = { 9, 14,  4, 13, 10,  7, 12,  3,  7,  8,  6,  3,  4,  6,  2, 10,  8, 14, 12, 13, 13, 14, 11,  5,  7,  2 };
+	//int a2[] = { 9,  3,  2,  6,  5,  5,  2,  5,  9, 10, 14,  4,  9, 13, 11,  3, 11, 12,  4, 12,  8,  7,  8, 11, 10,  6 };
+	//int a1[] = { 2, 3, 3, 2, 4, 4, 5, 6, 13, 8, 13, 5, 7, 11, 7, 12, 12, 6, 12, 10, 11, 8, 9, 14, 9, 10 };
+	//int a2[] = { 2, 2, 3, 4, 3, 4, 6, 13, 6, 5, 13, 8, 7, 5, 14, 11, 10, 7, 14, 11, 12, 8, 14, 9, 10, 9 };
+	f(a1, a2);
+	return 0;
+}

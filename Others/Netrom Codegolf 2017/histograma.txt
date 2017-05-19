@@ -1,0 +1,80 @@
+#include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+using namespace std;
+string t[1010],el;
+int n;
+char s[1010];
+/* 
+g - freq vector
+m - mat afisare
+u - frmax
+o - poz
+p - updated poz for a...z
+*/
+void f(string t[], char s[], int n)
+{
+	int i,j=0,g[200],u=0,o,p;
+	char m[150][300],c;
+	memset(m, 0, 45000);
+	for (; j < n; j++)
+	{
+		o = 3;
+		memset(g, 0, 800);
+		for (i = 0; i < t[j].size(); i++)
+			c= t[j][i],isalpha(c) ? ++g[c] > u ? u = g[c]:0:0;
+			
+		for (i = 65; i < 123; i++,o+=4)
+			if(isalpha(i))
+			{
+				p = o - (i > 96 ? 126 : 0);
+				m[0][p] = i;
+				int &y = ++g[i];
+				char  &x = m[y][p];
+				x = x && x != '.' ? 'x' : s[j];
+				while (y > 1)
+				{
+					m[y][p] ? 0 : m[y][p] = '.';
+					y--;
+				}
+			}
+		for (i = 1; i < 110; i++)
+		{
+			m[i][0] = (i-1) / 10+'0';
+			m[i][1] = (i-1) % 10+'0';
+			m[1][i + 2] = '-';
+			m[i% 11][0] = ' ';
+			m[i][2] = '|';
+			m[1][107] = '>';
+		}
+	}
+	cout << "  ^";
+	u++;
+	while(u>=0)
+	{
+		cout << '\n';
+		for (j = 0; j < 108; j++)
+			cout << (m[u][j] ? m[u][j] : ' ');
+		u--;
+	}
+}
+
+
+int main()
+{
+	ifstream cin("file.in");
+	cin >> n;
+	cin.get();
+	for (int i = 0; i <= n-1; i++)
+	{
+		getline(cin, t[i]);
+	}
+	cin >> s;
+	f(t, s, n);
+	return 0;
+}
