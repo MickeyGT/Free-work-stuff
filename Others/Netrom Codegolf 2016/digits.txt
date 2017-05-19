@@ -1,0 +1,85 @@
+include <iostream>
+#include <fstream>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <list>
+#include <bitset>
+#include <vector>
+char l[3][256];
+using namespace std;
+void f(char l[3][255], int s)
+{
+	int i = 2, j, k, b = 0, a = 0, v[42], f[42], c = 0, d, e = 1;
+	char m[42][10], x[8], q[42][42] = { "Numar invalid","Numarul este:","011101011","011000000","010111001","011111000","011010010","001111010","001111011","011100000","011111011","011111010" };
+	memset(m, '0', sizeof(m));
+	memset(v, -1, sizeof(v));
+	while (i <= strlen(l[1]))
+	{
+		for (j = 0;j < 3;j++)
+			l[j][i - 1] == '_' ? m[b][j + 3] = '1' : 0, l[j][i] == '|' ? m[b][j] = '1' : 0, l[j][i - 2] == '|' ? m[b][j + 6] = '1' : 0;
+		i += 5;
+		m[b][9] = '\0';
+		for (j = 2;j <= 11;j++)
+			!strcmp(q[j], m[b]) ?
+			v[b] = j - 2:0; 
+		v[b] < 0 ? (a++, d = b) : 0;
+		b++;
+	}
+
+	if (a > 1)
+		cout << q[0];
+	else if (a)
+	{
+		for (i = 0;i < b;i++)
+			v[i] > 0 ? s -= v[i] : 0;
+		s ? strcpy(x, q[3]) : strcpy(x, q[2]);
+
+
+		for (i = 0;i < 7;i++)
+			m[d][i] != x[i] ? c++ : 0;
+		if (c < 2)
+		{
+			v[d] = s;
+			cout << q[1];
+			for (i = 0;i < b;i++)
+				cout << v[i];
+		}
+		else
+			cout << q[0];;
+	}
+	else
+	{
+		f[0] = f[5] = 0;
+		for (i = 0;i < b;i++)
+			s -= v[i],
+			f[v[i]]++;
+		!s ? c = 1 : 0;
+		s == 8 ? f[0] ? c = 1 : 0 : 0;
+		s == 1 || s == 4 ? f[5] ? c = 1 : 0 : 0;
+
+		if (c)
+		{
+			cout << q[1];
+			for (i = 0;i < b;i++)
+				s == 4 && v[i] == 5 ? cout << 9 : s == 1 && v[i] == 5 ? cout << 6 : s == 8 && v[i] < 1 ? cout << 8 : cout << v[i];
+		}
+		else
+			cout << "Solutii multiple";
+
+	}
+
+}
+
+int main(int argc, char **argv)
+{
+	ifstream in("cifre.in");
+
+	char l[3][255];
+	in.getline(l[0], 255);
+	in.getline(l[1], 255);
+	in.getline(l[2], 255);
+	f(l, 44);
+	system("pause");
+	return 0;
+}
