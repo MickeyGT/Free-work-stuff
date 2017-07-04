@@ -1,0 +1,74 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, nr1,nr2, n, m, el, min1, max1, x, y, a, b,cost,l,r,best[200200],rez;
+struct voucher
+{
+	long long l,r,cost,type;
+}vr;
+vector<voucher>v;
+bool comp(voucher a, voucher b)
+{
+	if (a.l == b.l)
+	{
+		return a.type > b.type;
+	}
+	return a.l < b.l;
+}
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> n >> x;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> vr.l >> vr.r >> vr.cost;
+		vr.type = 1;
+		v.push_back(vr);
+		vr.type = 0;
+		swap(vr.l, vr.r);
+		v.push_back(vr);
+	}
+	for (i = 0; i <= 200000; i++)
+		best[i] = 1LL << 50;
+	sort(v.begin(), v.end(), comp);
+	rez = 1LL << 50;
+	for (auto it : v)
+	{
+		if (it.type == 0)
+		{
+			best[it.l - it.r + 1] = min(best[it.l - it.r + 1], it.cost);
+		}
+		else
+		{
+			if(x >= (it.r - it.l + 1))
+				rez = min(rez, 1LL*it.cost+1LL*best[x-(it.r-it.l+1)]);
+		}
+	}
+	if (rez >= 1LL << 50)
+		cout << "-1";
+	else
+		cout << rez;
+	return 0;
+}
