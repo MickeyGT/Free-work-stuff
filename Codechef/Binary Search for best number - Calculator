@@ -1,0 +1,53 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,t,rez;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> t;
+	for (k = 1; k <= t; k++)
+	{
+		cin >> n >> b;
+		x = min(1LL, (n - 1) / b);
+		y = (n - 1)/b;
+		rez = (n - 1) / b;
+		while (x <= y)
+		{
+			long long mid = (x + y) / 2;
+			if (mid*(n - mid*b) > rez)
+			{
+				rez = mid*(n - mid*b);
+				x = mid+1;
+			}
+			else
+			{
+				y = mid-1;
+			}
+		}
+		cout << rez << '\n';
+	}
+	return 0;
+}
