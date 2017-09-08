@@ -1,0 +1,55 @@
+#include<fstream>
+#include<string.h>
+#include<ctype.h>
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<unordered_map>
+#include<array>
+#include<deque>
+#include<unordered_set>
+using namespace std;
+int n, m, i, nr, j, el,k,t,p,ok;
+int mat[51][51],in[51][51];
+int main()
+{
+    ifstream f("rfinv.in");
+    ofstream g("rfinv.out");
+    f >> t;
+    for (p = 1; p <= t; p++)
+    {
+        f >> n >>m;
+        memset(mat, 0, sizeof(mat));
+        memset(in, 0, sizeof(in));
+        for (k = 1; k <= m; k++)
+        {
+            f >> i >> j;
+            mat[i][j] = 1;
+            mat[j][i] = 1;
+        }
+        for (i = 1; i <= n; i++)
+            for (j = 1; j <= n; j++)
+            {
+                f >> in[i][j];
+                if (mat[i][j] == 1)
+                    mat[i][j] = in[i][j];
+            }
+        for (k = 1; k <= n; k++)
+            for (i = 1; i <= n; i++)
+                for (j = 1; j <= n; j++)
+                {
+                    if (mat[i][k] != 0 && mat[k][j] != 0 && (mat[i][j] > mat[i][k] + mat[k][j] || !mat[i][j]) && i != j)
+                        mat[i][j] = mat[i][k] + mat[k][j];
+                }
+        ok = 1;
+        for (i = 1; i <= n; i++)
+            for (j = 1; j <= n; j++)
+                if (mat[i][j] != in[i][j])
+                    ok = 0;
+        if (ok)
+            g << "DA\n";
+        else
+            g << "NU\n";
+    }
+    return 0;
+}
