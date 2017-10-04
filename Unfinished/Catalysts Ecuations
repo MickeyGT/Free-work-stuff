@@ -1,0 +1,169 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,spare,points,shot,nr1,nr2,nr3;
+string s;
+char sign;
+vector<int>v[10];
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> s;
+	sign = s[1];
+	nr1 = s[0] - '0';
+	nr2 = s[2] - '0';
+	nr3 = s[4] - '0';
+	v[0].push_back(6);
+	v[1].push_back(7);
+	v[7].push_back(1);
+	v[0].push_back(9);
+	v[3].push_back(2);
+	v[3].push_back(5);
+	v[6].push_back(0);
+	v[6].push_back(9);
+	v[9].push_back(6);
+	v[9].push_back(0);
+	v[2].push_back(3);
+	v[5].push_back(3);
+	for (auto it = v[nr1].begin(); it != v[nr1].end(); it++)
+	{
+		for (auto iter = v[nr3].begin(); iter != v[nr3].end(); iter++)
+		{
+			if (sign == '+')
+			{
+				if (*it + nr2 == *iter)
+				{
+					cout << *it << '+' << nr2 << '=' << *iter;
+					return 0;
+				}
+			}
+			else
+			{
+				if (*it - nr2 == *iter)
+				{
+					cout << *it << '-' << nr2 << '=' << *iter;
+					return 0;
+				}
+			}
+		}
+		if (sign == '+')
+		{
+			if (*it + nr2 == nr3)
+			{
+				cout << *it << '+' << nr2 << '=' << nr3;
+				return 0;
+			}
+		}
+		else
+		{
+			if (*it - nr2 == nr3)
+			{
+				cout << *it << '-' << nr2 << '=' << nr3;
+				return 0;
+			}
+		}
+	}
+	for (auto it = v[nr2].begin(); it != v[nr2].end(); it++)
+	{
+		for (auto iter = v[nr3].begin(); iter != v[nr3].end(); iter++)
+		{
+			if (sign == '+')
+			{
+				if (*it + nr1 == *iter)
+				{
+					cout << nr1 << '+' << *it << '=' << *iter;
+					return 0;
+				}
+			}
+			else
+			{
+				if (nr1 - *it == *iter)
+				{
+					cout << nr1 << '-' << *it << '=' << *iter;
+					return 0;
+				}
+			}
+		}
+		if (sign == '+')
+		{
+			if (*it + nr1 == nr3)
+			{
+				cout << nr1 << '+' << *it << '=' << nr3;
+				return 0;
+			}
+		}
+		else
+		{
+			if (nr1 - *it == nr3)
+			{
+				cout << nr1 << '-' << *it << '=' << nr3;
+				return 0;
+			}
+		}
+	}
+	for (auto it = v[nr3].begin(); it != v[nr3].end(); it++)
+	{
+		
+		if (sign == '+')
+		{
+			if (nr2 + nr1 == *it)
+			{
+				cout << nr1 << '+' << nr2 << '=' << *it;
+				return 0;
+			}
+		}
+		else
+		{
+			if (nr1 - nr2 == *it)
+			{
+				cout << nr1 << '-' << nr2 << '=' << *it;
+				return 0;
+			}
+		}
+	}
+	for (auto it = v[nr1].begin(); it != v[nr1].end(); it++)
+	{
+		for (auto iter = v[nr2].begin(); iter != v[nr2].end(); iter++)
+		{
+			if (sign == '+')
+			{
+				if (*it + *iter == nr3)
+				{
+					cout << *it << '+' << *iter << '=' <<nr3 ;
+					return 0;
+				}
+			}
+			else
+			{
+				if (*it - *iter == nr3 )
+				{
+					cout << *it << '-' << *iter << '=' << nr3;
+					return 0;
+				}
+			}
+		}
+	}
+	return 0;
+}
