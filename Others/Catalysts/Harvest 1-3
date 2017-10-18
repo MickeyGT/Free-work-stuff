@@ -1,0 +1,125 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,rows,coll,mat[1002][1002];
+char direct;
+int main()
+{
+	//ifstream f("file.in");
+	//ofstream g("file.out");
+	cin >> rows >> coll >> x >> y >> direct;
+	for (i = 1; i <= rows; i++)
+		for (j = 1; j <= coll; j++)
+			mat[i][j] = ((i - 1) * coll) + j;
+	if (direct == 'N')
+	{
+		if (y == coll)
+			ok = 0;
+		else
+			ok = 1;
+	}
+	if (direct == 'S')
+	{
+		if (y == coll)
+			ok = 0;
+		else
+			ok = 1;
+	}
+	if (direct == 'O')
+	{
+		if (x == rows)
+			ok = 0;
+		else
+			ok = 1;
+	}
+	if (direct == 'W')
+	{
+		if (x == rows)
+			ok = 0;
+		else
+			ok = 1;
+	}
+	while (nr != rows*coll)
+	{
+		cout << mat[x][y] << " ";
+		if (direct == 'N')
+		{
+			if (mat[x - 1][y] != 0)
+				x--;
+			else
+			{
+				if (ok)
+					y++;
+				else
+					y--;
+				direct = 'S';
+			}
+		}
+		else
+			if (direct == 'O')
+			{
+				if (mat[x][y+1] != 0)
+					y++;
+				else
+				{
+					if (ok)
+						x++;
+					else
+						x--;
+					direct = 'W';
+				}
+			}
+			else
+				if (direct == 'S')
+				{
+					if (mat[x + 1][y] != 0)
+						x++;
+					else
+					{
+						if (ok)
+							y++;
+						else
+							y--;
+						direct = 'N';
+					}
+				}
+				else
+					if (direct == 'W')
+					{
+						if (mat[x][y-1] != 0)
+							y--;
+						else
+						{
+							if (ok)
+								x++;
+							else
+								x--;
+							direct = 'O';
+						}
+					}
+		nr++;
+	}
+	
+	return 0;
+}
