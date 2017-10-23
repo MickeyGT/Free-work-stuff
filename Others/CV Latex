@@ -1,0 +1,146 @@
+\documentclass[a4paper,10pt]{article}
+
+%A Few Useful Packages
+\usepackage{marvosym}
+\usepackage{fontspec} 	
+\usepackage{enumitem}
+%for loading fonts
+\usepackage{xunicode,xltxtra,url,parskip} 	%other packages for formatting
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[big]{layaureo} 				%better formatting of the A4 page
+% an alternative to Layaureo can be ** \usepackage{fullpage} **
+\usepackage{supertabular} 				%for Grades
+\usepackage{titlesec}					%custom \section
+
+%Setup hyperref package, and colours for links
+\usepackage{hyperref}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+%FONTS
+\defaultfontfeatures{Mapping=tex-text}
+%\setmainfont[SmallCapsFont = Fontin SmallCaps]{Fontin}
+%%% modified for Karol Kozioł for ShareLaTeX use
+\setmainfont[
+SmallCapsFont = Fontin-SmallCaps.otf,
+BoldFont = Fontin-Bold.otf,
+ItalicFont = Fontin-Italic.otf
+]
+{Fontin.otf}
+%%%
+
+%CV Sections inspired by: 
+%http://stefano.italians.nl/archives/26
+\titleformat{\section}{\Large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{3pt}{3pt}
+%Tweak a bit the top margin
+%\addtolength{\voffset}{-1.3cm}
+
+%Italian hyphenation for the word: ''corporations''
+\hyphenation{im-pre-se}
+
+%-------------WATERMARK TEST [**not part of a CV**]---------------
+\usepackage[absolute]{textpos}
+
+\setlength{\TPHorizModule}{30mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\textblockorigin{2mm}{0.65\paperheight}
+\setlength{\parindent}{0pt}
+
+%--------------------BEGIN DOCUMENT----------------------
+\begin{document}
+
+%WATERMARK TEST [**not part of a CV**]---------------
+%\font\wm=''Baskerville:color=787878'' at 8pt
+%\font\wmweb=''Baskerville:color=FF1493'' at 8pt
+%{\wm 
+%	\begin{textblock}{1}(0,0)
+%		\rotatebox{-90}{\parbox{500mm}{
+%			Typeset by Alessandro Plasmati with \XeTeX\  \today\ for 
+%			{\wmweb \href{http://www.aleplasmati.comuv.com}{aleplasmati.comuv.com}}
+%		}
+%	}
+%	\end{textblock}
+%}
+
+\pagestyle{empty} % non-numbered pages
+
+\font\fb=''[cmr10]'' %for use with \LaTeX command
+
+%--------------------TITLE-------------
+\par{\centering
+		{\Huge Turcu \textsc{Gabriel-Virgil}
+	}\bigskip\par}
+
+%--------------------SECTIONS-----------------------------------
+%Section: Personal Data
+\section{Personal Data}
+
+\begin{tabular}{rl}
+        \textsc{Place and Date of Birth:} & Romania, Craiova  | 10 April 1997 \\
+    \textsc{Address:}   & Romania, Craiova, ZIP 200719, Parangului Street, Nr. 53 \\
+    \textsc{Phone:}     & +40 773724660\\
+    \textsc{email:}     & \href{mailto:gabi_turcu_1997@yahoo.com}{gabi\textunderscore turcu\textunderscore1997@yahoo.com}
+\end{tabular}
+
+\section{Education}
+\begin{tabular}{rl}	
+ \textsc{2011-2015} & Mathematic-Informatic profile, \textbf{National College „Elena Cuza”}, Craiova\\
+
+\textsc{2015-Present} 
+& Studying Computer Science in English,\textbf{Faculty of Automatics, Computers and Electronics}, Craiova\\
+\end{tabular}
+
+
+
+%Section: Education
+
+
+%Section: Scholarships and additional info
+\section{Algorithmic Achievements and Contests}
+\begin{itemize}[noitemsep]
+\setlength\itemsep{0.5em}
+ \item ACM-ICPC South Eastern European Regional Contest 2016: 72nd(2 problems).
+\item Romania ACM-ICPC National Phase:
+\begin{itemize}[noitemsep]
+\item 2016 - 36th(3 problems).
+\item 2017 - 37th(3 problems).
+\end{itemize}
+\item ACM-ICPC Bucharest Subregional:
+\begin{itemize}[noitemsep]
+\item 2016 - 26th(3 problems).
+\item 2017 - 31st(3 problems).
+\end{itemize}
+\item National Olympiad in Informatics for Students 2016: 22nd place in the Final(3 problems)\\+ 39th place in the overall ranking(4 problems).
+\item Catalyst Coding Contest 2017 in Craiova: 8th place.
+\item FIICode:
+    \begin{itemize}[noitemsep]
+    \item 2016 - Finalist + 17th place in Final(3 problems).
+    \item 2017 - 17th place in the overall ranking + Final(2 problems).
+    \end{itemize}
+\item IT Engineering Contest (iTEC IX) 2017: 10th place.
+\item Netrom Codegolf:
+    \begin{itemize}[noitemsep]
+    \item 2016 - 11th place.
+    \item 2017 - Honorable mention - 10th place.
+    \end{itemize}
+\item STL for Competitive Programming and Software Development Course 2016: Certificate of Competence.\\
+\end{itemize}
+
+%Section: Work Experience at the top
+\section{Work Experience}
+\begin{tabular}{r|p{11cm}}
+ \emph{Current} & Founder, CEO at \textsc{Virtuoso} \\\textsc{July 2017}&\emph{Tech Start-Up}\\&\footnotesize{
+Virtuoso is a software development company. For now, it specializes in mobile development. Due to it being a start-up with few people in it, I've had to fulfill many different positions in the company including Marketing, Design and Development. Currently released applications can be found here on the \href{https://play.google.com/store/apps/developer?id=Virtuoso+ENT }{ Google Play Store}
+}
+\end{tabular}
+
+
+\section{Computer Skills}
+\begin{tabular}{rl}
+ Basic Knowledge:& \textsc{php}, my\textsc{sql}, \textsc{html}, Access, \textsc{Linux}, ubuntu, {\fb \LaTeX}\setmainfont[SmallCapsFont=Fontin-SmallCaps.otf]{Fontin.otf}\\
+Intermediate Knowledge:& \textsc{vba}, Excel, Word, PowerPoint\\
+\end{tabular}
+
+\end{document}
