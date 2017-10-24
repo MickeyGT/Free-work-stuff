@@ -1,4 +1,0 @@
-  int n; // number of students
-	cin >> n;
-	Student *s = new Student[n]; // an array of n students
- =====================================================================================
