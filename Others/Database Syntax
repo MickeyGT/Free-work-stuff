@@ -1,0 +1,140 @@
+CREATE DATABASE databasename;
+
+DROP DATABASE testDB;  // delete DB
+
+CREATE TABLE Shippers 
+(
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255) 
+);
+
+DROP TABLE Shippers;  // delete Table
+
+TRUNCATE TABLE Shippers; // delete data/content from table.
+
+ALTER TABLE Persons
+ALTER COLUMN DateOfBirth year;  // change data type.
+DROP COLUMN DateOfBirth;
+ADD DateOfBirth date;       // add new column
+ADD UNIQUE (ID);
+ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+DROP CONSTRAINT UC_Person;
+ADD PRIMARY KEY (ID);
+ADD CONSTRAINT PK_Person PRIMARY KEY (ID,LastName);
+ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+ADD CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+DROP FOREIGN KEY FK_PersonOrder;
+ADD CHECK (Age>=18);
+ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');
+DROP CHECK CHK_PersonAge;
+ALTER COLUMN City SET DEFAULT 'Sandnes';
+ALTER COLUMN City DROP DEFAULT;
+DROP INDEX table_name.index_name;
+
+
+CREATE TABLE table_name 
+(
+    column1 datatype constraint,        // for constraints
+    ID int NOT NULL,
+    ID int NOT NULL UNIQUE,
+    CONSTRAINT UC_Person UNIQUE (ID,LastName)  // unique constraint on multiple columns
+    ID int NOT NULL PRIMARY KEY,        // how to set primary key
+    CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)  // there is only ONE PRIMARY KEY (PK_Person). However, the VALUE of the primary key is made up of TWO COLUMNS (ID + LastName).
+    PersonID int FOREIGN KEY REFERENCES Persons(PersonID)      // key to connect two tables together
+    CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+    Age int CHECK (Age>=18)
+    CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Sandnes')
+    City varchar(255) DEFAULT 'Sandnes'
+    ID int IDENTITY(1,2) PRIMARY KEY,  // auto-increment. first parameter = start(1), second parm= increase value(2).
+    ....
+);
+
+CREATE INDEX idx_pname          // index for retrieveing data from database very fast.
+ON Persons (LastName, FirstName);
+
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+
+UPDATE Customers SET ContactName='Juan' WHERE Country='Mexico';
+
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+
+SELECT * FROM Orders WHERE OrderDate='2008-11-11'
+SELECT DISTINCT Country FROM Customers;   // DISTINCT entries only.
+SELECT COUNT(DISTINCT Country) FROM Customers;  // Returns number of distinc entries.
+Select operators: BETWEEN , LIKE , IN
+SELECT * FROM Customers WHERE Country='Germany' AND (City='Berlin' OR City='München');
+SELECT * FROM Customers ORDER BY Country ASC, CustomerName DESC;
+SELECT column_names FROM table_name WHERE column_name IS NULL;
+SELECT TOP 50 PERCENT * FROM Customers;
+SELECT TOP 3 * FROM Customers WHERE Country='Germany';
+SELECT MIN(Price) AS SmallestPrice FROM Products;
+SELECT SUM(Quantity) FROM OrderDetails; // (Same with AVG, COUNT)
+SELECT * FROM Customers WHERE Country IN ('Germany', 'France', 'UK');
+SELECT * FROM Orders WHERE OrderDate BETWEEN #07/04/1996# AND #07/09/1996#;
+
+
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders                                                              // When you want to select multiple columns from different tables based on a key.
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+sau LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+sau RIGHT JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID
+sau FULL OUTER JOIN Orders ON Customers.CustomerID=Orders.CustomerID
+
+SELECT City FROM Customers
+UNION
+SELECT City FROM Suppliers
+ORDER BY City;
+
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country;
+
+//////////////////////////////////////////////////////////////////// HUGE SELECT 
+CREATE VIEW [Current Product List] AS
+SELECT ProductID, ProductName
+FROM Products
+WHERE Discontinued = No;
+
+SELECT * FROM [Current Product List];
+
+CREATE VIEW [Products Above Average Price] AS
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE UnitPrice > (SELECT AVG(UnitPrice) FROM Products);
+
+SELECT COUNT(CustomerID), Country FROM Customers 
+GROUP BY Country HAVING COUNT(CustomerID) > 5;
+
+SELECT SupplierName
+FROM Suppliers
+WHERE EXISTS (SELECT ProductName FROM Products WHERE SupplierId = Suppliers.supplierId AND Price < 20);
+
+SELECT * FROM [Products Above Average Price];
+
+ELECT ProductName
+FROM Products
+WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 10);
+                  ALL
+
+CREATE VIEW [Category Sales For 1997] AS
+SELECT DISTINCT CategoryName, Sum(ProductSales) AS CategorySales
+FROM [Product Sales for 1997]
+GROUP BY CategoryName;
+SELECT * FROM [Category Sales For 1997];
+/////////////////////////////////////////////////////////////////////
+
+SELECT - extracts data from a database
+UPDATE - updates data in a database
+DELETE - deletes data from a database
+INSERT INTO - inserts new data into a database
+CREATE DATABASE - creates a new database
+ALTER DATABASE - modifies a database
+CREATE TABLE - creates a new table
+ALTER TABLE - modifies a table
+DROP TABLE - deletes a table
+CREATE INDEX - creates an index (search key)
+DROP INDEX - deletes an index
+
+https://www.w3schools.com/sql/sql_exists.asp
