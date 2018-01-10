@@ -1,4 +1,6 @@
-CREATE DATABASE databasename;
+CREATE DATABASE databasename ON
+(NAME = Secretariat, FILENAME = 'C\laboratorBD\testesql2004\Secretariat.mdf',
+SIZE = 10, MAXSIZE = 20, FILEGROWTH = 2);
 
 DROP DATABASE testDB;  // delete DB
 
