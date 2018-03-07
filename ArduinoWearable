@@ -1,0 +1,99 @@
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_LSM9DS0.h>
+#include <Adafruit_Simple_AHRS.h>
+
+Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);  // Use I2C,  assaign unique ID for sensor - #1000
+Adafruit_Simple_AHRS ahrs(&lsm.getAccel(), &lsm.getMag()); // Create simple AHRS algorithm using the LSM9DS0 instance's accelerometer and magnetometer.
+int nrOfSecondsOfTilt = 0;
+
+
+//Configure range and sensitivity of sensors
+void configureSensor(void)
+{
+  // 1.) Set the accelerometer range
+  lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_2G);
+  //lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_4G);
+  //lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_6G);
+  //lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_8G);
+  //lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_16G);
+  
+  // 2.) Set the magnetometer sensitivity
+  lsm.setupMag(lsm.LSM9DS0_MAGGAIN_2GAUSS);
+  //lsm.setupMag(lsm.LSM9DS0_MAGGAIN_4GAUSS);
+  //lsm.setupMag(lsm.LSM9DS0_MAGGAIN_8GAUSS);
+  //lsm.setupMag(lsm.LSM9DS0_MAGGAIN_12GAUSS);
+
+  // 3.) Setup the gyroscope
+  lsm.setupGyro(lsm.LSM9DS0_GYROSCALE_245DPS);
+  //lsm.setupGyro(lsm.LSM9DS0_GYROSCALE_500DPS);
+  //lsm.setupGyro(lsm.LSM9DS0_GYROSCALE_2000DPS);
+}
+
+
+void setup(void) 
+{
+  
+  Serial.begin(9600); // Initialize serial connection for console
+  lsm.begin(); // Initialize sensor
+  configureSensor(); //configure sensor
+  
+}
+
+void loop(void) 
+{  
+  
+  sensors_event_t accel, mag, gyro, temp; //variables for sensor data
+  sensors_vec_t   orientation; //variable for orientation object
+  
+  lsm.getEvent(&accel, &mag, &gyro, &temp); //get raw sensor data
+  ahrs.getOrientation(&orientation); //get orientation object
+
+/*
+  //Print raw data
+  Serial.print("Raw data: \n");
+  // print out accelleration data
+  Serial.print("Accel X: "); Serial.print(accel.acceleration.x); Serial.print(" ");
+  Serial.print("  \tY: "); Serial.print(accel.acceleration.y);       Serial.print(" ");
+  Serial.print("  \tZ: "); Serial.print(accel.acceleration.z);     Serial.println("  \tm/s^2");
+  // print out magnetometer data
+  Serial.print("Magn. X: "); Serial.print(mag.magnetic.x); Serial.print(" ");
+  Serial.print("  \tY: "); Serial.print(mag.magnetic.y);       Serial.print(" ");
+  Serial.print("  \tZ: "); Serial.print(mag.magnetic.z);     Serial.println("  \tgauss");
+  // print out gyroscopic data
+  Serial.print("Gyro  X: "); Serial.print(gyro.gyro.x); Serial.print(" ");
+  Serial.print("  \tY: "); Serial.print(gyro.gyro.y);       Serial.print(" ");
+  Serial.print("  \tZ: "); Serial.print(gyro.gyro.z);     Serial.println("  \tdps");
+  // print out temperature data
+  Serial.print("Temp: "); Serial.print(temp.temperature); Serial.print(" آ°C\n\n");
+
+*/
+  //print orientation data gained from simple AHRS algorithm
+  Serial.print("Orientation: \n");
+  Serial.print("Roll (Y axis): ");Serial.print(orientation.roll); Serial.print("آ°\n");
+  //Serial.print("Pitch (X axis): ");Serial.print(orientation.pitch); Serial.print("آ°\n");
+  //Serial.print("Yaw (Z axis): ");Serial.print(orientation.heading); Serial.print("آ°\n"); //This can be buggy since the magnetometer is not calibrated. Also values are relative to starting position.
+  countTilt(orientation.roll);
+  Serial.println("\n");
+  delay(1000);
+}
+
+
+void countTilt(double angle)
+{
+  if(angle <= 45)  
+    nrOfSecondsOfTilt++;
+  else
+    nrOfSecondsOfTilt=0;
+
+   if(nrOfSecondsOfTilt>=10)
+   {
+      Serial.println("Sending vibration notification \n");
+      analogWrite(6,160);
+      delay(500);
+      nrOfSecondsOfTilt=0;
+      analogWrite(6,0);
+   }
+}
+
