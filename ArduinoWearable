@@ -82,15 +82,15 @@ void loop(void)
 
 void countTilt(double angle)
 {
-  if(angle <= 45)  
+  if(angle <= -110|| (angle>=110&&angle<=180))  
     nrOfSecondsOfTilt++;
   else
     nrOfSecondsOfTilt=0;
 
-   if(nrOfSecondsOfTilt>=10)
+   if(nrOfSecondsOfTilt>=5)
    {
       Serial.println("Sending vibration notification \n");
-      analogWrite(6,160);
+      analogWrite(6,240);
       delay(500);
       nrOfSecondsOfTilt=0;
       analogWrite(6,0);
