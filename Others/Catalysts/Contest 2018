@@ -1,0 +1,295 @@
+#include<fstream>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+#include<bitset>
+#include<ctime>
+#include<set>
+#include<cmath>
+#include<unordered_map>
+#include<iomanip>
+#include<map>
+#include<stack>
+#include<vector>
+#include<bitset>
+#include<functional>
+#include<iostream>
+#include<deque>
+#include<unordered_set>
+#include<queue>
+#include<list>
+#include<array>
+#include<ctype.h>
+using namespace std;
+long long i, j, k, ok, nr, n, m, el, min1, max1, x, y, a, b,st,ed,imgcount,nrShapes=0;
+bool isused[1000000],exists[1000000];
+
+#define R 150
+#define C 150
+
+void reverseColumns(int arr[R][C])
+{
+	for (int i = 0; i<C; i++)
+		for (int j = 0, k = C - 1; j<k; j++, k--)
+			swap(arr[j][i], arr[k][i]);
+}
+
+
+// Function for do transpose of matrix
+void transpose(int arr[R][C])
+{
+	for (int i = 0; i<R; i++)
+		for (int j = i; j<C; j++)
+			swap(arr[i][j], arr[j][i]);
+}
+
+// Function for print matrix
+void printMatrix(int arr[R][C])
+{
+	for (int i = 0; i<R; i++)
+	{
+		for (int j = 0; j<C; j++)
+			cout << arr[i][j] << " ";
+		cout << '\n';
+	}
+}
+
+// Function to anticlockwise rotate matrix
+// by 90 degree
+void rotate90(int arr[R][C])
+{
+	transpose(arr);
+	reverseColumns(arr);
+}
+
+struct pairhash
+{
+public:
+	template <typename T, typename U>
+	std::size_t operator()(const std::pair<T, U> &x) const
+	{
+		return std::hash<T>()(x.first) ^ std::hash<U>()(x.second);
+	}
+};
+
+bool mapcomp(pair<int, int> i1, pair<int, int>i2)
+{
+	return i1.first < i2.first;
+}
+unordered_map<pair<int,int>, int,pairhash>mp;
+
+ifstream f("file.in");
+ofstream g("file.out");
+
+struct shapetype
+{
+	int content[150][150];
+	int nr;
+	int first = 1 << 30;;
+	int last;
+	int row;
+	int col;
+	int times[1000];
+}shapes[10000];
+struct image
+{
+	int timest;
+	int row;
+	int col;
+	int content[150][150];
+	bool asteroid = 0;
+	int strow = 1 << 30;
+	int stcol = 1 << 30;
+}images[10000];
+
+bool comp(image i1, image i2)
+{
+	return i1.timest < i2.timest;
+}
+
+struct rez
+{
+	int a;
+	int b;
+	int c;
+}res[10000];
+
+void lucrate(int id)
+{
+	for (int j = 1; j <= images[id].row; j++)
+		for (int l = 1; l <= images[id].col; l++)
+			if(images[id].content[j][l]!=0)
+			{
+				images[id].strow = min(images[id].strow, j);
+				images[id].stcol = min(images[id].stcol, l);
+			}
+}
+
+bool match(int ids,int idi)
+{
+	int ok = 1;
+	for (int i = 1; i <= shapes[ids].row; i++)
+		for (int j = 1; j <= shapes[ids].col; j++)
+			if (!((shapes[ids].content[i][j] !=0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1]!=0)|| (shapes[ids].content[i][j] == 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] == 0)))
+			{
+				ok = 0;
+				break;
+			}
+	if (ok)
+		return 1;
+	ok = 1;
+	rotate90(shapes[ids].content);
+	for (int i = 1; i <= shapes[ids].row; i++)
+		for (int j = 1; j <= shapes[ids].col; j++)
+			if (!((shapes[ids].content[i][j] != 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] != 0) || (shapes[ids].content[i][j] == 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] == 0)))
+			{
+				ok = 0;
+				break;
+			}
+	if (ok)
+		return 1;
+	ok = 1;
+	rotate90(shapes[ids].content);
+	for (int i = 1; i <= shapes[ids].row; i++)
+		for (int j = 1; j <= shapes[ids].col; j++)
+			if (!((shapes[ids].content[i][j] != 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] != 0) || (shapes[ids].content[i][j] == 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] == 0)))
+			{
+				ok = 0;
+				break;
+			}
+	if (ok)
+		return 1;
+	ok = 1;
+	rotate90(shapes[ids].content);
+	for (int i = 1; i <= shapes[ids].row; i++)
+		for (int j = 1; j <= shapes[ids].col; j++)
+			if (!((shapes[ids].content[i][j] != 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] != 0) || (shapes[ids].content[i][j] == 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] == 0)))
+			{
+				ok = 0;
+				break;
+			}
+	if (ok)
+		return 1;
+	ok = 1;
+	rotate90(shapes[ids].content);
+	for (int i = 1; i <= shapes[ids].row; i++)
+		for (int j = 1; j <= shapes[ids].col; j++)
+			if (!((shapes[ids].content[i][j] != 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] != 0) || (shapes[ids].content[i][j] == 0 && images[idi].content[i + images[idi].strow - 1][j + images[idi].stcol - 1] == 0)))
+			{
+				ok = 0;
+				break;
+			}
+	if (ok)
+		return 1;
+	return 0;
+}
+
+bool rescomp(rez r1, rez r2)
+{
+	if (r1.a == r2.a)
+		return r1.b < r2.b;
+	return r1.a < r2.a;
+}
+
+int number = 0;
+
+void findPatterns(int ids)
+{
+
+	for (int i = 2; i <= shapes[ids].last; i++)
+	{
+		//int first = 1 << 30;
+		for (int l = 1; l <= shapes[ids].nr; l++)
+		{
+			int nr = 0;
+			int last = 0;
+			int first = shapes[ids].times[l];
+			int value = first;
+			while (value > 0)
+			{
+				if (value - i>0 && (exists[value]||(isused[value]==true)))
+					nr = -1 *( 1 << 30);
+				value -= i;
+			}
+			
+				for (int j = 1; j <= shapes[ids].nr; j++)
+					if ((isused[shapes[ids].times[j]]==0)&&((shapes[ids].times[j]- shapes[ids].times[l]) - i*nr == 0))
+					{
+						nr++;
+						last = shapes[ids].times[j];
+						//first = min(shapes[ids].times[j], first);
+					}
+				if (nr >= 4)
+				{
+					for (int k = first; k <= last; k += i)
+						isused[k] = true;
+					res[++number].a =first;
+					res[number].b = last;
+					res[number].c = nr;
+					//g << first << " " << last << " " << nr << '\n';
+				}
+		}
+	}
+		
+}
+
+int main()
+{
+
+	f >> st >> ed >> imgcount;
+	for (int k = 1; k <= imgcount; k++)
+	{
+		f >> images[k].timest>> images[k].row >> images[k].col;
+		exists[images[k].timest] = true;
+		for (int j = 1; j <= images[k].row; j++)
+			for (int l = 1; l <= images[k].col; l++)
+			{
+				f >> images[k].content[j][l];
+				if (images[k].content[j][l] != 0)
+				{
+					images[k].asteroid = 1;
+					lucrate(k);
+				}
+			}
+	}
+	sort(images + 1, images + imgcount + 1, comp);
+	for (int k = 1; k <= imgcount; k++)
+	{
+		if (images[k].asteroid == 1)
+		{
+			ok = 0;
+			for (int l = 1; l <= nrShapes;l++)
+				if (match(l, k))
+				{
+					shapes[l].first = min(shapes[l].first, images[k].timest);
+					shapes[l].last = max(shapes[l].last, images[k].timest);
+					shapes[l].nr++;
+					shapes[l].times[shapes[l].nr] = images[k].timest;
+					ok = 1;
+				}
+			if (ok == 0)
+			{
+				nrShapes++;
+				shapes[nrShapes].first = images[k].timest;
+				shapes[nrShapes].last = images[k].timest;
+				shapes[nrShapes].nr = 1;
+				for (int j = images[k].strow; j <= images[k].row; j++)
+					for (int l = images[k].stcol; l <= images[k].col; l++)
+						shapes[nrShapes].content[j- images[k].strow+1][l- images[k].stcol+1] = images[k].content[j][l];
+				shapes[nrShapes].row = 149;//images[k].row - images[k].strow;
+				shapes[nrShapes].col = 149;//images[k].col - images[k].stcol;
+				shapes[nrShapes].times[shapes[nrShapes].nr] = images[k].timest;
+			}
+		}
+	}
+	for (int i = 1; i <= nrShapes; i++)
+	{
+		findPatterns(i);
+		//g << shapes[i].first << " " << shapes[i].last << " " << shapes[i].nr << '\n';
+	}
+	sort(res + 1, res + number + 1, rescomp);
+	for (int k = 1; k <= number; k++)
+		g << res[k].a << " " << res[k].b << " " << res[k].c << '\n';
+	return 0;
+}
